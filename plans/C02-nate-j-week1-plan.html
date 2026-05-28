@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 1 — Nate J</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; background: #085041; min-height: 100vh; padding: 2rem 1rem 4rem; }
+.plan { max-width: 560px; margin: 0 auto; position: relative; }
+.decor-circles { position: fixed; top: 0; right: 0; width: 340px; height: 320px; opacity: 0.06; pointer-events: none; z-index: -1; }
+.decor-dots { position: fixed; top: 0; left: 0; width: 60px; height: 100vh; opacity: 0.07; pointer-events: none; z-index: -1; overflow: hidden; }
+.plan-header { position: relative; z-index: 1; padding-bottom: 1.5rem; }
+.week-label { font-size: 10px; color: #9FE1CB; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; }
+.golfer-name { font-size: 32px; font-weight: 500; color: #fff; line-height: 1.15; margin-bottom: 2px; }
+.golfer-sub { font-size: 12px; color: #9FE1CB; margin-bottom: 1.25rem; }
+.overview-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 1.1rem; }
+.chip { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 8px 11px; }
+.chip-lbl { font-size: 9px; color: #9FE1CB; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
+.chip-val { font-size: 12px; font-weight: 500; color: #fff; }
+.opening-card { background: rgba(255,255,255,0.08); border-left: 3px solid #5DCAA5; border-radius: 0 8px 8px 0; padding: 11px 14px; }
+.opening-card p { font-size: 12.5px; color: rgba(255,255,255,0.88); line-height: 1.7; font-style: italic; }
+.section-label { font-size: 9px; font-weight: 600; color: #9FE1CB; text-transform: uppercase; letter-spacing: 0.1em; display: flex; align-items: center; gap: 8px; margin: 1.25rem 0 0.6rem; position: relative; z-index: 1; }
+.section-label::after { content: ''; flex: 1; height: 0.5px; background: rgba(255,255,255,0.15); }
+.drill-card { background: #fff; border-radius: 10px; overflow: hidden; margin-bottom: 9px; position: relative; z-index: 1; }
+.drill-header { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-bottom: 0.5px solid #ece9e3; }
+.drill-num { width: 26px; height: 26px; border-radius: 50%; background: #E1F5EE; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #085041; flex-shrink: 0; }
+.drill-name { font-size: 13px; font-weight: 500; color: #1a1a1a; flex: 1; }
+.drill-time { font-size: 11px; color: #0F6E56; background: #E1F5EE; border: 0.5px solid #9FE1CB; padding: 3px 9px; border-radius: 5px; font-weight: 500; white-space: nowrap; }
+.drill-body { padding: 13px 14px; display: flex; flex-direction: column; gap: 11px; }
+.micro { font-size: 9px; font-weight: 600; color: #aaa; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+.drill-text { font-size: 12px; color: #1a1a1a; line-height: 1.68; }
+.why-block { border-left: 3px solid #1D9E75; padding: 4px 0 4px 10px; }
+.why-lbl { font-size: 9px; font-weight: 600; color: #0F6E56; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 3px; }
+.why-text { font-size: 12px; color: #555; line-height: 1.62; font-style: italic; }
+.score-box { background: #E1F5EE; border: 0.5px solid #9FE1CB; border-radius: 8px; padding: 9px 12px; }
+.score-box-lbl { font-size: 9px; font-weight: 600; color: #085041; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.score-row { display: flex; flex-direction: column; gap: 10px; }
+.score-item-lbl { font-size: 11px; font-weight: 600; color: #085041; margin-bottom: 5px; }
+.score-single { display: flex; align-items: center; gap: 8px; }
+.score-single input { width: 64px; padding: 6px 9px; border-radius: 6px; border: 1px solid #9FE1CB; background: #fff; font-size: 16px; font-weight: 500; color: #085041; text-align: center; outline: none; font-family: inherit; }
+.score-single input:focus { border-color: #1D9E75; }
+.score-single .den { font-size: 13px; color: #0F6E56; font-weight: 500; }
+.score-sep { height: 0.5px; background: rgba(15,110,86,0.2); margin: 4px 0; }
+.score-total-row { display: flex; align-items: center; gap: 8px; padding-top: 4px; }
+.score-total-lbl { font-size: 11px; font-weight: 600; color: #085041; flex: 1; }
+.score-total-val { font-size: 18px; font-weight: 600; color: #085041; min-width: 32px; }
+.score-total-den { font-size: 13px; color: #0F6E56; font-weight: 500; }
+.feedback-section { position: relative; z-index: 1; }
+.feedback-card { background: rgba(255,255,255,0.08); border: 0.5px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 1.25rem 1.5rem; }
+.feedback-intro { font-size: 13px; color: rgba(255,255,255,0.88); line-height: 1.7; margin-bottom: 1.25rem; }
+.feedback-hint { display: block; margin-top: 8px; font-size: 12px; color: rgba(255,255,255,0.45); font-style: italic; }
+.feedback-question { margin-bottom: 16px; }
+.feedback-question:last-child { margin-bottom: 0; }
+.feedback-q-label { font-size: 11px; font-weight: 500; color: #9FE1CB; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 7px; display: flex; align-items: center; gap: 8px; }
+.q-num { width: 19px; height: 19px; border-radius: 50%; background: rgba(255,255,255,0.1); display: inline-flex; align-items: center; justify-content: center; font-size: 10px; color: #9FE1CB; flex-shrink: 0; }
+.feedback-textarea { width: 100%; background: #fff; border: 0.5px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 10px 12px; font-size: 13px; color: #085041; font-family: inherit; line-height: 1.6; resize: vertical; min-height: 72px; outline: none; }
+.feedback-textarea::placeholder { color: rgba(8,80,65,0.35); }
+.feedback-textarea:focus { border-color: #5DCAA5; }
+.yn-row { display: flex; gap: 8px; }
+.yn-btn { flex: 1; padding: 10px 12px; border: 0.5px solid rgba(255,255,255,0.2); border-radius: 8px; background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.65); font-size: 14px; font-weight: 500; cursor: pointer; text-align: center; font-family: inherit; transition: background 0.12s, border-color 0.12s, color 0.12s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.yn-yes.active { background: #E1F5EE; border-color: #5DCAA5; color: #085041; }
+.yn-no.active { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.45); color: #fff; }
+.send-wrap { position: relative; z-index: 1; margin-top: 1.25rem; padding-bottom: 0.5rem; }
+.send-btn { width: 100%; padding: 14px; background: #1D9E75; color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 500; cursor: pointer; font-family: inherit; transition: background 0.15s; display: flex; align-items: center; justify-content: center; gap: 9px; }
+.send-btn:hover { background: #0F6E56; }
+.send-btn:disabled { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.3); cursor: not-allowed; }
+.send-hint { text-align: center; font-size: 12px; color: rgba(255,255,255,0.32); margin-top: 9px; line-height: 1.4; }
+.plan-footer { display: flex; justify-content: space-between; padding-top: 1rem; margin-top: 1.5rem; border-top: 0.5px solid rgba(255,255,255,0.1); position: relative; z-index: 1; }
+.plan-footer span { font-size: 10px; color: rgba(255,255,255,0.25); }
+</style>
+</head>
+<body>
+
+<svg class="decor-circles" viewBox="0 0 340 320" aria-hidden="true">
+  <circle cx="320" cy="20" r="70" fill="none" stroke="#fff" stroke-width="1.5"/>
+  <circle cx="320" cy="20" r="115" fill="none" stroke="#fff" stroke-width="1.5"/>
+  <circle cx="320" cy="20" r="165" fill="none" stroke="#fff" stroke-width="1.5"/>
+  <circle cx="320" cy="20" r="220" fill="none" stroke="#fff" stroke-width="1.5"/>
+  <circle cx="320" cy="20" r="280" fill="none" stroke="#fff" stroke-width="1.5"/>
+</svg>
+<div class="decor-dots" aria-hidden="true">
+  <svg width="60" height="800" viewBox="0 0 60 800">
+    <defs><pattern id="dp" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="2" fill="#fff"/></pattern></defs>
+    <rect width="60" height="800" fill="url(#dp)"/>
+  </svg>
+</div>
+
+<div class="plan">
+
+  <!-- HEADER -->
+  <div class="plan-header">
+    <div class="week-label">Week 1</div>
+    <h1 class="golfer-name">Nate J</h1>
+    <div class="golfer-sub">Practice plan · Week 1</div>
+    <div class="overview-chips">
+      <div class="chip">
+        <div class="chip-lbl">Total time</div>
+        <div class="chip-val">60 min</div>
+      </div>
+      <div class="chip">
+        <div class="chip-lbl">Location</div>
+        <div class="chip-val">Driving range</div>
+      </div>
+      <div class="chip">
+        <div class="chip-lbl">This week's focus</div>
+        <div class="chip-val">Consistent ball-first contact and centred strike across the iron set</div>
+      </div>
+    </div>
+    <div class="opening-card">
+      <p>Nate, a 4.1 who knows his irons should be sharper — that day-to-day inconsistency from 4-iron through 7-iron is the kind of thing that turns a potential 68 into a 74 without a single dramatic miss. This week's session is built around locking in strike quality across your iron range, then finishing with a wedge cooldown to keep your distance control honest.</p>
+    </div>
+  </div>
+
+  <!-- DRILLS -->
+  <div class="section-label">Drills</div>
+
+  <!-- DRILL 1 — Towel Drill -->
+  <div class="drill-card">
+    <div class="drill-header">
+      <div class="drill-num">1</div>
+      <div class="drill-name">Towel Drill</div>
+      <div class="drill-time">20 min</div>
+    </div>
+    <div class="drill-body">
+      <div>
+        <div class="micro">What to do</div>
+        <p class="drill-text">Place a towel flat on the ground roughly 3–4 inches behind the ball. The goal is to strike the ball cleanly without the clubhead catching the towel on the way through. Hit 15 balls with your 7-iron, then 15 balls with your 5-iron. Reset the towel position as needed to keep the distance consistent. Track each club separately — a clean strike that misses the towel counts; any contact with the towel does not.</p>
+      </div>
+      <div class="why-block">
+        <div class="why-lbl">Why this matters for you</div>
+        <p class="why-text">At 4.1, your misses aren't massive — they're subtle low-point shifts that show up as thin or slightly heavy contact, and those are exactly the "4–7 ball striking inconsistencies" you're feeling day to day. The towel gives you instant, binary feedback on whether your low point is in front of the ball. Splitting the score between 7-iron and 5-iron will also show you if the inconsistency is worse with the longer club, which tells us where to dig deeper next week.</p>
+      </div>
+      <div class="score-box">
+        <div class="score-box-lbl">Score to record</div>
+        <div class="score-row">
+          <div>
+            <div class="score-item-lbl">Without towel (7i)</div>
+            <div class="score-single">
+              <input id="s1a" type="number" min="0" max="15" placeholder="—" oninput="checkReady()">
+              <span class="den">/ 15</span>
+            </div>
+          </div>
+          <div class="score-sep"></div>
+          <div>
+            <div class="score-item-lbl">Without towel (5i)</div>
+            <div class="score-single">
+              <input id="s1b" type="number" min="0" max="15" placeholder="—" oninput="checkReady()">
+              <span class="den">/ 15</span>
+            </div>
+          </div>
+          <div class="score-sep"></div>
+          <div class="score-total-row">
+            <span class="score-total-lbl">Total</span>
+            <span class="score-total-val" id="s1total">—</span>
+            <span class="score-total-den">/ 30</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DRILL 2 — Gate Drill -->
+  <div class="drill-card">
+    <div class="drill-header">
+      <div class="drill-num">2</div>
+      <div class="drill-name">Gate Drill</div>
+      <div class="drill-time">25 min</div>
+    </div>
+    <div class="drill-body">
+      <div>
+        <div class="micro">What to do</div>
+        <p class="drill-text">Place two balls on the ground forming a gate just slightly wider than the clubhead, one ball on each side of your hitting ball. The gate should be tight enough that an off-centre path or a mis-hit will contact one of the gate balls. Hit 20 balls with your 6-iron, then 20 balls with your 4-iron. A successful rep means the ball is struck cleanly and neither gate ball is disturbed. Track each club separately.</p>
+      </div>
+      <div class="why-block">
+        <div class="why-lbl">Why this matters for you</div>
+        <p class="why-text">This pairs perfectly with the towel drill — the towel fixes your low point, and the gate fixes your path and face alignment through impact. For a single-digit player chasing consistency, these two together cover the main reasons a strike feels different from one day to the next. The 4-iron reps will be the real test; if your gate pass rate drops significantly from the 6-iron, that's a clear signal your path is steepening or shifting with the longer club.</p>
+      </div>
+      <div class="score-box">
+        <div class="score-box-lbl">Score to record</div>
+        <div class="score-row">
+          <div>
+            <div class="score-item-lbl">Gate passes (6i)</div>
+            <div class="score-single">
+              <input id="s2a" type="number" min="0" max="20" placeholder="—" oninput="checkReady()">
+              <span class="den">/ 20</span>
+            </div>
+          </div>
+          <div class="score-sep"></div>
+          <div>
+            <div class="score-item-lbl">Gate passes (4i)</div>
+            <div class="score-single">
+              <input id="s2b" type="number" min="0" max="20" placeholder="—" oninput="checkReady()">
+              <span class="den">/ 20</span>
+            </div>
+          </div>
+          <div class="score-sep"></div>
+          <div class="score-total-row">
+            <span class="score-total-lbl">Total</span>
+            <span class="score-total-val" id="s2total">—</span>
+            <span class="score-total-den">/ 40</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DRILL 3 — Wedge Ladder Cooldown -->
+  <div class="drill-card">
+    <div class="drill-header">
+      <div class="drill-num">3</div>
+      <div class="drill-name">Wedge Ladder Cooldown</div>
+      <div class="drill-time">15 min</div>
+    </div>
+    <div class="drill-body">
+      <div>
+        <div class="micro">What to do</div>
+        <p class="drill-text">Using your most lofted wedge, pick three targets at approximately 50, 70, and 90 yards. Hit 5 balls to each distance in order — all 5 to 50 yards, then all 5 to 70, then all 5 to 90. A ball counts if it finishes within 5 yards of the target. Track each distance separately. Focus on smooth tempo and consistent landing spots — this is a cooldown, so resist the urge to steer or force.</p>
+      </div>
+      <div class="why-block">
+        <div class="why-lbl">Why this matters for you</div>
+        <p class="why-text">After 45 minutes of focused iron work, this resets your tempo and reminds your hands that feel and distance control still matter. For a 4-handicapper, the strokes you save inside 100 yards are the ones that offset those days when the irons aren't perfect — and tracking each distance separately will highlight whether your partial swings are as reliable as they should be.</p>
+      </div>
+      <div class="score-box">
+        <div class="score-box-lbl">Score to record</div>
+        <div class="score-row">
+          <div>
+            <div class="score-item-lbl">Within 5 yd (50)</div>
+            <div class="score-single">
+              <input id="s3a" type="number" min="0" max="5" placeholder="—" oninput="checkReady()">
+              <span class="den">/ 5</span>
+            </div>
+          </div>
+          <div class="score-sep"></div>
+          <div>
+            <div class="score-item-lbl">Within 5 yd (70)</div>
+            <div class="score-single">
+              <input id="s3b" type="number" min="0" max="5" placeholder="—" oninput="checkReady()">
+              <span class="den">/ 5</span>
+            </div>
+          </div>
+          <div class="score-sep"></div>
+          <div>
+            <div class="score-item-lbl">Within 5 yd (90)</div>
+            <div class="score-single">
+              <input id="s3c" type="number" min="0" max="5" placeholder="—" oninput="checkReady()">
+              <span class="den">/ 5</span>
+            </div>
+          </div>
+          <div class="score-sep"></div>
+          <div class="score-total-row">
+            <span class="score-total-lbl">Total</span>
+            <span class="score-total-val" id="s3total">—</span>
+            <span class="score-total-den">/ 15</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLOSING + FEEDBACK -->
+  <div class="section-label">Closing</div>
+  <div class="feedback-section">
+    <div class="feedback-card">
+      <p class="feedback-intro">This session is all about giving you hard data on where your strike actually breaks down across the set — 4-iron to 7-iron, long to short. Track those scores honestly, Nate, and we'll know exactly which clubs and which drill to push harder next week. The consistency you're after is in there; we're just building the feedback loop to make it stick.</p>
+      <p class="feedback-hint">Fill in your scores above, answer the four questions below, then tap Send.</p>
+
+      <div class="feedback-question">
+        <div class="feedback-q-label"><span class="q-num">1</span>What felt different, hard, or clicked?</div>
+        <textarea class="feedback-textarea" id="q1" rows="3" placeholder="Even one or two sentences is perfect..." oninput="checkReady()"></textarea>
+      </div>
+      <div class="feedback-question">
+        <div class="feedback-q-label"><span class="q-num">2</span>Anything that didn't make sense or felt wrong?</div>
+        <textarea class="feedback-textarea" id="q2" rows="3" placeholder="Drills, instructions, timing — anything off..." oninput="checkReady()"></textarea>
+      </div>
+      <div class="feedback-question">
+        <div class="feedback-q-label"><span class="q-num">3</span>One thing you want to focus on more next week?</div>
+        <textarea class="feedback-textarea" id="q3" rows="2" placeholder="Any specific shot, situation, or area of your game..." oninput="checkReady()"></textarea>
+      </div>
+      <div class="feedback-question">
+        <div class="feedback-q-label"><span class="q-num">4</span>Ready for next week's plan?</div>
+        <div class="yn-row">
+          <button type="button" class="yn-btn yn-yes" id="yn-yes" onclick="selectYN('yes')">Yes — send it</button>
+          <button type="button" class="yn-btn yn-no" id="yn-no" onclick="selectYN('no')">Not yet — need more time</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEND -->
+  <div class="send-wrap">
+    <button class="send-btn" id="send-btn" onclick="sendPlan()" disabled>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      Send my scores &amp; feedback
+    </button>
+    <p class="send-hint" id="send-hint">Fill in all drill scores and answer question 4 to unlock</p>
+    <div id="send-options" style="display:none;margin-top:12px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.14);border-radius:14px;padding:18px 16px">
+      <p style="color:#9FE1CB;font-size:13px;font-weight:500;margin-bottom:4px">How would you like to send?</p>
+      <p style="color:rgba(255,255,255,0.35);font-size:11px;margin-bottom:14px;line-height:1.5">Looks like your device doesn't have an email app set up. Choose an option below.</p>
+      <button type="button" onclick="openGmail()" style="width:100%;padding:12px;margin-bottom:9px;background:#1D9E75;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8l10 6 10-6"/></svg>
+        Open Gmail in browser
+      </button>
+      <button type="button" onclick="openMailApp()" style="width:100%;padding:11px;margin-bottom:9px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);border:0.5px solid rgba(255,255,255,0.15);border-radius:10px;font-size:13px;cursor:pointer;font-family:inherit">
+        Try my email app again (Mail, Outlook…)
+      </button>
+      <button type="button" id="copy-btn" onclick="copyResults()" style="width:100%;padding:11px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);border:0.5px solid rgba(255,255,255,0.15);border-radius:10px;font-size:13px;cursor:pointer;font-family:inherit">
+        Copy text — paste into any email manually
+      </button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="plan-footer">
+    <span>Alfie Golf Trainings</span>
+    <span>Week 1 · Nate J</span>
+  </div>
+
+</div>
+
+<script>
+var ynAnswer = '';
+var lastSubject = '';
+var lastBody = '';
+
+function selectYN(v) {
+  ynAnswer = v;
+  document.getElementById('yn-yes').classList.toggle('active', v === 'yes');
+  document.getElementById('yn-no').classList.toggle('active', v === 'no');
+  checkReady();
+}
+
+function checkReady() {
+  var s1a = document.getElementById('s1a').value;
+  var s1b = document.getElementById('s1b').value;
+  var s2a = document.getElementById('s2a').value;
+  var s2b = document.getElementById('s2b').value;
+  var s3a = document.getElementById('s3a').value;
+  var s3b = document.getElementById('s3b').value;
+  var s3c = document.getElementById('s3c').value;
+
+  // Update totals
+  var a1 = parseInt(s1a) || 0, b1 = parseInt(s1b) || 0;
+  document.getElementById('s1total').textContent = (s1a !== '' || s1b !== '') ? (a1 + b1) : '—';
+
+  var a2 = parseInt(s2a) || 0, b2 = parseInt(s2b) || 0;
+  document.getElementById('s2total').textContent = (s2a !== '' || s2b !== '') ? (a2 + b2) : '—';
+
+  var a3 = parseInt(s3a) || 0, b3 = parseInt(s3b) || 0, c3 = parseInt(s3c) || 0;
+  document.getElementById('s3total').textContent = (s3a !== '' || s3b !== '' || s3c !== '') ? (a3 + b3 + c3) : '—';
+
+  var scoresOk = s1a !== '' && s1b !== '' && s2a !== '' && s2b !== '' && s3a !== '' && s3b !== '' && s3c !== '';
+  var ready = scoresOk && ynAnswer !== '';
+  document.getElementById('send-btn').disabled = !ready;
+
+  var hint = document.getElementById('send-hint');
+  if (ready) {
+    hint.textContent = 'Opens your email app with everything pre-filled — just hit send';
+    hint.style.color = 'rgba(255,255,255,0.32)';
+  } else {
+    var missing = [];
+    if (!scoresOk) missing.push('all drill scores');
+    if (!ynAnswer) missing.push('question 4');
+    hint.textContent = 'Fill in ' + missing.join(' and ') + ' to unlock';
+    hint.style.color = 'rgba(255,200,100,0.6)';
+  }
+}
+
+function buildEmailParts() {
+  var q1 = document.getElementById('q1').value.trim() || '(no response)';
+  var q2 = document.getElementById('q2').value.trim() || '(no response)';
+  var q3 = document.getElementById('q3').value.trim() || '(no response)';
+  var q4 = ynAnswer === 'yes' ? 'Yes — send it' : 'Not yet — need more time';
+
+  var s1a = document.getElementById('s1a').value || '—';
+  var s1b = document.getElementById('s1b').value || '—';
+  var s2a = document.getElementById('s2a').value || '—';
+  var s2b = document.getElementById('s2b').value || '—';
+  var s3a = document.getElementById('s3a').value || '—';
+  var s3b = document.getElementById('s3b').value || '—';
+  var s3c = document.getElementById('s3c').value || '—';
+
+  var subject = 'Week 1 results — Nate J';
+  var raw =
+    'Week 1 — Nate J\n\n' +
+    '-- SCORES --\n' +
+    'Drill 1 — Towel Drill:\n' +
+    '  Without towel (7i): ' + s1a + ' / 15\n' +
+    '  Without towel (5i): ' + s1b + ' / 15\n' +
+    'Drill 2 — Gate Drill:\n' +
+    '  Gate passes (6i): ' + s2a + ' / 20\n' +
+    '  Gate passes (4i): ' + s2b + ' / 20\n' +
+    'Drill 3 — Wedge Ladder Cooldown:\n' +
+    '  Within 5 yd (50): ' + s3a + ' / 5\n' +
+    '  Within 5 yd (70): ' + s3b + ' / 5\n' +
+    '  Within 5 yd (90): ' + s3c + ' / 5\n\n' +
+    '-- FEEDBACK --\n' +
+    '1. What felt different, hard, or clicked:\n' + q1 + '\n\n' +
+    '2. Anything that did not make sense or felt wrong:\n' + q2 + '\n\n' +
+    '3. One thing to focus on more next week:\n' + q3 + '\n\n' +
+    '4. Ready for next week\'s plan: ' + q4 + '\n\n' +
+    '— Nate';
+
+  return { subject: subject, raw: raw };
+}
+
+function sendPlan() {
+  var parts = buildEmailParts();
+  lastSubject = parts.subject;
+  lastBody = parts.raw;
+  var mailtoWorked = false;
+  function onBlur() { mailtoWorked = true; window.removeEventListener('blur', onBlur); }
+  window.addEventListener('blur', onBlur);
+  window.location.href = 'mailto:alfie.golf.trainings@gmail.com?subject=' +
+    encodeURIComponent(parts.subject) + '&body=' + encodeURIComponent(parts.raw);
+  setTimeout(function() {
+    window.removeEventListener('blur', onBlur);
+    if (!mailtoWorked) {
+      document.getElementById('send-options').style.display = 'block';
+      document.getElementById('send-btn').style.display = 'none';
+      document.getElementById('send-hint').style.display = 'none';
+    }
+  }, 800);
+}
+
+function openGmail() {
+  var parts = buildEmailParts();
+  window.open('https://mail.google.com/mail/?view=cm&fs=1&to=alfie.golf.trainings@gmail.com&su=' +
+    encodeURIComponent(parts.subject) + '&body=' + encodeURIComponent(parts.raw), '_blank');
+}
+
+function openMailApp() {
+  var parts = buildEmailParts();
+  window.location.href = 'mailto:alfie.golf.trainings@gmail.com?subject=' +
+    encodeURIComponent(parts.subject) + '&body=' + encodeURIComponent(parts.raw);
+}
+
+function copyResults() {
+  var parts = buildEmailParts();
+  var text = 'To: alfie.golf.trainings@gmail.com\nSubject: ' + parts.subject + '\n\n' + parts.raw;
+  var btn = document.getElementById('copy-btn');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = '✓ Copied! Paste it into an email to alfie.golf.trainings@gmail.com';
+      btn.style.color = '#9FE1CB';
+    });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = '✓ Copied! Paste it into an email to alfie.golf.trainings@gmail.com';
+    btn.style.color = '#9FE1CB';
+  }
+}
+</script>
+
+</body>
+</html>

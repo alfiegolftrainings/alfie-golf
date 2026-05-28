@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daniel Lewis — Week 1 Practice Plan</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: #085041; min-height: 100vh; padding: 2rem 1rem 4rem;
+    }
+    .plan { max-width: 560px; margin: 0 auto; position: relative; }
+
+    /* Decor */
+    .decor-circles { position: fixed; top: 0; right: 0; width: 340px; height: 320px; opacity: 0.06; pointer-events: none; z-index: -1; }
+    .decor-dots { position: fixed; top: 0; left: 0; width: 60px; height: 100vh; opacity: 0.07; pointer-events: none; z-index: -1; overflow: hidden; }
+
+    /* Header */
+    .plan-header { position: relative; z-index: 1; padding-bottom: 1.5rem; }
+    .week-label { font-size: 10px; color: #9FE1CB; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; }
+    .golfer-name { font-size: 32px; font-weight: 500; color: #fff; line-height: 1.15; margin-bottom: 2px; }
+    .golfer-sub { font-size: 12px; color: #9FE1CB; margin-bottom: 1.25rem; }
+    .overview-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 1.1rem; }
+    .chip { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 8px 11px; }
+    .chip-lbl { font-size: 9px; color: #9FE1CB; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
+    .chip-val { font-size: 12px; font-weight: 500; color: #fff; }
+    .opening-card { background: rgba(255,255,255,0.08); border-left: 3px solid #5DCAA5; border-radius: 0 8px 8px 0; padding: 11px 14px; }
+    .opening-card p { font-size: 12.5px; color: rgba(255,255,255,0.88); line-height: 1.7; font-style: italic; }
+
+    /* Section label */
+    .section-label {
+      font-size: 9px; font-weight: 600; color: #9FE1CB;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      display: flex; align-items: center; gap: 8px;
+      margin: 1.25rem 0 0.6rem; position: relative; z-index: 1;
+    }
+    .section-label::after { content: ''; flex: 1; height: 0.5px; background: rgba(255,255,255,0.15); }
+
+    /* Drill cards */
+    .drill-card { background: #fff; border-radius: 10px; overflow: hidden; margin-bottom: 9px; position: relative; z-index: 1; }
+    .drill-header { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-bottom: 0.5px solid #ece9e3; }
+    .drill-num { width: 26px; height: 26px; border-radius: 50%; background: #E1F5EE; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #085041; flex-shrink: 0; }
+    .drill-name { font-size: 13px; font-weight: 500; color: #1a1a1a; flex: 1; }
+    .drill-time { font-size: 11px; color: #0F6E56; background: #E1F5EE; border: 0.5px solid #9FE1CB; padding: 3px 9px; border-radius: 5px; font-weight: 500; white-space: nowrap; }
+    .drill-body { padding: 13px 14px; display: flex; flex-direction: column; gap: 11px; }
+    .micro { font-size: 9px; font-weight: 600; color: #aaa; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+    .drill-text { font-size: 12px; color: #1a1a1a; line-height: 1.68; }
+    .why-block { border-left: 3px solid #1D9E75; padding: 4px 0 4px 10px; }
+    .why-lbl { font-size: 9px; font-weight: 600; color: #0F6E56; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 3px; }
+    .why-text { font-size: 12px; color: #555; line-height: 1.62; font-style: italic; }
+
+    /* Score boxes */
+    .score-box { background: #E1F5EE; border: 0.5px solid #9FE1CB; border-radius: 8px; padding: 9px 12px; }
+    .score-box-lbl { font-size: 9px; font-weight: 600; color: #085041; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+    .score-single { display: flex; align-items: center; gap: 8px; }
+    .score-single input { width: 64px; padding: 6px 9px; border-radius: 6px; border: 1px solid #9FE1CB; background: #fff; font-size: 16px; font-weight: 500; color: #085041; text-align: center; outline: none; }
+    .score-single input:focus { border-color: #1D9E75; }
+    .score-single .den { font-size: 13px; color: #0F6E56; font-weight: 500; }
+
+    /* Feedback / Closing — dark glass card */
+    .feedback-section { position: relative; z-index: 1; }
+    .feedback-card { background: rgba(255,255,255,0.08); border: 0.5px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 1.25rem 1.5rem; }
+    .feedback-intro { font-size: 13px; color: rgba(255,255,255,0.88); line-height: 1.7; margin-bottom: 1.25rem; }
+    .feedback-hint { display: block; font-size: 12px; color: rgba(255,255,255,0.45); font-style: italic; margin-bottom: 1.25rem; }
+    .feedback-question { margin-bottom: 16px; }
+    .feedback-question:last-child { margin-bottom: 0; }
+    .feedback-q-label { font-size: 11px; font-weight: 500; color: #9FE1CB; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 7px; display: flex; align-items: center; gap: 8px; }
+    .q-num { width: 19px; height: 19px; border-radius: 50%; background: rgba(255,255,255,0.1); display: inline-flex; align-items: center; justify-content: center; font-size: 10px; color: #9FE1CB; flex-shrink: 0; }
+    .feedback-textarea { width: 100%; background: #fff; border: 0.5px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 10px 12px; font-size: 13px; color: #085041; font-family: inherit; line-height: 1.6; resize: vertical; min-height: 72px; outline: none; transition: border-color 0.15s; }
+    .feedback-textarea::placeholder { color: rgba(8,80,65,0.35); }
+    .feedback-textarea:focus { border-color: #5DCAA5; }
+    .yn-row { display: flex; gap: 8px; }
+    .yn-btn { flex: 1; padding: 10px 12px; border: 0.5px solid rgba(255,255,255,0.2); border-radius: 8px; background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.65); font-size: 14px; font-weight: 500; cursor: pointer; text-align: center; font-family: inherit; transition: background 0.12s, border-color 0.12s, color 0.12s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+    .yn-yes.active { background: #E1F5EE; border-color: #5DCAA5; color: #085041; }
+    .yn-no.active  { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.45); color: #fff; }
+
+    /* Send button */
+    .send-wrap { position: relative; z-index: 1; margin-top: 1.25rem; padding-bottom: 0.5rem; }
+    .send-btn { width: 100%; padding: 14px; background: #1D9E75; color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 500; cursor: pointer; font-family: inherit; transition: background 0.15s; display: flex; align-items: center; justify-content: center; gap: 9px; }
+    .send-btn:hover { background: #0F6E56; }
+    .send-btn:active { transform: scale(0.985); }
+    .send-btn:disabled { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.3); cursor: not-allowed; transform: none; }
+    .send-btn:disabled:hover { background: rgba(255,255,255,0.12); }
+    .send-hint { text-align: center; font-size: 12px; color: rgba(255,255,255,0.32); margin-top: 9px; line-height: 1.4; }
+
+    /* Footer */
+    .plan-footer { display: flex; justify-content: space-between; padding-top: 1rem; margin-top: 1.5rem; border-top: 0.5px solid rgba(255,255,255,0.1); position: relative; z-index: 1; }
+    .plan-footer span { font-size: 10px; color: rgba(255,255,255,0.25); }
+  </style>
+</head>
+<body>
+
+  <!-- Decorative SVGs -->
+  <svg class="decor-circles" viewBox="0 0 340 320" aria-hidden="true">
+    <circle cx="320" cy="20" r="70"  fill="none" stroke="#fff" stroke-width="1.5"/>
+    <circle cx="320" cy="20" r="115" fill="none" stroke="#fff" stroke-width="1.5"/>
+    <circle cx="320" cy="20" r="165" fill="none" stroke="#fff" stroke-width="1.5"/>
+    <circle cx="320" cy="20" r="220" fill="none" stroke="#fff" stroke-width="1.5"/>
+    <circle cx="320" cy="20" r="280" fill="none" stroke="#fff" stroke-width="1.5"/>
+  </svg>
+  <div class="decor-dots" aria-hidden="true">
+    <svg width="60" height="100vh" viewBox="0 0 60 800" preserveAspectRatio="xMinYMin slice">
+      <defs><pattern id="dp" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="2" fill="#fff"/></pattern></defs>
+      <rect width="60" height="800" fill="url(#dp)"/>
+    </svg>
+  </div>
+
+  <div class="plan">
+
+    <!-- HEADER -->
+    <div class="plan-header">
+      <div class="week-label">Week 1 · Practice Plan</div>
+      <div class="golfer-name">Daniel Lewis</div>
+      <div class="golfer-sub">Personalised by Alfie Golf Trainings</div>
+      <div class="overview-chips">
+        <div class="chip">
+          <div class="chip-lbl">Duration</div>
+          <div class="chip-val">30 min</div>
+        </div><!-- END chip -->
+        <div class="chip">
+          <div class="chip-lbl">Location</div>
+          <div class="chip-val">Grass driving range</div>
+        </div><!-- END chip -->
+        <div class="chip">
+          <div class="chip-lbl">Focus</div>
+          <div class="chip-val">Weight transfer &amp; low point</div>
+        </div><!-- END chip -->
+      </div><!-- END overview-chips -->
+      <div class="opening-card">
+        <p>"Approach shots (5–7 iron)" — that's the frustration in a nutshell, and the numbers confirm it precisely. GIR between 0% and 28% over 8 rounds tells us those mid-irons are the biggest single stroke-loser in your bag right now. You broke 90 this season for the first time, which means the rest of your game is solid enough to do it — but until those 5–7 irons start finding greens more consistently, the ceiling stays where it is. Because your sessions are only 30 minutes and this is our first structured training together, I'm giving you a single drill this week — one focused rep is worth more than three scattered ones. If we move forward and you can extend your sessions a little, we'll start layering in more. For now, this is the right place to start.</p>
+      </div><!-- END opening-card -->
+    </div><!-- END plan-header -->
+
+    <!-- DRILLS SECTION -->
+    <div class="section-label">Drills</div>
+
+    <!-- DRILL 1 -->
+    <div class="drill-card">
+      <div class="drill-header">
+        <div class="drill-num">1</div>
+        <div class="drill-name">Step and Strike + Towel — 7-iron</div>
+        <div class="drill-time">25 min</div>
+      </div><!-- END drill-header -->
+      <div class="drill-body">
+
+        <div>
+          <div class="micro">What to do</div>
+          <div class="drill-text">
+            1. On the grass range, place a small towel flat on the ground a few inches behind the ball — not right against it, but with a clear gap between the towel's edge and the ball. The ball sits on the turf just ahead of the towel.<br><br>
+            2. Set up to the ball with your 7-iron, but bring your trail foot in so that both feet start together — side by side, directly beneath you. This is your starting position for every swing.<br><br>
+            3. Take your backswing from this narrow stance.<br><br>
+            4. As you begin the downswing, step your lead foot out to your normal stance width — planting it firmly in its usual address position as the club comes down. The step is the trigger for the downswing: your lead side lands and stabilises before the club reaches the ball.<br><br>
+            5. Complete the swing normally. When the step works, your weight commits forward before impact, the club bottoms out in front of the ball, and the towel stays untouched.<br><br>
+            6. Hit 20 balls. After each shot, check one thing: did the towel move? If the club catches it, weight stayed back — slow the swing down, exaggerate the step, and focus on landing the lead foot firmly before the club arrives.
+          </div>
+        </div><!-- END what to do -->
+
+        <div class="why-block">
+          <div class="why-lbl">Why this matters for you</div>
+          <div class="why-text">The low ball flight, the blocks, and the hooks all share the same origin: weight staying on the trail side through impact, causing the club to bottom out too early and the face to arrive offline. The step drill removes the option to stay back — physically committing your weight forward before the club arrives at the ball. The towel gives you honest, instant feedback on every rep: untouched means the sequence was right. Your 8-iron already carries 140 yards, which means the distance is there. This drill is about making sure the club is delivering at the right moment, which is what turns mid-iron misses into greens.</div>
+        </div><!-- END why-block -->
+
+        <div class="score-box">
+          <div class="score-box-lbl">Score to record</div>
+          <div class="score-single">
+            <input id="score1" type="number" min="0" max="20" placeholder="—" oninput="checkReady()">
+            <span class="den">/ 20 shots without touching the towel</span>
+          </div>
+        </div><!-- END score-box -->
+
+      </div><!-- END drill-body -->
+    </div><!-- END DRILL 1 -->
+
+    <!-- CLOSING + FEEDBACK (merged dark glass card) -->
+    <div class="section-label">Closing</div>
+    <div class="feedback-section">
+      <div class="feedback-card">
+
+        <!-- Closing text only -->
+        <p class="feedback-intro">Dan, one drill is intentional — 30 minutes is enough to build one correct habit, not enough to spread across three. Breaking 90 this season proves the game is already there in pieces; the GIR numbers show exactly where the next improvement lives. Bring the score back and we'll know whether to stay here another week or start layering in the next piece.</p>
+        <!-- END closing text -->
+
+        <p class="feedback-hint">Fill in your score above, answer the four questions below, then tap Send.</p>
+
+        <div class="feedback-question">
+          <div class="feedback-q-label"><span class="q-num">1</span>What felt different, hard, or clicked?</div>
+          <textarea class="feedback-textarea" id="q1" rows="3" placeholder="Even one or two sentences is perfect..." oninput="checkReady()"></textarea>
+        </div><!-- END feedback-question -->
+
+        <div class="feedback-question">
+          <div class="feedback-q-label"><span class="q-num">2</span>Anything that didn't make sense or felt wrong?</div>
+          <textarea class="feedback-textarea" id="q2" rows="3" placeholder="Drills, instructions, timing — anything off..." oninput="checkReady()"></textarea>
+        </div><!-- END feedback-question -->
+
+        <div class="feedback-question">
+          <div class="feedback-q-label"><span class="q-num">3</span>One thing you want to focus on more next week?</div>
+          <textarea class="feedback-textarea" id="q3" rows="2" placeholder="Any specific shot, situation, or area of your game..." oninput="checkReady()"></textarea>
+        </div><!-- END feedback-question -->
+
+        <div class="feedback-question">
+          <div class="feedback-q-label"><span class="q-num">4</span>Ready for next week's plan?</div>
+          <div class="yn-row">
+            <button type="button" class="yn-btn yn-yes" id="yn-yes" onclick="selectYN('yes')">Yes — send it</button>
+            <button class="yn-btn yn-no"  id="yn-no"  onclick="selectYN('no')">Not yet — need more time</button>
+          </div>
+        </div><!-- END feedback-question -->
+
+      </div><!-- END feedback-card -->
+    </div><!-- END feedback-section -->
+
+    <!-- SEND BUTTON -->
+    <div class="send-wrap">
+      <button class="send-btn" id="send-btn" onclick="sendPlan()" disabled>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Send my scores &amp; feedback
+      </button>
+      <p class="send-hint" id="send-hint">Fill in your drill score and answer question 4 to unlock</p>
+    </div>
+
+  <!-- SEND OPTIONS (shown if no email client handles the mailto) -->
+  <div id="send-options" style="display:none;margin-top:12px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.14);border-radius:14px;padding:18px 16px">
+    <p style="color:#9FE1CB;font-size:13px;font-weight:500;margin-bottom:4px">How would you like to send?</p>
+    <p style="color:rgba(255,255,255,0.35);font-size:11px;margin-bottom:14px;line-height:1.5">Choose the option that works best on your device.</p>
+    <button onclick="openGmail()" style="width:100%;padding:12px;margin-bottom:9px;background:#1D9E75;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8l10 6 10-6"/></svg>
+      Open Gmail in browser
+    </button>
+    <button onclick="openMailApp()" style="width:100%;padding:11px;margin-bottom:9px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);border:0.5px solid rgba(255,255,255,0.15);border-radius:10px;font-size:13px;cursor:pointer;font-family:inherit">
+      Open my email app (Mail, Outlook…)
+    </button>
+    <button id="copy-btn" onclick="copyResults()" style="width:100%;padding:11px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);border:0.5px solid rgba(255,255,255,0.15);border-radius:10px;font-size:13px;cursor:pointer;font-family:inherit">
+      Copy text — paste into any email manually
+    </button>
+  </div><!-- END send-wrap -->
+
+    <!-- FOOTER -->
+    <div class="plan-footer">
+      <span>Alfie Golf Trainings</span>
+      <span>Week 1 · Daniel Lewis</span>
+    </div><!-- END plan-footer -->
+
+  </div><!-- END plan -->
+
+  <script>
+    var ynAnswer = '';
+var lastSubject = ''; var lastBody = '';
+
+    function selectYN(v) {
+      ynAnswer = v;
+      document.getElementById('yn-yes').classList.toggle('active', v === 'yes');
+      document.getElementById('yn-no').classList.toggle('active',  v === 'no');
+      checkReady();
+    }
+
+    function checkReady() {
+      var s1 = document.getElementById('score1').value;
+      var scoresOk = s1 !== '';
+      var ready = scoresOk && ynAnswer !== '';
+
+      document.getElementById('send-btn').disabled = !ready;
+      var hint = document.getElementById('send-hint');
+      if (ready) {
+        hint.textContent = 'Opens your email app with everything pre-filled — just hit send';
+        hint.style.color = 'rgba(255,255,255,0.32)';
+      } else {
+        var missing = [];
+        if (!scoresOk) missing.push('your drill score');
+        if (!ynAnswer) missing.push('question 4');
+        hint.textContent = 'Fill in ' + missing.join(' and ') + ' to unlock';
+        hint.style.color = 'rgba(255,200,100,0.6)';
+      }
+    }
+
+    function sendPlan() {
+      var q1 = document.getElementById('q1').value.trim() || '(no response)';
+      var q2 = document.getElementById('q2').value.trim() || '(no response)';
+      var q3 = document.getElementById('q3').value.trim() || '(no response)';
+      var q4 = ynAnswer === 'yes' ? 'Yes — send it' : 'Not yet — need more time';
+
+      var s1 = document.getElementById('score1').value || '—';
+
+      var subject = encodeURIComponent('Week 1 results — Daniel Lewis');
+      var body = encodeURIComponent(
+        'Week 1 — Daniel Lewis\n\n' +
+        '-- SCORES --\n' +
+        'Drill 1 — Step and Strike + Towel: ' + s1 + ' / 20 shots without touching the towel\n\n' +
+        '-- FEEDBACK --\n' +
+        '1. What felt different, hard, or clicked:\n' + q1 + '\n\n' +
+        '2. Anything that did not make sense or felt wrong:\n' + q2 + '\n\n' +
+        '3. One thing to focus on more next week:\n' + q3 + '\n\n' +
+        '4. Ready for next week\'s plan: ' + q4 + '\n\n' +
+        '-- Dan'
+      );
+
+      lastSubject = decodeURIComponent(subject); lastBody = decodeURIComponent(body);
+      var mailtoWorked = false;
+      function onBlur() { mailtoWorked = true; window.removeEventListener('blur', onBlur); }
+      window.addEventListener('blur', onBlur);
+      window.location.href = 'mailto:alfie.golf.trainings@gmail.com?subject=' + subject + '&body=' + body;
+      setTimeout(function() {
+        window.removeEventListener('blur', onBlur);
+        if (!mailtoWorked) {
+          document.getElementById('send-options').style.display = 'block';
+          document.getElementById('send-btn').style.display = 'none';
+          document.getElementById('send-hint').style.display = 'none';
+        }
+      }, 800);
+}
+function openGmail() {
+  var url = 'https://mail.google.com/mail/?view=cm&fs=1&to=alfie.golf.trainings@gmail.com&su=' +
+    encodeURIComponent(lastSubject) + '&body=' + encodeURIComponent(lastBody);
+  window.open(url, '_blank');
+}
+function openMailApp() {
+  window.location.href = 'mailto:alfie.golf.trainings@gmail.com?subject=' +
+    encodeURIComponent(lastSubject) + '&body=' + encodeURIComponent(lastBody);
+}
+function copyResults() {
+  var text = 'To: alfie.golf.trainings@gmail.com\nSubject: ' + lastSubject + '\n\n' + lastBody;
+  var btn = document.getElementById('copy-btn');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = '✓ Copied! Paste it into an email to alfie.golf.trainings@gmail.com';
+      btn.style.color = '#9FE1CB';
+      btn.style.borderColor = 'rgba(29,158,117,0.5)';
+    });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    btn.textContent = '✓ Copied! Paste it into an email to alfie.golf.trainings@gmail.com';
+    btn.style.color = '#9FE1CB';
+  }
+}
+  </script>
+
+</body>
+</html>

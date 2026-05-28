@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roy Johns — Week 1 Practice Plan</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  background: #085041;
+  min-height: 100vh;
+  padding: 2rem 1rem 4rem;
+}
+
+.card {
+  max-width: 560px;
+  margin: 0 auto;
+  background: #085041;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── Decorative SVGs ── */
+.decor-circles {
+  position: absolute;
+  top: 0; right: 0;
+  width: 300px; height: 280px;
+  opacity: 0.07;
+  pointer-events: none;
+  z-index: 0;
+}
+.decor-dots {
+  position: absolute;
+  top: 0; left: 0;
+  width: 60px; height: 100%;
+  opacity: 0.07;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* ── Header ── */
+.header {
+  padding: 2rem 2rem 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+.week-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #9FE1CB;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.golfer-name {
+  font-size: 28px;
+  font-weight: 500;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 2px;
+}
+.sub-meta {
+  font-size: 12px;
+  color: #9FE1CB;
+  margin-bottom: 1.25rem;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 1rem;
+}
+.chip {
+  background: rgba(255,255,255,0.1);
+  border-radius: 7px;
+  padding: 8px 10px;
+}
+.chip-lbl {
+  font-size: 9px;
+  color: #9FE1CB;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 2px;
+}
+.chip-val {
+  font-size: 12px;
+  font-weight: 500;
+  color: #fff;
+}
+.opening {
+  background: rgba(255,255,255,0.08);
+  border-left: 3px solid #5DCAA5;
+  border-radius: 0 7px 7px 0;
+  padding: 10px 14px;
+}
+.opening p {
+  font-size: 12px;
+  color: rgba(255,255,255,0.88);
+  line-height: 1.7;
+  font-style: italic;
+}
+
+/* ── Drills section ── */
+.drills {
+  padding: 0 1.5rem;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.section-label {
+  font-size: 9px;
+  font-weight: 600;
+  color: #9FE1CB;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 0.5px;
+  background: rgba(255,255,255,0.15);
+}
+
+.drill-card {
+  background: #fff;
+  border-radius: 9px;
+  overflow: hidden;
+}
+.drill-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 0.5px solid #e9e7e1;
+}
+.drill-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #E1F5EE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: #085041;
+  flex-shrink: 0;
+}
+.drill-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a1a1a;
+  flex: 1;
+}
+.drill-time {
+  font-size: 11px;
+  color: #0F6E56;
+  background: #E1F5EE;
+  border: 0.5px solid #9FE1CB;
+  padding: 2px 8px;
+  border-radius: 5px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.drill-body {
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.micro {
+  font-size: 9px;
+  font-weight: 600;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 4px;
+}
+.drill-text {
+  font-size: 12px;
+  color: #1a1a1a;
+  line-height: 1.7;
+}
+.why-block {
+  border-left: 3px solid #1D9E75;
+  padding: 4px 0 4px 10px;
+}
+.why-lbl {
+  font-size: 9px;
+  font-weight: 600;
+  color: #0F6E56;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 3px;
+}
+.why-text {
+  font-size: 12px;
+  color: #555;
+  line-height: 1.65;
+  font-style: italic;
+}
+.score-box {
+  background: #E1F5EE;
+  border: 0.5px solid #9FE1CB;
+  border-radius: 7px;
+  padding: 10px 12px;
+}
+.score-lbl {
+  font-size: 9px;
+  font-weight: 600;
+  color: #085041;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 8px;
+}
+.score-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.score-field-lbl {
+  font-size: 11px;
+  color: #0F6E56;
+  font-weight: 500;
+}
+input[type="number"] {
+  width: 58px;
+  padding: 5px 8px;
+  border: 1.5px solid #9FE1CB;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #085041;
+  background: #fff;
+  text-align: center;
+  font-family: inherit;
+  outline: none;
+}
+input[type="number"]:focus { border-color: #1D9E75; }
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+.score-denom {
+  font-size: 13px;
+  color: #085041;
+  font-weight: 500;
+}
+
+/* ── Submit ── */
+.submit-wrap {
+  padding: 1rem 1.5rem 0;
+  position: relative;
+  z-index: 1;
+}
+.submit-btn {
+  width: 100%;
+  background: #1D9E75;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  transition: background 0.12s;
+}
+.submit-btn:hover { background: #0F6E56; }
+
+/* ── Closing ── */
+.closing {
+  padding: 1.25rem 1.5rem 0;
+  position: relative;
+  z-index: 1;
+}
+.closing-card {
+  background: rgba(255,255,255,0.08);
+  border: 0.5px solid rgba(255,255,255,0.15);
+  border-radius: 9px;
+  padding: 1rem 1.25rem;
+}
+.closing-text {
+  font-size: 12px;
+  color: rgba(255,255,255,0.82);
+  line-height: 1.75;
+}
+
+/* ── Footer ── */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 1.5rem 1.25rem;
+  margin-top: 1rem;
+  border-top: 0.5px solid rgba(255,255,255,0.1);
+  position: relative;
+  z-index: 1;
+}
+.footer span {
+  font-size: 10px;
+  color: rgba(255,255,255,0.28);
+}
+</style>
+</head>
+<body>
+<div class="card">
+
+  <!-- Decorative elements -->
+  <svg class="decor-circles" viewBox="0 0 300 280" aria-hidden="true">
+    <circle cx="280" cy="20" r="60"  fill="none" stroke="#fff" stroke-width="1.5"/>
+    <circle cx="280" cy="20" r="100" fill="none" stroke="#fff" stroke-width="1.5"/>
+    <circle cx="280" cy="20" r="145" fill="none" stroke="#fff" stroke-width="1.5"/>
+    <circle cx="280" cy="20" r="195" fill="none" stroke="#fff" stroke-width="1.5"/>
+    <circle cx="280" cy="20" r="250" fill="none" stroke="#fff" stroke-width="1.5"/>
+  </svg>
+  <div class="decor-dots">
+    <svg width="60" height="2000" viewBox="0 0 60 2000" preserveAspectRatio="xMinYMin">
+      <defs>
+        <pattern id="dp" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse">
+          <circle cx="3" cy="3" r="2" fill="#fff"/>
+        </pattern>
+      </defs>
+      <rect width="60" height="2000" fill="url(#dp)"/>
+    </svg>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="week-label">Week 1 · Practice Plan</div>
+    <div class="golfer-name">Roy Johns</div>
+    <div class="sub-meta">Mat driving range</div>
+    <div class="chips">
+      <div class="chip"><div class="chip-lbl">Duration</div><div class="chip-val">60 minutes</div></div>
+      <div class="chip"><div class="chip-lbl">Location</div><div class="chip-val">Driving range</div></div>
+      <div class="chip"><div class="chip-lbl">Focus</div><div class="chip-val">Path &amp; impact position</div></div>
+    </div>
+    <div class="opening">
+      <p>Roy, "sliced drives and bad spots off the tee" is exactly what your last two rounds confirm — a 104 and a 53 on 9 happen when the driver starts the hole in the wrong place and every shot after is damage control. What you mentioned about the irons is important too: toe contact and an extreme slice are almost never separate problems at your level. Both typically come from the same move — the club swinging over the top and the body standing up through impact, which throws the club outward, opens the face, and puts contact toward the toe. This week targets that one thing from two angles. You mentioned you've never followed a structured practice routine before, so this plan keeps it to two focused drills — one clear thing to fix, two ways to feel it. That's intentional. A plan you can actually absorb and repeat three times this week will do far more than five drills you half-remember.</p>
+    </div>
+  </div>
+
+  <!-- Drills -->
+  <div class="drills">
+    <div class="section-label">Drills</div>
+
+    <!-- Drill 1 -->
+    <div class="drill-card">
+      <div class="drill-header">
+        <div class="drill-num">1</div>
+        <span class="drill-name">Path gate with headcover — 3W then driver</span>
+        <span class="drill-time">30 min</span>
+      </div>
+      <div class="drill-body">
+        <div>
+          <div class="micro">What to do</div>
+          <p class="drill-text">Place a headcover (or a golf bag, towel, or any object roughly fist-sized) on the ground just outside the ball — about 6 inches beyond the ball on the far side from you, just outside the target line. This is your path guard. If you swing over the top, the club head will clip it on the way down. Your job: miss the headcover by swinging the club from the inside. Start with your 3-wood for the first 3 sets (shorter shaft makes it easier to feel the path change), then switch to driver for the last 3 sets. Hit in sets of 5 balls, pause between sets to reset your aim. 6 sets total, 30 balls.</p>
+        </div>
+        <div class="why-block">
+          <div class="why-lbl">Why this drill for you</div>
+          <p class="why-text">At a 21 handicap with an extreme slice, you're losing 20+ yards of effective driving distance because every hole is playing on the diagonal. You mentioned you normally shoot in the 90s — the 104 and 53 happened because the driver put you in spots that turned bogeys into doubles. The headcover gives you instant, honest feedback: you'll hear and feel it when you come over the top, and you'll miss it cleanly when the path is right. No tracking system needed.</p>
+        </div>
+        <div class="score-box">
+          <div class="score-lbl">Score to record</div>
+          <div class="score-row">
+            <span class="score-field-lbl">Clean swings (missed headcover):</span>
+            <input type="number" id="s1" min="0" max="30" placeholder="—">
+            <span class="score-denom">/ 30</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Drill 2 -->
+    <div class="drill-card">
+      <div class="drill-header">
+        <div class="drill-num">2</div>
+        <span class="drill-name">Posture guard — 7 or 8 iron</span>
+        <span class="drill-time">20 min</span>
+      </div>
+      <div class="drill-body">
+        <div>
+          <div class="micro">What to do</div>
+          <p class="drill-text">Set up to hit a normal shot with your 7 or 8 iron. Before you swing, push a tee into the mat using this reference: picture a clock face with the ball at the centre and your body at 6 o'clock. Place the tee at 12 o'clock — directly away from your body, 3 inches from the ball. It should be clearly visible when you look down at address. Now swing. If your body stands up and reaches through impact, the club head swings outward and hits the tee. If you stay in your posture, the club travels on the same radius as at address and misses the tee cleanly. Hit in sets of 3 balls, pause between sets to reset your address. 5 sets, 15 balls total. Ignore the ball flight — focus only on the tee.</p>
+        </div>
+        <div class="why-block">
+          <div class="why-lbl">Why this drill for you</div>
+          <p class="why-text">The toe contact you described on irons is the same move as the slice, showing up differently. When you stand up through impact, the club head is suddenly further from your body than it was at address — it finds the toe instead of the centre. Keeping the tee untouched trains you to stay in your posture and keep the club on the radius it started on. Fix this and the toe contact cleans up; it also reinforces the path you've been working on in Drill 1.</p>
+        </div>
+        <div class="score-box">
+          <div class="score-lbl">Score to record</div>
+          <div class="score-row">
+            <span class="score-field-lbl">Clean swings (tee untouched):</span>
+            <input type="number" id="s2" min="0" max="15" placeholder="—">
+            <span class="score-denom">/ 15</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Submit -->
+  <div class="submit-wrap">
+    <button class="submit-btn" onclick="sendScores()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      Send scores to Alfie
+    </button>
+  </div>
+
+  <!-- Closing -->
+  <div class="closing">
+    <div class="section-label" style="margin-bottom:8px">Closing</div>
+    <div class="closing-card">
+      <p class="closing-text">Roy, 4+ rounds a month with no prior structured practice means you've been building habits without a framework — and that's fixable fast. Your short game is holding the scorecard together right now, which means when the tee shots start working, scores will drop quickly. Three sessions this week with these two drills is the goal. After a session or two, send me your two scores and one honest line about what felt different. That shapes week two.</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span>Alfie Golf Trainings · Week 1</span>
+    <span>Reply to get your next plan</span>
+  </div>
+
+</div>
+
+<script>
+function sendScores() {
+  var s1 = document.getElementById('s1').value;
+  var s2 = document.getElementById('s2').value;
+
+  if (s1 === '' || s2 === '') {
+    alert('Please fill in both scores before sending.');
+    return;
+  }
+
+  var subject = encodeURIComponent('Roy Johns — Week 1 Scores');
+  var body = encodeURIComponent(
+    'Roy Johns — Week 1 scores\n\n' +
+    'Drill 1 — Path gate with headcover (3W / driver):\n' +
+    'Clean swings (missed headcover): ' + s1 + ' / 30\n\n' +
+    'Drill 2 — Posture guard (7 or 8 iron):\n' +
+    'Clean swings (tee untouched): ' + s2 + ' / 15\n\n' +
+    '---\n' +
+    'What felt different, hard, or clicked:\n\n'
+  );
+
+  lastSubject = decodeURIComponent(subject); lastBody = decodeURIComponent(body);
+  var mailtoWorked = false;
+  function onBlur() { mailtoWorked = true; window.removeEventListener('blur', onBlur); }
+  window.addEventListener('blur', onBlur);
+  window.location.href = 'mailto:alfie.golf.trainings@gmail.com?subject=' + subject + '&body=' + body;
+  setTimeout(function() {
+    window.removeEventListener('blur', onBlur);
+    if (!mailtoWorked) {
+      document.getElementById('send-options').style.display = 'block';
+      document.getElementById('send-btn').style.display = 'none';
+      document.getElementById('send-hint').style.display = 'none';
+    }
+  }, 800);
+}
+function openGmail() {
+  var url = 'https://mail.google.com/mail/?view=cm&fs=1&to=alfie.golf.trainings@gmail.com&su=' +
+    encodeURIComponent(lastSubject) + '&body=' + encodeURIComponent(lastBody);
+  window.open(url, '_blank');
+}
+function openMailApp() {
+  window.location.href = 'mailto:alfie.golf.trainings@gmail.com?subject=' +
+    encodeURIComponent(lastSubject) + '&body=' + encodeURIComponent(lastBody);
+}
+function copyResults() {
+  var text = 'To: alfie.golf.trainings@gmail.com\nSubject: ' + lastSubject + '\n\n' + lastBody;
+  var btn = document.getElementById('copy-btn');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = '✓ Copied! Paste it into an email to alfie.golf.trainings@gmail.com';
+      btn.style.color = '#9FE1CB';
+      btn.style.borderColor = 'rgba(29,158,117,0.5)';
+    });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    btn.textContent = '✓ Copied! Paste it into an email to alfie.golf.trainings@gmail.com';
+    btn.style.color = '#9FE1CB';
+  }
+}
+</script>
+</body>
+</html>

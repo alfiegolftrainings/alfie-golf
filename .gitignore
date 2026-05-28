@@ -1,0 +1,11 @@
+# Fabio's local tools — not deployed to Vercel
+plan-builder.html
+
+# Reference docs — not deployed
+docs/
+
+# Temp files
+*.bak
+~$*
+.DS_Store
+Thumbs.db

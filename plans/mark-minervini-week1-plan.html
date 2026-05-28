@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 1 Practice Plan — Mark Minervini</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  background: #0a4a3a;
+  min-height: 100vh;
+  padding: 2rem 1rem 3rem;
+  color: #1a1a1a;
+  line-height: 1.5;
+}
+.page {
+  max-width: 600px;
+  margin: 0 auto;
+  background: #085041;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+}
+.header { padding: 2rem 2rem 1.5rem; position: relative; z-index: 1; }
+.week-label { font-size: 11px; color: #9FE1CB; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+.golfer-name { font-size: 30px; font-weight: 500; color: #fff; line-height: 1.15; margin-bottom: 2px; }
+.plan-meta { font-size: 13px; color: #9FE1CB; margin-bottom: 1.5rem; }
+.chips { display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 8px; margin-bottom: 1.25rem; }
+.chip { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 12px; }
+.chip-label { font-size: 10px; color: #9FE1CB; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 3px; }
+.chip-value { font-size: 14px; font-weight: 500; color: #fff; }
+.opening { background: rgba(255,255,255,0.08); border-left: 3px solid #5DCAA5; border-radius: 0 8px 8px 0; padding: 12px 16px; }
+.opening p { font-size: 13px; color: rgba(255,255,255,0.88); line-height: 1.65; font-style: italic; }
+.drills-section { padding: 0 1.5rem; position: relative; z-index: 1; display: flex; flex-direction: column; gap: 10px; }
+.section-label { font-size: 10px; font-weight: 500; color: #9FE1CB; text-transform: uppercase; letter-spacing: 0.1em; display: flex; align-items: center; gap: 10px; margin-bottom: 2px; }
+.section-label::after { content: ''; flex: 1; height: 0.5px; background: rgba(255,255,255,0.15); }
+.drill-card { background: #fff; border-radius: 10px; overflow: hidden; }
+.drill-header { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 0.5px solid #e9e7e1; }
+.drill-num { width: 26px; height: 26px; border-radius: 50%; background: #E1F5EE; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; color: #085041; flex-shrink: 0; }
+.drill-name { font-size: 15px; font-weight: 500; color: #1a1a1a; flex: 1; }
+.drill-time { font-size: 12px; color: #0F6E56; background: #E1F5EE; border: 0.5px solid #9FE1CB; padding: 3px 9px; border-radius: 6px; font-weight: 500; white-space: nowrap; }
+.drill-body { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; }
+.micro-label { font-size: 10px; font-weight: 500; color: #999; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 5px; }
+.drill-text { font-size: 13px; color: #1a1a1a; line-height: 1.7; }
+.why-block { border-left: 3px solid #1D9E75; padding: 5px 0 5px 12px; }
+.why-label { font-size: 10px; font-weight: 500; color: #0F6E56; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 4px; }
+.why-text { font-size: 13px; color: #555; line-height: 1.6; font-style: italic; }
+.score-box { background: #E1F5EE; border: 0.5px solid #9FE1CB; border-radius: 8px; padding: 10px 14px; }
+.score-box-label { font-size: 10px; font-weight: 500; color: #085041; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; }
+.score-single { display: flex; align-items: center; gap: 10px; }
+.score-desc { font-size: 13px; color: #0F6E56; flex: 1; }
+.score-input {
+  border: none; border-bottom: 2px solid #1D9E75; background: transparent;
+  font-size: 18px; font-weight: 500; color: #085041; text-align: center;
+  outline: none; padding: 0 2px 2px; font-family: inherit;
+  -moz-appearance: textfield;
+}
+.score-input.wide { width: 48px; }
+.score-input::-webkit-outer-spin-button,
+.score-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.score-input::placeholder { color: #9FE1CB; font-size: 14px; }
+.score-denom { font-size: 13px; color: #0F6E56; font-weight: 500; }
+.feedback-section { padding: 1.25rem 1.5rem 0; position: relative; z-index: 1; }
+.feedback-card { background: rgba(255,255,255,0.08); border: 0.5px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 1.25rem 1.5rem; }
+.feedback-intro { font-size: 13px; color: rgba(255,255,255,0.88); line-height: 1.7; margin-bottom: 1.25rem; }
+.feedback-hint { display: block; margin-top: 8px; font-size: 12px; color: rgba(255,255,255,0.45); font-style: italic; }
+.feedback-question { margin-bottom: 16px; }
+.feedback-question:last-child { margin-bottom: 0; }
+.feedback-q-label { font-size: 11px; font-weight: 500; color: #9FE1CB; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 7px; display: flex; align-items: center; gap: 8px; }
+.q-num { width: 19px; height: 19px; border-radius: 50%; background: rgba(255,255,255,0.1); display: inline-flex; align-items: center; justify-content: center; font-size: 10px; color: #9FE1CB; flex-shrink: 0; }
+.feedback-textarea { width: 100%; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 10px 12px; font-size: 13px; color: #fff; font-family: inherit; line-height: 1.6; resize: vertical; min-height: 72px; outline: none; transition: border-color 0.15s; }
+.feedback-textarea::placeholder { color: rgba(255,255,255,0.28); }
+.feedback-textarea:focus { border-color: rgba(93,202,165,0.55); }
+.yn-row { display: flex; gap: 8px; }
+.yn-btn { flex: 1; padding: 10px 12px; border: 0.5px solid rgba(255,255,255,0.2); border-radius: 8px; background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.65); font-size: 14px; font-weight: 500; cursor: pointer; text-align: center; font-family: inherit; transition: background 0.12s, border-color 0.12s, color 0.12s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.yn-btn:hover { border-color: rgba(93,202,165,0.5); color: #fff; }
+.yn-yes.active { background: #E1F5EE; border-color: #5DCAA5; color: #085041; }
+.yn-no.active { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.45); color: #fff; }
+.send-wrap { padding: 1.25rem 1.5rem 1.75rem; position: relative; z-index: 1; }
+.send-btn { width: 100%; padding: 14px; background: #1D9E75; color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 500; cursor: pointer; font-family: inherit; transition: background 0.15s; display: flex; align-items: center; justify-content: center; gap: 9px; }
+.send-btn:hover { background: #0F6E56; }
+.send-btn:active { transform: scale(0.985); }
+.send-btn:disabled { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.3); cursor: not-allowed; transform: none; }
+.send-btn:disabled:hover { background: rgba(255,255,255,0.12); }
+.send-hint { text-align: center; font-size: 12px; color: rgba(255,255,255,0.32); margin-top: 9px; line-height: 1.4; }
+.footer { display: flex; align-items: center; justify-content: space-between; padding: 12px 1.5rem 1.5rem; border-top: 0.5px solid rgba(255,255,255,0.12); position: relative; z-index: 1; }
+.footer span { font-size: 11px; color: rgba(255,255,255,0.28); }
+@media (max-width: 480px) {
+  body { padding: 0; background: #085041; }
+  .page { border-radius: 0; min-height: 100vh; }
+  .chips { grid-template-columns: 1fr 1fr; }
+  .chips .chip:last-child { grid-column: 1 / -1; }
+  .golfer-name { font-size: 26px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <svg style="position:absolute;top:0;right:0;width:340px;height:320px;opacity:0.07;pointer-events:none;z-index:0" viewBox="0 0 340 320" aria-hidden="true">
+    <circle cx="300" cy="20" r="70"  fill="none" stroke="#fff" stroke-width="1.5"/>
+    <circle cx="300" cy="20" r="110" fill="none" stroke="#fff" stroke-width="1.5"/>
+    <circle cx="300" cy="20" r="155" fill="none" stroke="#fff" stroke-width="1.5"/>
+    <circle cx="300" cy="20" r="200" fill="none" stroke="#fff" stroke-width="1.5"/>
+    <circle cx="300" cy="20" r="250" fill="none" stroke="#fff" stroke-width="1.5"/>
+    <circle cx="300" cy="20" r="305" fill="none" stroke="#fff" stroke-width="1.5"/>
+  </svg>
+  <svg style="position:absolute;top:0;left:0;width:68px;height:2400px;opacity:0.08;pointer-events:none;z-index:0" viewBox="0 0 68 2400" preserveAspectRatio="xMinYMin" aria-hidden="true">
+    <defs><pattern id="dotcol" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="2.2" fill="#fff"/></pattern></defs>
+    <rect width="68" height="2400" fill="url(#dotcol)"/>
+  </svg>
+
+  <div class="header">
+    <div class="week-label">Week 1 · Practice Plan</div>
+    <div class="golfer-name">Mark Minervini</div>
+    <div class="plan-meta">May 2026 &nbsp;·&nbsp; Driving range</div>
+    <div class="chips">
+      <div class="chip"><div class="chip-label">Duration</div><div class="chip-value">30 min</div></div>
+      <div class="chip"><div class="chip-label">Drills</div><div class="chip-value">3 this week</div></div>
+      <div class="chip"><div class="chip-label">Focus</div><div class="chip-value">Square strike + fairway drives</div></div>
+    </div>
+    <div class="opening">
+      <p>Mark — you said it yourself: "Straight drives only 50% of the time and inconsistent ball striking on irons." We'll keep this 30-minute session focused: train a square clubface through a two-ball gate, build repeatable iron contact with a feedback tee, then finish with 20 deliberate driver reps into a defined fairway zone.</p>
+    </div>
+  </div>
+
+  <div class="drills-section">
+    <div class="section-label">Drills</div>
+
+    <!-- Drill 1 -->
+    <div class="drill-card">
+      <div class="drill-header">
+        <div class="drill-num">1</div>
+        <span class="drill-name">Clubhead gate (two-ball gate)</span>
+        <span class="drill-time">8 min</span>
+      </div>
+      <div class="drill-body">
+        <div>
+          <div class="micro-label">What to do</div>
+          <p class="drill-text">Place your ball on the tee or mat. Set two spare balls on the ground just outside the toe and heel of your clubhead — roughly 1–2 inches wider on each side — forming a gate the clubhead must pass through cleanly. Using a 9- or 8-iron, hit 8 shots with the same routine each time (pick a target, set up square, one practice swing, step in). Only count swings where the clubhead passes through without touching either gate ball. If you clip one, don't adjust — just repeat the same setup and focus on the gap.</p>
+        </div>
+        <div class="why-block">
+          <div class="why-label">Why this drill for you</div>
+          <p class="why-text">The gate gives you instant feedback on whether your face and path are square at impact, directly targeting your "inconsistent ball striking on irons."</p>
+        </div>
+        <div class="score-box">
+          <div class="score-single">
+            <span class="score-box-label" style="margin-bottom:0">Score to record</span>
+            <span class="score-desc">Gate passes (clean through gap):</span>
+            <input type="number" class="score-input wide" id="score1" min="0" max="8" placeholder="·" oninput="checkReady()">
+            <span class="score-denom">/ 8</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Drill 2 -->
+    <div class="drill-card">
+      <div class="drill-header">
+        <div class="drill-num">2</div>
+        <span class="drill-name">7-iron contact ladder</span>
+        <span class="drill-time">10 min</span>
+      </div>
+      <div class="drill-body">
+        <div>
+          <div class="micro-label">What to do</div>
+          <p class="drill-text">Place a small tee or coin 1–2 inches behind the ball on the mat — if you hit behind it, you'll feel and hear it immediately. Hit 5 half-swings focusing only on clipping the ball first, then 5 three-quarter or full swings. Use the same short routine before every shot. If a shot feels fat, take a breath, reset your routine, and move on to the next ball.</p>
+        </div>
+        <div class="why-block">
+          <div class="why-label">Why this drill for you</div>
+          <p class="why-text">Training yourself to strike the ball before the ground directly attacks your "inconsistent ball striking on irons."</p>
+        </div>
+        <div class="score-box">
+          <div class="score-single">
+            <span class="score-box-label" style="margin-bottom:0">Score to record</span>
+            <span class="score-desc">Solid center strikes (no tee contact):</span>
+            <input type="number" class="score-input wide" id="score2" min="0" max="10" placeholder="·" oninput="checkReady()">
+            <span class="score-denom">/ 10</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Drill 3 -->
+    <div class="drill-card">
+      <div class="drill-header">
+        <div class="drill-num">3</div>
+        <span class="drill-name">Driver — 20-ball fairway block</span>
+        <span class="drill-time">12 min</span>
+      </div>
+      <div class="drill-body">
+        <div>
+          <div class="micro-label">What to do</div>
+          <p class="drill-text">Pick one target on the range and define a fairway zone about 40 yards wide centred on it — use two visible markers (flags, buckets, fence posts) as your left and right edges. Place a spare club on the ground along your feet for consistent alignment. If you have an alignment stick, push it through the top of a range bucket and place the bucket just outside your rear hip line, pointing down the target line — this gives your swing a visual path to swing past and naturally encourages an inside-to-out movement. Hit exactly 20 driver balls using the same short routine each time (pick target, align, one practice swing, step in). After each shot, mark down only one thing: did it land inside the 40-yard fairway zone?</p>
+        </div>
+        <div class="why-block">
+          <div class="why-label">Why this drill for you</div>
+          <p class="why-text">Repeating 20 committed reps into a defined window — with a path reference if you have sticks — directly attacks "Straight drives only 50% of the time."</p>
+        </div>
+        <div class="score-box">
+          <div class="score-single">
+            <span class="score-box-label" style="margin-bottom:0">Score to record</span>
+            <span class="score-desc">Fairways hit:</span>
+            <input type="number" class="score-input wide" id="score3" min="0" max="20" placeholder="·" oninput="checkReady()">
+            <span class="score-denom">/ 20</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Feedback -->
+  <div class="feedback-section">
+    <div class="feedback-card">
+      <p class="feedback-intro">
+        Both of those issues — the wayward driver and the inconsistent irons — didn't show up overnight, and they won't disappear in one session. This week is about getting clear, repeatable feedback from two iron drills and then putting 20 committed driver reps on the board — not fixing everything, just building reliable data.
+        <span class="feedback-hint">Fill in your scores above, answer the four questions below, then tap Send. Takes about 2 minutes.</span>
+      </p>
+      <div class="feedback-question">
+        <div class="feedback-q-label"><span class="q-num">1</span>What felt different, hard, or clicked?</div>
+        <textarea class="feedback-textarea" id="q-felt" rows="3" placeholder="Even one or two sentences is perfect…"></textarea>
+      </div>
+      <div class="feedback-question">
+        <div class="feedback-q-label"><span class="q-num">2</span>What did you think of the training?</div>
+        <textarea class="feedback-textarea" id="q-thoughts" rows="3" placeholder="Do you think it could help your game?"></textarea>
+      </div>
+      <div class="feedback-question">
+        <div class="feedback-q-label"><span class="q-num">3</span>Anything you'd want to focus on more next week?</div>
+        <textarea class="feedback-textarea" id="q-focus" rows="2" placeholder="Any specific shot, situation, or area of your game…"></textarea>
+      </div>
+      <div class="feedback-question">
+        <div class="feedback-q-label"><span class="q-num">4</span>Would you like a new plan next week — built on your own progression?</div>
+        <div class="yn-row">
+          <button type="button" class="yn-btn yn-yes" id="yn-yes" onclick="selectYN('yes')">Yes, please!</button>
+          <button class="yn-btn yn-no"  id="yn-no"  onclick="selectYN('no')">Not this week</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Send -->
+  <div class="send-wrap">
+    <button class="send-btn" id="send-btn" onclick="sendFeedback()" disabled>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      Send my scores &amp; feedback
+    </button>
+    <p class="send-hint" id="send-hint">Fill in all three scores and answer question 4 to unlock</p>
+  </div>
+
+  <!-- SEND OPTIONS (shown if no email client handles the mailto) -->
+  <div id="send-options" style="display:none;margin-top:12px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.14);border-radius:14px;padding:18px 16px">
+    <p style="color:#9FE1CB;font-size:13px;font-weight:500;margin-bottom:4px">How would you like to send?</p>
+    <p style="color:rgba(255,255,255,0.35);font-size:11px;margin-bottom:14px;line-height:1.5">Choose the option that works best on your device.</p>
+    <button onclick="openGmail()" style="width:100%;padding:12px;margin-bottom:9px;background:#1D9E75;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8l10 6 10-6"/></svg>
+      Open Gmail in browser
+    </button>
+    <button onclick="openMailApp()" style="width:100%;padding:11px;margin-bottom:9px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);border:0.5px solid rgba(255,255,255,0.15);border-radius:10px;font-size:13px;cursor:pointer;font-family:inherit">
+      Open my email app (Mail, Outlook…)
+    </button>
+    <button id="copy-btn" onclick="copyResults()" style="width:100%;padding:11px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);border:0.5px solid rgba(255,255,255,0.15);border-radius:10px;font-size:13px;cursor:pointer;font-family:inherit">
+      Copy text — paste into any email manually
+    </button>
+  </div>
+
+  <div class="footer">
+    <span>Alfie Golf Trainings · Week 1</span>
+    <span>Reply to get your next plan</span>
+  </div>
+
+</div>
+<script>
+var ynAnswer = '';
+var lastSubject = ''; var lastBody = '';
+
+function selectYN(v) {
+  ynAnswer = v;
+  document.getElementById('yn-yes').classList.toggle('active', v === 'yes');
+  document.getElementById('yn-no').classList.toggle('active',  v === 'no');
+  checkReady();
+}
+
+function checkReady() {
+  var s1 = document.getElementById('score1').value;
+  var s2 = document.getElementById('score2').value;
+  var s3 = document.getElementById('score3').value;
+  var scoresOk = s1 !== '' && s2 !== '' && s3 !== '';
+  var ynOk = ynAnswer !== '';
+  var ready = scoresOk && ynOk;
+  document.getElementById('send-btn').disabled = !ready;
+  var hint = document.getElementById('send-hint');
+  if (ready) {
+    hint.textContent = 'Opens your email app with everything pre-filled — just hit send';
+    hint.style.color = 'rgba(255,255,255,0.32)';
+  } else {
+    var missing = [];
+    if (!scoresOk) missing.push('all three scores');
+    if (!ynOk)     missing.push('question 4');
+    hint.textContent = 'Fill in ' + missing.join(' and ') + ' to unlock';
+    hint.style.color = 'rgba(255,200,100,0.6)';
+  }
+}
+
+function sendFeedback() {
+  var s1 = document.getElementById('score1').value || '—';
+  var s2 = document.getElementById('score2').value || '—';
+  var s3 = document.getElementById('score3').value || '—';
+  var felt     = document.getElementById('q-felt').value.trim()     || '(no response)';
+  var thoughts = document.getElementById('q-thoughts').value.trim() || '(no response)';
+  var focus    = document.getElementById('q-focus').value.trim()    || '(no response)';
+  var nextPlan = ynAnswer === 'yes' ? 'Yes — I would love a new plan next week!'
+               : ynAnswer === 'no'  ? 'Not this week, thanks.'
+               : '(not answered)';
+
+  var body =
+    'Hi Fabio,\n\n' +
+    'Here are my Week 1 scores and feedback:\n\n' +
+    '── SCORES ──────────────────────────────\n' +
+    'Drill 1 — Clubhead gate:              ' + s1 + ' / 8\n' +
+    'Drill 2 — 7-iron contact ladder:      ' + s2 + ' / 10\n' +
+    'Drill 3 — Driver fairway block:       ' + s3 + ' / 20\n\n' +
+    '── FEEDBACK ────────────────────────────\n' +
+    '1. What felt different, hard, or clicked:\n' + felt + '\n\n' +
+    '2. What I thought of the training:\n' + thoughts + '\n\n' +
+    '3. What I\'d like to focus on more:\n' + focus + '\n\n' +
+    '4. New plan next week:\n' + nextPlan + '\n\n' +
+    '────────────────────────────────────────\n' +
+    'Mark';
+
+  var subject = encodeURIComponent('Week 1 Scores & Feedback — Mark Minervini');
+  lastSubject = decodeURIComponent(subject); lastBody = body;
+  var mailtoWorked = false;
+  function onBlur() { mailtoWorked = true; window.removeEventListener('blur', onBlur); }
+  window.addEventListener('blur', onBlur);
+  window.location.href = 'mailto:alfie.golf.trainings@gmail.com?subject=' + subject + '&body=' + encodeURIComponent(body);
+  setTimeout(function() {
+    window.removeEventListener('blur', onBlur);
+    if (!mailtoWorked) {
+      document.getElementById('send-options').style.display = 'block';
+      document.getElementById('send-btn').style.display = 'none';
+      document.getElementById('send-hint').style.display = 'none';
+    }
+  }, 800);
+}
+function openGmail() {
+  var url = 'https://mail.google.com/mail/?view=cm&fs=1&to=alfie.golf.trainings@gmail.com&su=' +
+    encodeURIComponent(lastSubject) + '&body=' + encodeURIComponent(lastBody);
+  window.open(url, '_blank');
+}
+function openMailApp() {
+  window.location.href = 'mailto:alfie.golf.trainings@gmail.com?subject=' +
+    encodeURIComponent(lastSubject) + '&body=' + encodeURIComponent(lastBody);
+}
+function copyResults() {
+  var text = 'To: alfie.golf.trainings@gmail.com\nSubject: ' + lastSubject + '\n\n' + lastBody;
+  var btn = document.getElementById('copy-btn');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = '✓ Copied! Paste it into an email to alfie.golf.trainings@gmail.com';
+      btn.style.color = '#9FE1CB';
+      btn.style.borderColor = 'rgba(29,158,117,0.5)';
+    });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    btn.textContent = '✓ Copied! Paste it into an email to alfie.golf.trainings@gmail.com';
+    btn.style.color = '#9FE1CB';
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alfie Golf — My Dashboard</title>
+  <style>
+    /* ── Reset ──────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #063d31;
+      color: rgba(255,255,255,0.93);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Design tokens ──────────────────────────────────────────── */
+    :root {
+      --bg:           #063d31;
+      --card-fill:    rgba(255,255,255,0.06);
+      --card-border:  rgba(255,255,255,0.10);
+      --radius:       12px;
+      --green:        #1D9E75;
+      --accent:       #5DCAA5;
+      --light:        #9FE1CB;
+      --amber:        #ffc846;
+      --amber-text:   #3a2800;
+      --text:         rgba(255,255,255,0.93);
+      --muted:        rgba(255,255,255,0.42);
+      --muted-dim:    rgba(255,255,255,0.20);
+      --gap:          14px;
+    }
+
+    /* ── Nav ────────────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      height: 48px; padding: 0 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-bottom: 0.5px solid rgba(255,255,255,0.07);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 500; color: var(--light);
+      letter-spacing: -0.01em; text-decoration: none;
+    }
+    .nav-logo svg { flex-shrink: 0; }
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+    .nav-name { font-size: 11px; color: var(--muted); }
+    .avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(29,158,117,0.18); border: 1px solid var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700; color: var(--light);
+      flex-shrink: 0;
+    }
+
+    /* ── App shell ──────────────────────────────────────────────── */
+    #app { max-width: 980px; margin: 0 auto; padding: 28px 20px 80px; }
+
+    /* ── Loading / error states ─────────────────────────────────── */
+    .state-center {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; min-height: 55vh; gap: 14px; text-align: center;
+    }
+    .spinner {
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 2.5px solid rgba(255,255,255,0.08);
+      border-top-color: var(--green);
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .state-icon { font-size: 30px; }
+    .state-title { font-size: 15px; font-weight: 600; color: var(--text); }
+    .state-sub   { font-size: 12px; color: var(--muted); }
+
+    /* ── Greeting ────────────────────────────────────────────────── */
+    .greeting { margin-bottom: 20px; }
+    .greeting h1 { font-size: 17px; font-weight: 700; color: #fff; }
+    .greeting p  { font-size: 11px; color: rgba(255,255,255,0.40); margin-top: 3px; }
+
+    /* ── Bento grid ─────────────────────────────────────────────── */
+    .bento {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: var(--gap);
+      margin-bottom: var(--gap);
+    }
+
+    /* ── Card base ──────────────────────────────────────────────── */
+    .card {
+      background: var(--card-fill);
+      border: 0.5px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+    }
+    .card-label {
+      font-size: 9px; font-weight: 700; text-transform: uppercase;
+      color: var(--light); letter-spacing: 0.08em; margin-bottom: 10px;
+    }
+
+    /* ── Hero card ──────────────────────────────────────────────── */
+    .card-hero {
+      grid-column: span 8;
+      background: linear-gradient(135deg, rgba(29,158,117,0.18) 0%, rgba(6,61,49,0.60) 100%);
+      border-color: rgba(29,158,117,0.28);
+      position: relative; overflow: hidden;
+    }
+    /* Decorative circle */
+    .card-hero::after {
+      content: '';
+      position: absolute; top: -40px; right: -40px;
+      width: 180px; height: 180px; border-radius: 50%;
+      border: 1px solid rgba(157,225,203,0.08);
+      box-shadow: 0 0 0 28px rgba(157,225,203,0.04), 0 0 0 56px rgba(157,225,203,0.025);
+      pointer-events: none; z-index: 0;
+    }
+    .card-hero > * { position: relative; z-index: 1; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 9px; font-weight: 700; text-transform: uppercase;
+      color: var(--accent); letter-spacing: 0.08em; margin-bottom: 12px;
+    }
+    .hero-badge-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+      animation: pulse 2.2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(0.75); }
+    }
+    .hero-headline { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 8px; line-height: 1.3; }
+    .hero-body {
+      font-size: 12px; color: rgba(255,255,255,0.60);
+      line-height: 1.65; margin-bottom: 18px;
+    }
+    .progress-row {
+      display: flex; justify-content: space-between;
+      font-size: 10px; color: var(--muted); margin-bottom: 7px;
+    }
+    .progress-track {
+      height: 5px; background: rgba(255,255,255,0.08); border-radius: 3px;
+      margin-bottom: 18px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; background: var(--green); border-radius: 3px;
+      transition: width 0.9s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .hero-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+    /* ── Buttons ────────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 10px 20px; border-radius: 10px; font-family: inherit;
+      font-size: 12px; font-weight: 600; cursor: pointer;
+      border: none; transition: opacity 0.15s, transform 0.1s; text-decoration: none;
+      white-space: nowrap; letter-spacing: -0.01em;
+    }
+    .btn:hover:not(:disabled) { opacity: 0.88; }
+    .btn:active:not(:disabled) { transform: scale(0.97); }
+    .btn-primary   { background: var(--green); color: #fff; box-shadow: 0 2px 12px rgba(29,158,117,0.35); }
+    .btn-secondary {
+      background: rgba(255,255,255,0.08);
+      border: 0.5px solid rgba(255,255,255,0.16);
+      color: rgba(255,255,255,0.78);
+    }
+    .btn-amber     { background: var(--amber); color: var(--amber-text); box-shadow: 0 2px 12px rgba(255,200,70,0.25); }
+    .btn-locked    {
+      background: rgba(255,255,255,0.05);
+      border: 0.5px solid rgba(255,255,255,0.10);
+      color: var(--muted); cursor: default;
+    }
+    .btn:disabled  { opacity: 0.45; cursor: default; box-shadow: none; }
+
+    /* ── Sessions ring card ─────────────────────────────────────── */
+    .card-sessions { grid-column: span 4; }
+    .ring-row { display: flex; align-items: center; gap: 14px; }
+    .ring-row svg { flex-shrink: 0; }
+    .ring-info { flex: 1; min-width: 0; }
+    .ring-count { font-size: 30px; font-weight: 800; color: var(--accent); line-height: 1; margin-bottom: 1px; }
+    .ring-sub   { font-size: 10px; color: var(--muted); margin-bottom: 10px; }
+    .streak-chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: rgba(93,202,165,0.12); border: 0.5px solid rgba(93,202,165,0.25);
+      border-radius: 20px; padding: 4px 9px;
+      font-size: 10px; color: var(--light);
+    }
+    .streak-chip.dim { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.10); color: var(--muted); }
+
+    /* ── Stat cards ─────────────────────────────────────────────── */
+    .stats-row { grid-column: span 12; display: grid; grid-template-columns: repeat(3,1fr); gap: var(--gap); }
+    .card-stat { }
+    .stat-num { font-size: 26px; font-weight: 800; margin-bottom: 2px; line-height: 1; }
+    .stat-num.c-accent { color: var(--accent); }
+    .stat-num.c-white  { color: #fff; }
+    .stat-num.c-amber  { color: var(--amber); }
+    .stat-num.c-muted  { color: var(--muted); }
+    .stat-detail    { font-size: 10px; color: var(--muted); margin-bottom: 3px; }
+    .stat-highlight { font-size: 10px; color: var(--light); }
+    .stat-highlight.dim { color: var(--muted); }
+
+    /* ── Drill bars card ────────────────────────────────────────── */
+    .card-drills { grid-column: span 7; }
+    .drill-empty { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+    .drills-sub  { font-size: 10px; color: var(--muted); margin-bottom: 12px; }
+    .drill-row   { margin-bottom: 12px; }
+    .drill-row:last-child { margin-bottom: 0; }
+    .drill-row-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 5px;
+    }
+    .drill-row-name { font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.80); }
+    .drill-row-pct  { font-size: 11px; font-weight: 700; color: var(--accent); }
+    .bar-track {
+      height: 5px; background: rgba(255,255,255,0.06); border-radius: 3px;
+      overflow: hidden; margin-bottom: 2px;
+    }
+    .bar-fill { height: 100%; border-radius: 3px; transition: width 0.7s ease; }
+    .bar-single { background: var(--green); }
+    .bar-s1     { background: rgba(29,158,117,0.45); }
+    .bar-s2     { background: var(--accent); }
+
+    /* ── Coach card ─────────────────────────────────────────────── */
+    .card-coach { grid-column: span 5; }
+    .coach-quote {
+      border-left: 2px solid var(--light); padding-left: 10px; margin-bottom: 14px;
+    }
+    .coach-quote p {
+      font-size: 11px; font-style: italic;
+      color: rgba(255,255,255,0.72); line-height: 1.65;
+    }
+    .coach-author { display: flex; align-items: center; gap: 8px; }
+    .coach-avatar {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: rgba(29,158,117,0.18); border: 1px solid var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: var(--light);
+    }
+    .coach-name  { font-size: 11px; font-weight: 600; color: #fff; }
+    .coach-title { font-size: 9px; color: var(--muted); margin-top: 1px; }
+
+    /* ── Timeline ───────────────────────────────────────────────── */
+    .card-timeline { grid-column: span 12; }
+    .timeline-track {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      position: relative; padding-top: 4px;
+    }
+    .timeline-line {
+      position: absolute; top: 18px; left: 5%; right: 5%; height: 1px;
+      background: rgba(255,255,255,0.07); z-index: 0;
+    }
+    .milestone { display: flex; flex-direction: column; align-items: center; gap: 6px; z-index: 1; flex: 1; }
+    .milestone-dot {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.10);
+      color: var(--muted);
+    }
+    .milestone.done   .milestone-dot { background: rgba(29,158,117,0.20); border-color: var(--green);  color: var(--green);  }
+    .milestone.active .milestone-dot { background: rgba(93,202,165,0.12);  border-color: var(--accent); color: var(--accent); }
+    .milestone-label {
+      font-size: 9px; font-weight: 500; color: rgba(255,255,255,0.45);
+      text-align: center; white-space: nowrap;
+    }
+    .milestone.done   .milestone-label,
+    .milestone.active .milestone-label { color: rgba(255,255,255,0.72); }
+
+    /* ── Feedback snapshot ──────────────────────────────────────── */
+    .card-feedback { grid-column: span 12; }
+    .feedback-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 4px; }
+    .feedback-q-label {
+      font-size: 9px; font-weight: 700; text-transform: uppercase;
+      color: var(--light); letter-spacing: 0.08em; margin-bottom: 6px;
+    }
+    .feedback-answer { font-size: 10px; color: rgba(255,255,255,0.65); line-height: 1.55; }
+
+    /* ── Week 2 card ────────────────────────────────────────────── */
+    .week2-card {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--card-fill);
+      border: 0.5px dashed rgba(255,255,255,0.14);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      gap: 12px; flex-wrap: wrap;
+    }
+    .week2-card.unlocked {
+      border: 0.5px solid rgba(29,158,117,0.30);
+      background: rgba(29,158,117,0.10);
+    }
+    .week2-left   { display: flex; align-items: center; gap: 12px; }
+    .week2-icon   { font-size: 20px; }
+    .week2-title  { font-size: 13px; font-weight: 600; color: #fff; }
+    .week2-sub    { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .week2-right  { display: flex; align-items: center; gap: 10px; }
+    .week2-confirm {
+      font-size: 12px; font-weight: 600; color: var(--accent);
+      display: none;
+    }
+
+    /* ── Modal ──────────────────────────────────────────────────── */
+    #modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.60); z-index: 200;
+      align-items: center; justify-content: center;
+    }
+    #modal-overlay.open { display: flex; }
+    .modal-card {
+      background: #063d31;
+      border: 0.5px solid rgba(255,255,255,0.15);
+      border-radius: 16px; padding: 24px;
+      max-width: 480px; width: calc(100% - 40px);
+      max-height: 88vh; overflow-y: auto;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute; top: 14px; right: 16px;
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); font-size: 20px; line-height: 1; padding: 4px;
+      font-family: inherit;
+    }
+    .modal-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .modal-sub   { font-size: 11px; color: var(--muted); margin-bottom: 22px; }
+    .modal-section { margin-bottom: 20px; }
+    .modal-section-label {
+      font-size: 9px; font-weight: 700; text-transform: uppercase;
+      color: var(--light); letter-spacing: 0.08em; margin-bottom: 10px;
+    }
+    /* Score inputs */
+    .score-row  { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .score-row:last-child { margin-bottom: 0; }
+    .score-name { font-size: 11px; color: rgba(255,255,255,0.80); flex: 1; min-width: 0; }
+    .score-wrap { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
+    .score-input {
+      width: 58px; padding: 7px 8px; border-radius: 8px; text-align: center;
+      background: rgba(255,255,255,0.08); border: 0.5px solid rgba(255,255,255,0.18);
+      color: #fff; font-family: inherit; font-size: 14px; font-weight: 600; outline: none;
+    }
+    .score-input:focus { border-color: var(--green); }
+    .score-denom { font-size: 11px; color: var(--muted); white-space: nowrap; }
+    /* Tile questions */
+    .tile-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .q-tile {
+      padding: 10px 14px; border-radius: 10px; cursor: pointer;
+      font-size: 11px; font-family: inherit; line-height: 1;
+      background: rgba(255,255,255,0.07);
+      border: 0.5px solid rgba(255,255,255,0.14);
+      color: rgba(255,255,255,0.65);
+      transition: background 0.12s, border-color 0.12s, color 0.12s;
+    }
+    .q-tile.selected {
+      background: rgba(29,158,117,0.20); border: 1px solid var(--green); color: var(--light);
+    }
+    /* Submit */
+    .modal-submit {
+      display: block; width: 100%; padding: 13px; margin-top: 6px;
+      border-radius: 10px; border: none; font-family: inherit;
+      font-size: 13px; font-weight: 600; cursor: not-allowed;
+      background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.28);
+      transition: background 0.15s, color 0.15s;
+    }
+    .modal-submit.ready { background: var(--green); color: #fff; cursor: pointer; }
+    .modal-submit.ready:hover { opacity: 0.88; }
+    .modal-submit.loading { opacity: 0.55; cursor: not-allowed; }
+    .modal-error { font-size: 11px; color: #ff7070; margin-top: 10px; display: none; }
+
+    /* ── "How this works" modal ─────────────────────────────────── */
+    .info-steps { margin-top: 4px; }
+    .info-step {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 12px 0; border-bottom: 0.5px solid rgba(255,255,255,0.07);
+    }
+    .info-step:last-child { border-bottom: none; }
+    .info-num {
+      width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(29,158,117,0.20); border: 1px solid var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700; color: var(--light);
+    }
+    .info-text { font-size: 12px; color: rgba(255,255,255,0.75); line-height: 1.55; padding-top: 2px; }
+
+    /* ── Mobile ─────────────────────────────────────────────────── */
+    @media (max-width: 700px) {
+      #app { padding: 20px 16px 80px; }
+
+      /* All bento items full-width */
+      .card-hero, .card-sessions,
+      .card-drills, .card-coach,
+      .card-timeline, .card-feedback { grid-column: span 12; }
+
+      /* Stats row full-width on mobile */
+      .stats-row { grid-template-columns: repeat(3, 1fr); }
+
+      /* Card polish */
+      .card { border-radius: 16px; padding: 18px; }
+
+      /* Hero: bigger, more impact */
+      .card-hero { padding: 20px; }
+      .hero-headline { font-size: 18px; }
+      .hero-body { font-size: 12px; }
+
+      /* Hero actions: primary full-width, secondary text-style */
+      .hero-actions { flex-direction: column; gap: 10px; }
+      .hero-actions .btn-primary { width: 100%; padding: 14px; font-size: 14px; border-radius: 12px; }
+      .hero-actions .btn-secondary {
+        width: 100%; padding: 12px; font-size: 12px; border-radius: 12px;
+        background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12);
+      }
+      .hero-actions .btn-amber { width: 100%; padding: 14px; font-size: 14px; border-radius: 12px; }
+
+      /* Ring card: smaller ring on mobile */
+      .ring-count { font-size: 28px; }
+
+      /* Stats: 3-col on mobile (compact enough with smaller numbers) */
+      .stats-row { grid-template-columns: repeat(3, 1fr); }
+      .stat-num { font-size: 22px; }
+
+      /* Feedback: single column */
+      .feedback-grid  { grid-template-columns: 1fr; gap: 14px; }
+
+      /* Timeline: scrollable if needed */
+      .timeline-track { overflow-x: auto; padding-bottom: 6px; gap: 0; }
+      .milestone { min-width: 56px; }
+      .milestone-label { font-size: 8px; }
+
+      /* Greeting */
+      .greeting h1 { font-size: 20px; }
+      .greeting p  { font-size: 12px; }
+
+      /* Week 2 card */
+      .week2-card { border-radius: 16px; padding: 18px; }
+      .week2-right { width: 100%; }
+      .week2-right .btn-amber { width: 100%; padding: 13px; border-radius: 12px; font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ──────────────────────────────────────────────────── -->
+  <nav>
+    <a class="nav-logo" href="#">
+      <!-- Golf ball SVG -->
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="10" cy="10" r="8.25" stroke="#9FE1CB" stroke-width="1.5"/>
+        <circle cx="7.5"  cy="9"    r="0.9" fill="#9FE1CB"/>
+        <circle cx="11"   cy="7"    r="0.7" fill="#9FE1CB"/>
+        <circle cx="13"   cy="10.5" r="0.9" fill="#9FE1CB"/>
+        <circle cx="8.5"  cy="12.5" r="0.7" fill="#9FE1CB"/>
+        <circle cx="12"   cy="13"   r="0.7" fill="#9FE1CB"/>
+      </svg>
+      Alfie Golf
+    </a>
+    <div class="nav-right">
+      <span class="nav-name" id="nav-name"></span>
+      <div class="avatar" id="nav-avatar">?</div>
+    </div>
+  </nav>
+
+  <!-- ── App root ──────────────────────────────────────────────── -->
+  <div id="app">
+    <!-- Loading -->
+    <div id="view-loading" class="state-center">
+      <div class="spinner"></div>
+      <p class="state-sub">Loading your dashboard...</p>
+    </div>
+
+    <!-- No slug -->
+    <div id="view-no-slug" class="state-center" style="display:none">
+      <div class="state-icon">🏌️</div>
+      <div class="state-title">Visit your personal URL to see your dashboard.</div>
+      <div class="state-sub">Your URL looks like: alfie-golf.com/your-name</div>
+    </div>
+
+    <!-- 404 -->
+    <div id="view-404" class="state-center" style="display:none">
+      <div class="state-icon">⛳</div>
+      <div class="state-title">Plan not found.</div>
+      <div class="state-sub">Check your link or contact Alfie.</div>
+    </div>
+
+    <!-- Dashboard (populated by JS) -->
+    <div id="view-dashboard" style="display:none"></div>
+  </div>
+
+  <!-- ── Session log modal ────────────────────────────────────── -->
+  <div id="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      <div class="modal-title" id="modal-title">Log your session</div>
+      <div class="modal-sub" id="modal-sub">Fill in your scores and quick feedback to submit.</div>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- ── "How this works" modal ────────────────────────────────── -->
+  <div id="info-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.60); z-index:200; align-items:center; justify-content:center;">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeInfo()">×</button>
+      <div class="modal-title">How this works</div>
+      <div class="info-steps">
+        <div class="info-step">
+          <div class="info-num">1</div>
+          <div class="info-text"><strong>Open your plan</strong> — read it fully, then head to the range or course and do the drills as described.</div>
+        </div>
+        <div class="info-step">
+          <div class="info-num">2</div>
+          <div class="info-text"><strong>Record your score</strong> — each drill has one score to track. Note it down during the session.</div>
+        </div>
+        <div class="info-step">
+          <div class="info-num">3</div>
+          <div class="info-text"><strong>Log the session here</strong> — come back to this page, tap "Log session", enter your scores and a few quick taps of feedback.</div>
+        </div>
+        <div class="info-step">
+          <div class="info-num">4</div>
+          <div class="info-text"><strong>Request Week 2</strong> — after your first session you can request your Week 2 plan. Alfie will build it around what you just submitted.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ── Config ───────────────────────────────────────────────── */
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzkQCL_sV5A-XbGzHsqkyWFVzmmOcfslLE9VtT7hnLikD3vR85fsM35jJhVqBT8fuiUsQ/exec';
+
+    /* ── App state ────────────────────────────────────────────── */
+    let GOLFER   = null;
+    let SESSIONS = [];   // real sessions (week=2 session=0 filtered out)
+    let DRILLS   = [];   // [{name, max}]
+    let SLUG     = '';
+    let WEEK2_REQUESTED = false;
+
+    /* ── Boot ─────────────────────────────────────────────────── */
+    (async function boot() {
+      SLUG = window.location.pathname.replace(/^\/+/, '').replace(/\/+$/, '');
+      if (!SLUG) { showView('no-slug'); return; }
+
+      try {
+        const [golferData, resultsData] = await Promise.all([
+          apiFetch('getGolferBySlug', { slug: SLUG }),
+          apiFetch('getGolferResults', { slug: SLUG })
+        ]);
+
+        if (!golferData.found) { showView('404'); return; }
+
+        GOLFER = golferData;
+        const allRows = resultsData.sessions || [];
+        SESSIONS = allRows.filter(s => !(String(s.week) === '2' && String(s.session) === '0'));
+        WEEK2_REQUESTED = allRows.some(s => String(s.week) === '2' && String(s.session) === '0');
+
+        // Nav
+        const firstName = firstNameOf(GOLFER.name);
+        const initials  = initialsOf(GOLFER.name);
+        document.getElementById('nav-name').textContent   = firstName;
+        document.getElementById('nav-avatar').textContent = initials;
+
+        // Drills source: latest session → plan file → empty
+        if (SESSIONS.length > 0) {
+          DRILLS = SESSIONS[SESSIONS.length - 1].drills
+            .filter(d => d.name)
+            .map(d => ({ name: d.name, max: Number(d.max) || 0 }));
+        } else {
+          DRILLS = await parseDrillsFromPlan(GOLFER.planWeek1) || [];
+        }
+
+        if (SESSIONS.length === 0) renderState1(); else renderState2();
+        showView('dashboard');
+
+      } catch (err) {
+        console.error('Boot error:', err);
+        showView('404');
+      }
+    })();
+
+    /* ── API helpers ──────────────────────────────────────────── */
+    async function apiFetch(action, params = {}) {
+      const qs = Object.entries({ action, ...params })
+        .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
+        .join('&');
+      const r = await fetch(APPS_SCRIPT_URL + '?' + qs);
+      return r.json();
+    }
+
+    /* ── View switcher ────────────────────────────────────────── */
+    function showView(id) {
+      ['loading', 'no-slug', '404', 'dashboard'].forEach(v => {
+        document.getElementById('view-' + v).style.display = v === id ? '' : 'none';
+      });
+    }
+
+    /* ── Parse drills from plan HTML ──────────────────────────── */
+    async function parseDrillsFromPlan(filename) {
+      if (!filename) return null;
+      try {
+        const res = await fetch('/plans/' + filename);
+        if (!res.ok) return null;
+        const html = await res.text();
+        const doc  = new DOMParser().parseFromString(html, 'text/html');
+        const result = [];
+        doc.querySelectorAll('.drill-card').forEach(card => {
+          const name  = card.querySelector('.drill-name')?.textContent?.trim();
+          const input = card.querySelector('input[type="number"]');
+          const max   = input ? Number(input.getAttribute('max')) : 0;
+          if (name) result.push({ name, max });
+        });
+        return result.length ? result : null;
+      } catch { return null; }
+    }
+
+    /* ── Greeting helper ──────────────────────────────────────── */
+    function timeGreeting() {
+      const h = new Date().getHours();
+      if (h < 12) return 'Good morning';
+      if (h < 17) return 'Good afternoon';
+      return 'Good evening';
+    }
+
+    /* ── Name helpers ─────────────────────────────────────────── */
+    function firstNameOf(name) { return (name || '').split(' ')[0] || ''; }
+    function initialsOf(name) {
+      return (name || '').split(' ').filter(Boolean).map(w => w[0]).join('').slice(0, 2).toUpperCase() || '?';
+    }
+
+    /* ── State 1: plan ready, no sessions ────────────────────── */
+    function renderState1() {
+      const firstName  = firstNameOf(GOLFER.name);
+      const frustration = (GOLFER.frustration || 'your game').replace(/\.+$/, '').toLowerCase();
+      const planUrl    = '/plans/' + (GOLFER.planWeek1 || '#');
+
+      set('view-dashboard', `
+        <div class="greeting">
+          <h1>${timeGreeting()}, ${firstName} 👋</h1>
+          <p>Week 1 · Here's how your training is looking.</p>
+        </div>
+
+        <div class="bento">
+
+          <!-- Hero -->
+          <div class="card card-hero">
+            <div class="hero-badge"><div class="hero-badge-dot"></div>Week 1 active</div>
+            <div class="hero-headline">Your personalised plan is ready.</div>
+            <div class="hero-body">Alfie built this around ${frustration} — every drill targets that one thing. Open it, do the drills, and send your scores.</div>
+            <div class="progress-row"><span>0 of 4 sessions logged</span><span>0%</span></div>
+            <div class="progress-track"><div class="progress-fill" style="width:0%"></div></div>
+            <div class="hero-actions">
+              <a href="${planUrl}" class="btn btn-primary">Open my plan</a>
+              <button class="btn btn-secondary" onclick="openInfo()">How this works</button>
+            </div>
+          </div>
+
+          <!-- Sessions ring -->
+          <div class="card card-sessions">
+            <div class="card-label">Sessions</div>
+            ${ringCardHtml([])}
+          </div>
+
+          <!-- Stats -->
+          <div class="stats-row">
+            <div class="card card-stat">
+              <div class="card-label">Best score</div>
+              <div class="stat-num c-muted">—</div>
+              <div class="stat-detail">single drill high</div>
+              <div class="stat-highlight dim">No sessions yet</div>
+            </div>
+            <div class="card card-stat">
+              <div class="card-label">Avg score</div>
+              <div class="stat-num c-muted">—</div>
+              <div class="stat-detail">across all drills</div>
+              <div class="stat-highlight dim">No sessions yet</div>
+            </div>
+            <div class="card card-stat">
+              <div class="card-label">Drills done</div>
+              <div class="stat-num c-white">0</div>
+              <div class="stat-detail">total entries</div>
+              <div class="stat-highlight dim">Get started</div>
+            </div>
+          </div>
+
+          <!-- Drill bars -->
+          <div class="card card-drills">
+            <div class="card-label">Drill performance</div>
+            <div class="drill-empty">Complete your first session to see trends here.</div>
+          </div>
+
+          <!-- From Alfie -->
+          <div class="card card-coach">
+            <div class="card-label">From Alfie</div>
+            <div class="coach-quote">
+              <p>"This week every drill is built around ${frustration}. Trust the process — it's all one thing."</p>
+            </div>
+            <div class="coach-author">
+              <div class="coach-avatar">A</div>
+              <div>
+                <div class="coach-name">Alfie</div>
+                <div class="coach-title">PGA Teaching Pro</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Timeline -->
+          <div class="card card-timeline">
+            <div class="card-label">Your journey</div>
+            ${timelineHtml(0)}
+          </div>
+
+        </div><!-- /bento -->
+
+        <!-- Week 2 locked -->
+        <div class="week2-card">
+          <div class="week2-left">
+            <div class="week2-icon">🔒</div>
+            <div>
+              <div class="week2-title">Week 2 plan — locked</div>
+              <div class="week2-sub">Complete at least 1 Week 1 session to unlock.</div>
+            </div>
+          </div>
+          <button class="btn btn-locked">🔒 Locked</button>
+        </div>
+      `);
+    }
+
+    /* ── State 2: in progress ────────────────────────────────── */
+    function renderState2() {
+      const firstName   = firstNameOf(GOLFER.name);
+      const n           = SESSIONS.length;
+      const pct         = Math.min(Math.round((n / 4) * 100), 100);
+      const latest      = SESSIONS[n - 1];
+      const planUrl     = '/plans/' + (GOLFER.planWeek1 || '#');
+      const { avg, topDrill, topPct, drillsDone } = computeStats();
+      const w2disabled  = WEEK2_REQUESTED ? 'disabled' : '';
+      const w2label     = WEEK2_REQUESTED ? 'Request sent ✓' : '🚀 Request Week 2';
+
+      // Hero body — scores from latest session
+      const scoreLines = latest.drills
+        .filter(d => d.name && d.max > 0)
+        .map(d => {
+          const p = Math.round((Number(d.score) / Number(d.max)) * 100);
+          return `${d.name}: ${d.score}/${d.max} (${p}%)`;
+        });
+      const heroBody = scoreLines.length
+        ? scoreLines.join('. ') + '. Solid starting point — keep going.'
+        : 'Great work completing your session. Keep the momentum going.';
+
+      set('view-dashboard', `
+        <div class="greeting">
+          <h1>${timeGreeting()}, ${firstName} 👋</h1>
+          <p>Week 1 · Here's how your training is looking.</p>
+        </div>
+
+        <div class="bento">
+
+          <!-- Hero -->
+          <div class="card card-hero">
+            <div class="hero-badge"><div class="hero-badge-dot"></div>Week 1 · Session ${n} done</div>
+            <div class="hero-headline">Session ${n} done. Here's how you did.</div>
+            <div class="hero-body">${heroBody}</div>
+            <div class="progress-row"><span>${n} of 4 sessions logged</span><span>${pct}%</span></div>
+            <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+            <div class="hero-actions">
+              <button class="btn btn-primary" onclick="openModal()">Log session ${n + 1}</button>
+              <a href="${planUrl}" class="btn btn-secondary">Open Week 1 plan</a>
+              <button class="btn btn-amber" id="btn-w2-hero" onclick="requestWeek2()" ${w2disabled}>${w2label}</button>
+            </div>
+          </div>
+
+          <!-- Sessions ring -->
+          <div class="card card-sessions">
+            <div class="card-label">Sessions</div>
+            ${ringCardHtml(SESSIONS)}
+          </div>
+
+          <!-- Stats -->
+          <div class="stats-row">
+            <div class="card card-stat">
+              <div class="card-label">Best score</div>
+              <div class="stat-num c-accent">${topPct}%</div>
+              <div class="stat-detail">${topDrill}</div>
+              <div class="stat-highlight">Single drill high</div>
+            </div>
+            <div class="card card-stat">
+              <div class="card-label">Avg score</div>
+              <div class="stat-num c-accent">${avg}%</div>
+              <div class="stat-detail">all drills</div>
+              <div class="stat-highlight">${n === 1 ? 'First session' : n + ' sessions'}</div>
+            </div>
+            <div class="card card-stat">
+              <div class="card-label">Drills done</div>
+              <div class="stat-num c-white">${drillsDone}</div>
+              <div class="stat-detail">total entries</div>
+              <div class="stat-highlight">Keep going</div>
+            </div>
+          </div>
+
+          <!-- Drill bars -->
+          <div class="card card-drills">
+            <div class="card-label">Drill performance</div>
+            <div class="drills-sub">Your scores from session ${n}.</div>
+            ${drillBarsHtml()}
+          </div>
+
+          <!-- From Alfie -->
+          <div class="card card-coach">
+            <div class="card-label">From Alfie</div>
+            <div class="coach-quote">
+              <p>"${coachQuote(avg)}"</p>
+            </div>
+            <div class="coach-author">
+              <div class="coach-avatar">A</div>
+              <div>
+                <div class="coach-name">Alfie</div>
+                <div class="coach-title">PGA Teaching Pro</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Timeline -->
+          <div class="card card-timeline">
+            <div class="card-label">Your journey</div>
+            ${timelineHtml(n)}
+          </div>
+
+          <!-- Feedback snapshot -->
+          <div class="card card-feedback">
+            <div class="card-label">Your latest feedback</div>
+            ${feedbackHtml(latest)}
+          </div>
+
+        </div><!-- /bento -->
+
+        <!-- Week 2 unlocked -->
+        <div class="week2-card unlocked">
+          <div class="week2-left">
+            <div class="week2-icon">🚀</div>
+            <div>
+              <div class="week2-title">Week 2 plan — ready to request</div>
+              <div class="week2-sub">You've logged a session. Tap to request Week 2.</div>
+            </div>
+          </div>
+          <div class="week2-right">
+            <div class="week2-confirm" id="w2-confirm">Sent! Alfie will be in touch. ✓</div>
+            <button class="btn btn-amber" id="btn-w2-card" onclick="requestWeek2()" ${w2disabled}>${w2label}</button>
+          </div>
+        </div>
+      `);
+    }
+
+    /* ── Dot grid ─────────────────────────────────────────────── */
+    function dotGridHtml(sessions) {
+      const todayMs  = startOfDay(new Date()).getTime();
+      const doneDays = new Set(sessions.map(s => startOfDay(new Date(s.date)).getTime()).filter(Boolean));
+      let html = '<div class="dot-grid">';
+      for (let i = 13; i >= 0; i--) {
+        const d = new Date(todayMs - i * 86400000);
+        const t = d.getTime();
+        const cls = doneDays.has(t) ? (i === 0 ? 'dot today' : 'dot done') : 'dot';
+        html += `<div class="${cls}"></div>`;
+      }
+      return html + '</div>';
+    }
+    function startOfDay(d) { const c = new Date(d); c.setHours(0,0,0,0); return c; }
+
+    /* ── Timeline ─────────────────────────────────────────────── */
+    function timelineHtml(sessionCount) {
+      // Determine active index (the next thing to do)
+      // 0=Signed up,1=Week1Sent,2=Session1,3=Session2,4=Week2
+      const doneCount = [
+        true,                    // always signed up
+        !!GOLFER.week1Sent,
+        sessionCount >= 1,
+        sessionCount >= 2,
+        !!GOLFER.week2Sent,
+      ];
+      // Active = first not-done item
+      let activeIdx = doneCount.findIndex(d => !d);
+      if (activeIdx === -1) activeIdx = 4; // all done
+
+      const labels = ['Signed up', 'Week 1 sent', 'Session 1', 'Session 2', 'Week 2'];
+      const icons  = doneCount.map((d, i) => d ? '✓' : (i === activeIdx ? '◉' : '○'));
+
+      let html = '<div class="timeline-track"><div class="timeline-line"></div>';
+      labels.forEach((label, i) => {
+        const cls = doneCount[i] ? 'done' : (i === activeIdx ? 'active' : '');
+        html += `<div class="milestone ${cls}">
+          <div class="milestone-dot">${icons[i]}</div>
+          <div class="milestone-label">${label}</div>
+        </div>`;
+      });
+      return html + '</div>';
+    }
+
+    /* ── Drill bars ───────────────────────────────────────────── */
+    function drillBarsHtml() {
+      if (!SESSIONS.length) return '<div class="drill-empty">No sessions yet.</div>';
+      const latest = SESSIONS[SESSIONS.length - 1].drills.filter(d => d.name);
+      const prev   = SESSIONS.length >= 2 ? SESSIONS[SESSIONS.length - 2].drills : null;
+      return latest.map((d, i) => {
+        const pct  = pctOf(d.score, d.max);
+        const pPct = prev && prev[i] ? pctOf(prev[i].score, prev[i].max) : null;
+        const bars = pPct !== null
+          ? `<div class="bar-track"><div class="bar-fill bar-s1" style="width:${pPct}%"></div></div>
+             <div class="bar-track"><div class="bar-fill bar-s2" style="width:${pct}%"></div></div>`
+          : `<div class="bar-track"><div class="bar-fill bar-single" style="width:${pct}%"></div></div>`;
+        return `<div class="drill-row">
+          <div class="drill-row-header">
+            <span class="drill-row-name">${d.name}</span>
+            <span class="drill-row-pct">${pct}%</span>
+          </div>${bars}
+        </div>`;
+      }).join('');
+    }
+
+    /* ── Stats ────────────────────────────────────────────────── */
+    function computeStats() {
+      let total = 0, count = 0, topDrill = '—', topPct = 0;
+      SESSIONS.forEach(s => s.drills.filter(d => d.name && d.max > 0).forEach(d => {
+        const p = pctOf(d.score, d.max);
+        total += p; count++;
+        if (p > topPct) { topPct = p; topDrill = d.name; }
+      }));
+      return { avg: count ? Math.round(total / count) : 0, topDrill, topPct, drillsDone: count };
+    }
+
+    /* ── Ring card ─────────────────────────────────────────────── */
+    function ringCardHtml(sessions) {
+      const n     = sessions.length;
+      const total = 4;
+      const circ  = 2 * Math.PI * 26;
+      const dash  = n > 0 ? Math.min((n / total) * circ, circ).toFixed(2) : 0;
+      const streak = computeStreak(sessions);
+      const streakHtml = streak > 0
+        ? `<div class="streak-chip">🔥 ${streak}-day streak</div>`
+        : `<div class="streak-chip dim">No streak yet</div>`;
+      return `
+        <div class="ring-row">
+          <svg width="68" height="68" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="6"/>
+            ${n > 0 ? `<circle cx="32" cy="32" r="26" fill="none" stroke="#5DCAA5" stroke-width="6"
+              stroke-dasharray="${dash} ${circ.toFixed(2)}" stroke-linecap="round"
+              transform="rotate(-90 32 32)"/>` : ''}
+            <text x="32" y="29" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">${n}</text>
+            <text x="32" y="41" text-anchor="middle" fill="rgba(255,255,255,0.38)" font-size="9">of ${total}</text>
+          </svg>
+          <div class="ring-info">
+            <div class="ring-count">${n}</div>
+            <div class="ring-sub">of ${total} sessions</div>
+            ${streakHtml}
+          </div>
+        </div>`;
+    }
+
+    /* ── Streak ─────────────────────────────────────────────────── */
+    function computeStreak(sessions) {
+      if (!sessions.length) return 0;
+      const doneDays = new Set(
+        sessions.map(s => startOfDay(new Date(s.date)).getTime()).filter(Boolean)
+      );
+      let streak = 0;
+      const today = startOfDay(new Date()).getTime();
+      for (let i = 0; i <= 365; i++) {
+        const d = today - i * 86400000;
+        if (doneDays.has(d)) { streak++; } else if (i > 0) { break; }
+      }
+      return streak;
+    }
+
+    /* ── Feedback snapshot ────────────────────────────────────── */
+    function feedbackHtml(session) {
+      const qs = [
+        { label: 'How it went',    value: session.q1 || '—' },
+        { label: 'Instructions',   value: session.q2 || '—' },
+        { label: 'Focus next week', value: session.q3 || '—' },
+      ];
+      return `<div class="feedback-grid">${qs.map(q => `
+        <div>
+          <div class="feedback-q-label">${q.label}</div>
+          <div class="feedback-answer">${q.value}</div>
+        </div>`).join('')}</div>`;
+    }
+
+    /* ── Coach quote ──────────────────────────────────────────── */
+    function coachQuote(avg) {
+      const f = (GOLFER.frustration || '').replace(/\.+$/, '').toLowerCase();
+      if (!SESSIONS.length) return `This week every drill is built around ${f}. Trust the process.`;
+      if (avg >= 70) return `${avg}% average — the pattern is already changing. Keep the reps going.`;
+      if (avg >= 50) return `${avg}% on session 1 is exactly where it should be. The score climbs as the movement clicks.`;
+      return `Session 1 is the hardest. Stay patient — the fix for ${f} takes a few reps to feel. You're in the right place.`;
+    }
+
+    /* ── Utilities ────────────────────────────────────────────── */
+    function pctOf(score, max) {
+      const s = Number(score), m = Number(max);
+      return m > 0 ? Math.round((s / m) * 100) : 0;
+    }
+    function set(id, html) { document.getElementById(id).innerHTML = html; }
+
+    /* ── Session log modal ────────────────────────────────────── */
+    function openModal() {
+      const n = SESSIONS.length + 1;
+      document.getElementById('modal-title').textContent = `Log session ${n}`;
+      document.getElementById('modal-sub').textContent   = `Week 1 · Session ${n} — enter your drill scores and quick feedback.`;
+
+      let html = '';
+
+      // Scores
+      if (DRILLS.length) {
+        html += `<div class="modal-section">
+          <div class="modal-section-label">Your scores</div>`;
+        DRILLS.forEach((d, i) => {
+          html += `<div class="score-row">
+            <span class="score-name">${d.name}</span>
+            <div class="score-wrap">
+              <input class="score-input" id="sc-${i}" type="number" min="0" max="${d.max}" placeholder="—" oninput="checkReady()">
+              <span class="score-denom">/ ${d.max}</span>
+            </div>
+          </div>`;
+        });
+        html += `</div>`;
+      }
+
+      // Q1
+      html += tileSection('How did this session go?', 'q1',
+        ['Nailed it 💪', 'Good progress 👍', 'Struggled 😅', 'Very tough 🤯']);
+      // Q2
+      html += tileSection('The instructions were…', 'q2',
+        ['Crystal clear ✓', 'A bit confusing', 'Hard to follow']);
+      // Q3
+      html += tileSection('Next week I want…', 'q3',
+        ['More of the same', 'Push it harder', 'Something different']);
+
+      html += `<button class="modal-submit" id="modal-submit" onclick="submitSession()">Submit scores &amp; feedback</button>
+               <div class="modal-error" id="modal-error"></div>`;
+
+      document.getElementById('modal-body').innerHTML = html;
+      document.getElementById('modal-overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function tileSection(label, group, options) {
+      return `<div class="modal-section">
+        <div class="modal-section-label">${label}</div>
+        <div class="tile-row">
+          ${options.map(v => `<button class="q-tile" data-group="${group}" data-value="${v}" onclick="selectTile(this)">${v}</button>`).join('')}
+        </div>
+      </div>`;
+    }
+
+    function closeModal() {
+      docum

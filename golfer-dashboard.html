@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Dashboard — Alfie Golf</title>
+<style>
+  :root {
+    --bg:      #052e23;
+    --card:    rgba(255,255,255,0.055);
+    --card-b:  rgba(255,255,255,0.10);
+    --green:   #1D9E75;
+    --light:   #9FE1CB;
+    --pale:    #E1F5EE;
+    --text:    rgba(255,255,255,0.93);
+    --muted:   rgba(255,255,255,0.42);
+    --accent:  #5DCAA5;
+    --amber:   #ffc846;
+    --red:     rgba(255,100,100,0.85);
+    --glow:    rgba(29,158,117,0.18);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Nav ──────────────────────────────────────────────────── */
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 24px;
+    border-bottom: 0.5px solid rgba(255,255,255,0.07);
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(5,46,35,0.92);
+    backdrop-filter: blur(14px);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 15px; font-weight: 700; color: var(--light);
+    letter-spacing: -0.01em;
+  }
+  .nav-logo svg { opacity: 0.85; }
+  .nav-avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(29,158,117,0.25); border: 1.5px solid var(--green);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: var(--light); cursor: pointer;
+  }
+  .nav-name { font-size: 13px; color: var(--muted); }
+
+  /* ── Page shell ───────────────────────────────────────────── */
+  .page {
+    max-width: 980px; margin: 0 auto;
+    padding: 28px 20px 80px;
+    display: flex; flex-direction: column; gap: 18px;
+  }
+
+  /* ── Greeting ─────────────────────────────────────────────── */
+  .greeting { display: flex; justify-content: space-between; align-items: flex-end; }
+  .greeting-text h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.025em; }
+  .greeting-text p  { font-size: 14px; color: var(--muted); margin-top: 3px; }
+  .week-pill {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: rgba(29,158,117,0.18); color: var(--accent);
+    border: 0.5px solid rgba(29,158,117,0.35);
+    padding: 5px 12px; border-radius: 20px;
+  }
+
+  /* ── Bento grid ───────────────────────────────────────────── */
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 14px;
+  }
+
+  /* card base */
+  .card {
+    background: var(--card);
+    border: 0.5px solid rgba(255,255,255,0.09);
+    border-radius: 18px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.15s;
+  }
+  .card:hover { border-color: rgba(255,255,255,0.16); }
+  .card-label {
+    font-size: 10px; font-weight: 700; color: var(--light);
+    text-transform: uppercase; letter-spacing: 0.09em;
+    margin-bottom: 4px;
+  }
+
+  /* ── Hero unlock card ────────────────────────────────────── */
+  .hero {
+    grid-column: span 8;
+    background: linear-gradient(135deg, rgba(29,158,117,0.18) 0%, rgba(5,46,35,0.4) 100%);
+    border-color: rgba(29,158,117,0.28);
+    padding: 28px 28px 24px;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 85% 50%, rgba(29,158,117,0.13), transparent);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--accent); background: rgba(29,158,117,0.15);
+    border: 0.5px solid rgba(29,158,117,0.3); border-radius: 20px;
+    padding: 4px 11px; margin-bottom: 14px;
+  }
+  .hero-badge span { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .hero h2 { font-size: 28px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 8px; }
+  .hero p { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.55; max-width: 400px; margin-bottom: 22px; }
+  .hero-progress-label {
+    display: flex; justify-content: space-between;
+    font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 8px;
+  }
+  .progress-track {
+    width: 100%; height: 7px; border-radius: 99px;
+    background: rgba(255,255,255,0.09); overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; border-radius: 99px;
+    background: linear-gradient(90deg, var(--green), var(--accent));
+    transition: width 0.9s cubic-bezier(0.16,1,0.3,1);
+  }
+  .hero-actions { display: flex; gap: 10px; margin-top: 20px; }
+  .btn-primary {
+    background: var(--green); color: #fff; font-size: 13px; font-weight: 700;
+    border: none; border-radius: 10px; padding: 10px 20px; cursor: pointer;
+    font-family: inherit; display: flex; align-items: center; gap: 7px;
+    transition: background 0.12s, transform 0.08s;
+  }
+  .btn-primary:hover { background: #1a8a67; transform: translateY(-1px); }
+  .btn-secondary {
+    background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7);
+    font-size: 13px; font-weight: 600; border: 0.5px solid rgba(255,255,255,0.14);
+    border-radius: 10px; padding: 10px 18px; cursor: pointer;
+    font-family: inherit; transition: background 0.12s;
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.13); }
+
+  /* ── Streak card ─────────────────────────────────────────── */
+  .streak-card {
+    grid-column: span 4;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .streak-number {
+    font-size: 56px; font-weight: 900; line-height: 1;
+    letter-spacing: -0.04em; color: #fff;
+    background: linear-gradient(135deg, #fff 30%, var(--accent));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .streak-label { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  .streak-dots { display: flex; gap: 5px; margin-top: 18px; flex-wrap: wrap; }
+  .streak-dot {
+    width: 10px; height: 10px; border-radius: 3px;
+    background: rgba(255,255,255,0.08);
+  }
+  .streak-dot.done { background: var(--green); }
+  .streak-dot.today { background: var(--accent); box-shadow: 0 0 6px rgba(93,202,165,0.5); }
+
+  /* ── Mini stat cards ─────────────────────────────────────── */
+  .stat-card { grid-column: span 4; }
+  .stat-num {
+    font-size: 38px; font-weight: 900; letter-spacing: -0.035em;
+    line-height: 1.05; margin-top: 10px;
+  }
+  .stat-num.green { color: var(--accent); }
+  .stat-num.amber { color: var(--amber); }
+  .stat-num.white { color: #fff; }
+  .stat-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .stat-delta {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 11px; font-weight: 700; margin-top: 10px;
+    padding: 3px 9px; border-radius: 20px;
+  }
+  .stat-delta.up { background: rgba(29,158,117,0.15); color: var(--accent); }
+  .stat-delta.neutral { background: rgba(255,255,255,0.07); color: var(--muted); }
+  .stat-delta.down { background: rgba(255,100,100,0.12); color: rgba(255,130,130,0.9); }
+
+  /* ── Drill performance card ─────────────────────────────── */
+  .drills-card { grid-column: span 7; }
+  .drills-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .drills-card .sub { font-size: 12px; color: var(--muted); margin-bottom: 20px; }
+  .drill-row { margin-bottom: 20px; }
+  .drill-row:last-child { margin-bottom: 0; }
+  .drill-row-hd {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 6px;
+  }
+  .drill-row-name { font-size: 13px; font-weight: 600; }
+  .drill-row-pct  { font-size: 13px; font-weight: 700; color: var(--accent); }
+  .bars { display: flex; gap: 4px; height: 8px; }
+  .bar-wrap { flex: 1; height: 8px; border-radius: 99px; background: rgba(255,255,255,0.07); overflow: hidden; position: relative; }
+  .bar-fill {
+    position: absolute; left: 0; top: 0; height: 100%; border-radius: 99px;
+    transition: width 1s cubic-bezier(0.16,1,0.3,1);
+  }
+  .bar-fill.s1 { background: rgba(29,158,117,0.45); }
+  .bar-fill.s2 { background: var(--accent); }
+  .bar-legend {
+    display: flex; gap: 14px; margin-top: 14px;
+  }
+  .bar-leg-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
+  .bar-leg-dot { width: 8px; height: 8px; border-radius: 2px; }
+
+  /* ── Coach card ──────────────────────────────────────────── */
+  .coach-card { grid-column: span 5; display: flex; flex-direction: column; justify-content: space-between; }
+  .coach-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .coach-quote {
+    font-size: 13px; color: rgba(255,255,255,0.65); line-height: 1.65;
+    font-style: italic; padding: 14px 16px;
+    background: rgba(255,255,255,0.04); border-radius: 12px;
+    border-left: 2.5px solid var(--green);
+    flex: 1; margin-bottom: 14px;
+  }
+  .coach-sig { display: flex; align-items: center; gap: 10px; }
+  .coach-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(29,158,117,0.22); border: 1.5px solid var(--green);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: var(--light); flex-shrink: 0;
+  }
+  .coach-name { font-size: 13px; font-weight: 600; }
+  .coach-title { font-size: 11px; color: var(--muted); }
+
+  /* ── Journey card (timeline) ─────────────────────────────── */
+  .journey-card { grid-column: span 12; }
+  .journey-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 18px; }
+  .timeline { display: flex; gap: 0; position: relative; }
+  .timeline::before {
+    content: ''; position: absolute; top: 18px; left: 20px; right: 20px; height: 1.5px;
+    background: rgba(255,255,255,0.07);
+  }
+  .tl-item {
+    flex: 1; display: flex; flex-direction: column; align-items: center;
+    position: relative; z-index: 1; cursor: default;
+  }
+  .tl-dot {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; margin-bottom: 10px; position: relative;
+    background: rgba(255,255,255,0.05);
+    border: 1.5px solid rgba(255,255,255,0.1);
+    transition: transform 0.12s;
+  }
+  .tl-item:hover .tl-dot { transform: scale(1.08); }
+  .tl-dot.done  { background: rgba(29,158,117,0.2); border-color: var(--green); }
+  .tl-dot.active{ background: rgba(93,202,165,0.15); border-color: var(--accent); box-shadow: 0 0 12px rgba(93,202,165,0.3); }
+  .tl-dot.locked{ background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.06); }
+  .tl-label { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.6); }
+  .tl-date  { font-size: 10px; color: var(--muted); margin-top: 2px; }
+  .tl-dot.done  .tl-label { color: var(--light); }
+  .tl-dot.active .tl-label{ color: var(--accent); }
+
+  /* ── Feedback snapshot ────────────────────────────────────── */
+  .feedback-card { grid-column: span 12; }
+  .feedback-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 16px; }
+  .fb-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .fb-item {
+    background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.08);
+    border-radius: 12px; padding: 14px 16px;
+  }
+  .fb-q { font-size: 10px; font-weight: 700; color: var(--light); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 7px; }
+  .fb-a { font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.55; }
+  .fb-a.empty { color: var(--muted); font-style: italic; }
+
+  /* ── Next plan locked card ───────────────────────────────── */
+  .locked-card {
+    grid-column: span 12;
+    background: rgba(255,255,255,0.03);
+    border: 1px dashed rgba(255,255,255,0.12);
+    border-radius: 18px; padding: 24px 28px;
+    display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  }
+  .locked-left { display: flex; align-items: center; gap: 18px; }
+  .locked-icon {
+    width: 52px; height: 52px; border-radius: 14px; flex-shrink: 0;
+    background: rgba(255,255,255,0.05); border: 0.5px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center; font-size: 22px;
+  }
+  .locked-title { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+  .locked-desc  { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .lock-prog { margin-top: 12px; display: flex; align-items: center; gap: 10px; }
+  .lock-prog-track { flex: 1; height: 5px; border-radius: 99px; background: rgba(255,255,255,0.07); overflow: hidden; }
+  .lock-prog-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--green), var(--accent)); transition: width 0.9s cubic-bezier(0.16,1,0.3,1); }
+  .lock-prog-label { font-size: 11px; color: var(--muted); white-space: nowrap; }
+  .btn-unlock {
+    background: linear-gradient(135deg, var(--green), #15795a);
+    color: #fff; font-size: 13px; font-weight: 700;
+    border: none; border-radius: 10px; padding: 11px 22px; cursor: pointer;
+    font-family: inherit; white-space: nowrap; flex-shrink: 0;
+    display: flex; align-items: center; gap: 7px;
+    box-shadow: 0 4px 16px rgba(29,158,117,0.3);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .btn-unlock:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(29,158,117,0.4); }
+  .btn-unlock.locked-state {
+    background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.35);
+    cursor: not-allowed; box-shadow: none;
+  }
+  .btn-unlock.locked-state:hover { transform: none; box-shadow: none; }
+
+  /* ── Decor circles ───────────────────────────────────────── */
+  .decor-circles {
+    position: absolute; top: -40px; right: -40px;
+    width: 200px; height: 200px; pointer-events: none; opacity: 0.06;
+  }
+
+  /* ── Loading state ───────────────────────────────────────── */
+  .loading-state {
+    text-align: center; padding: 80px 20px; color: var(--muted); font-size: 15px;
+  }
+  .spin {
+    width: 28px; height: 28px; border: 2.5px solid rgba(255,255,255,0.1);
+    border-top-color: var(--green); border-radius: 50%;
+    animation: spin 0.7s linear infinite; margin: 0 auto 16px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── Mobile ──────────────────────────────────────────────── */
+  @media (max-width: 700px) {
+    .hero { grid-column: span 12; }
+    .hero h2 { font-size: 22px; }
+    .streak-card { grid-column: span 12; }
+    .stat-card   { grid-column: span 12; }
+    .drills-card { grid-column: span 12; }
+    .coach-card  { grid-column: span 12; }
+    .journey-card { grid-column: span 12; }
+    .feedback-card { grid-column: span 12; }
+    .fb-grid { grid-template-columns: 1fr; }
+    .locked-card { flex-direction: column; align-items: flex-start; }
+    .timeline::before { top: 18px; left: 10px; right: 10px; }
+  }
+  @media (min-width: 701px) and (max-width: 860px) {
+    .hero { grid-column: span 7; }
+    .streak-card { grid-column: span 5; }
+    .stat-card { grid-column: span 4; }
+    .drills-card { grid-column: span 7; }
+    .coach-card  { grid-column: span 5; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Nav ─────────────────────────────────────────────────── -->
+<nav>
+  <div class="nav-logo">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+      <circle cx="11" cy="11" r="10" stroke="#9FE1CB" stroke-width="1.5"/>
+      <circle cx="11" cy="11" r="5"  stroke="#9FE1CB" stroke-width="1.2" stroke-dasharray="2 2"/>
+      <circle cx="11" cy="11" r="2"  fill="#9FE1CB"/>
+    </svg>
+    Alfie Golf
+  </div>
+  <div id="nav-right" style="display:flex;align-items:center;gap:12px;">
+    <span class="nav-name" id="nav-name"></span>
+    <div class="nav-avatar" id="nav-avatar"></div>
+  </div>
+</nav>
+
+<!-- ── Page ─────────────────────────────────────────────────── -->
+<div class="page" id="page">
+  <div class="loading-state">
+    <div class="spin"></div>
+    Loading your dashboard…
+  </div>
+</div>
+
+<script>
+// ── Helpers ────────────────────────────────────────────────────
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function initials(name){ return (name||'?').split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
+
+function fmtDate(iso) {
+  if (!iso) return '';
+  var d = new Date(iso);
+  return d.toLocaleDateString('en-GB', { day:'numeric', month:'short' });
+}
+
+function pct(val, max) {
+  if (!max || max <= 0) return 0;
+  return Math.round((val / max) * 100);
+}
+
+function avgPct(sessions) {
+  if (!sessions || !sessions.length) return null;
+  var total = 0, count = 0;
+  sessions.forEach(function(r) {
+    var scores = (r.parsed && r.parsed.scores) || [];
+    scores.forEach(function(s) {
+      if (s.max && s.max > 0) { total += s.value / s.max; count++; }
+    });
+  });
+  return count > 0 ? Math.round((total / count) * 100) : null;
+}
+
+// ── Main render ────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', function() {
+  var raw = localStorage.getItem('alfie_profile_golfer');
+  var golfer;
+
+  if (raw) {
+    try { golfer = JSON.parse(raw); } catch(e) {}
+  }
+
+  // Demo data fallback for standalone preview
+  if (!golfer) {
+    golfer = {
+      name: 'Alex Turner',
+      handicap: '18',
+      frustration: 'Slicing off the tee — I can\'t keep it in the fairway',
+      sessions: '3 times a week',
+      duration: '60 min',
+      facilities: 'Driving range, putting green',
+      cohort: '01',
+      week1Sent: '20/05/2026',
+      week2Sent: '',
+      notes: 'Really keen to improve. Has time to practise but needs structure.',
+      results: [
+        {
+          week: 1, session: 1, date: new Date(Date.now() - 7*86400000).toISOString(),
+          rawName: 'Alex Turner',
+          parsed: {
+            scores: [
+              { label: 'Path gate (3W)', value: 18, max: 30 },
+              { label: 'Posture guard', value: 10, max: 15 }
+            ],
+            q1: 'Felt like I was finally swinging inside-out for the first time.',
+            q2: 'The posture drill felt awkward at first.',
+            q3: 'More gate drill reps with driver.',
+            q4: 'yes'
+          }
+        },
+        {
+          week: 1, session: 2, date: new Date(Date.now() - 2*86400000).toISOString(),
+          rawName: 'Alex Turner',
+          parsed: {
+            scores: [
+              { label: 'Path gate (3W)', value: 24, max: 30 },
+              { label: 'Posture guard', value: 13, max: 15 }
+            ],
+            q1: 'Much better — hit 8 in a row through the gate at one point.',
+            q2: 'Nothing really.',
+            q3: 'Adding driver to the gate drill.',
+            q4: 'yes'
+          }
+        }
+      ],
+      rowIndex: 0
+    };
+  }
+
+  renderDashboard(golfer);
+});
+
+function renderDashboard(g) {
+  var firstName   = (g.name || 'there').split(/\s+/)[0];
+  var allSessions = g.results || [];
+  var w1sessions  = allSessions.filter(function(r){ return r.week === 1; });
+  var w2sessions  = allSessions.filter(function(r){ return r.week === 2; });
+  var latest      = allSessions.length ? allSessions[allSessions.length - 1] : null;
+  var latestParsed = (latest && latest.parsed) ? latest.parsed : {};
+  var totalSessions= allSessions.length;
+
+  var avgScore     = avgPct(allSessions);
+  var w1avg        = avgPct(w1sessions);
+  var w2avg        = avgPct(w2sessions);
+  var improvement  = (w1avg !== null && w2avg !== null) ? (w2avg - w1avg) : null;
+
+  // Drill trends across sessions for w1
+  var drillMap = {};
+  w1sessions.forEach(function(r, idx) {
+    var scores = (r.parsed && r.parsed.scores) || [];
+    scores.forEach(function(s) {
+      if (!drillMap[s.label]) drillMap[s.label] = [];
+      drillMap[s.label][idx] = { val: s.value, max: s.max };
+    });
+  });
+  var drills = Object.keys(drillMap);
+
+  // Q4 from latest = wants next plan?
+  var q4Latest = (latestParsed.q4 || '').toLowerCase();
+  var wantsNext = q4Latest === 'yes';
+
+  // Progress: sessions done out of 4 (typical plan)
+  var sessTarget = 4;
+  var sessDone   = totalSessions;
+  var progressPct= Math.min(100, Math.round((sessDone / sessTarget) * 100));
+
+  // Unlock condition: at least 1 session done + wants next plan
+  var canUnlock = sessDone >= 1 && wantsNext;
+
+  // Week pill
+  var currentWeek = (g.week2Sent ? 2 : 1);
+
+  // Nav
+  document.getElementById('nav-avatar').textContent = initials(g.name);
+  document.getElementById('nav-name').textContent   = firstName;
+  document.title = firstName + '\'s Dashboard — Alfie Golf';
+
+  // Greeting time
+  var hour = new Date().getHours();
+  var greetWord = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
+
+  // Build page
+  var html = '';
+
+  // ── Greeting
+  html += '<div class="greeting">';
+  html += '<div class="greeting-text">';
+  html += '<h1>' + esc(greetWord) + ', ' + esc(firstName) + ' ⛳</h1>';
+  html += '<p>Here\'s how your training is looking.</p>';
+  html += '</div>';
+  html += '<div class="week-pill">Week ' + currentWeek + ' Active</div>';
+  html += '</div>';
+
+  // ── Bento
+  html += '<div class="bento">';
+
+  // ── Hero card
+  var heroTitle = canUnlock ? 'Ready for Week 2?' : (sessDone === 0 ? 'Your plan is ready.' : 'Keep going — you\'re building momentum.');
+  var heroDesc  = canUnlock
+    ? 'You\'ve said you want your next plan — Alfie is ready to build Week 2 around what you\'ve just done. One tap to request it.'
+    : (sessDone === 0
+      ? 'Your personalised Week 1 plan is attached to your email. Open it, do the drills, and come back here to see your progress.'
+      : 'Complete more sessions and let Alfie know you\'re ready for Week 2 in your feedback. Every rep you log here shows your progress.');
+
+  html += '<div class="card hero">';
+  html += '<svg class="decor-circles" viewBox="0 0 200 200"><circle cx="100" cy="100" r="90" stroke="white" stroke-width="1" fill="none"/><circle cx="100" cy="100" r="65" stroke="white" stroke-width="1" fill="none"/><circle cx="100" cy="100" r="40" stroke="white" stroke-width="1" fill="none"/></svg>';
+  html += '<div class="hero-badge"><span></span>Week ' + currentWeek + ' Active</div>';
+  html += '<h2>' + esc(heroTitle) + '</h2>';
+  html += '<p>' + esc(heroDesc) + '</p>';
+  html += '<div class="hero-progress-label">';
+  html += '<span>' + sessDone + ' of ' + sessTarget + ' sessions logged</span>';
+  html += '<span>' + progressPct + '%</span>';
+  html += '</div>';
+  html += '<div class="progress-track"><div class="progress-fill" id="hero-prog" style="width:0%"></div></div>';
+  html += '<div class="hero-actions">';
+  if (canUnlock) {
+    html += '<button class="btn-primary" onclick="requestNextPlan()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>Request Week 2</button>';
+  }
+  html += '<button class="btn-secondary" onclick="openPlan()">Open my plan</button>';
+  html += '</div>';
+  html += '</div>';
+
+  // ── Streak card
+  var streakDays = computeStreak(allSessions);
+  html += '<div class="card streak-card">';
+  html += '<div>';
+  html += '<div class="card-label">Training Streak</div>';
+  html += '<div class="streak-number">' + streakDays + '</div>';
+  html += '<div class="streak-label">' + (streakDays === 1 ? 'day' : 'days') + ' in a row ' + (streakDays >= 3 ? '🔥' : '💪') + '</div>';
+  html += '</div>';
+  html += '<div class="streak-dots" id="streak-dots">' + buildStreakDots(allSessions) + '</div>';
+  html += '</div>';
+
+  // ── Stat cards
+  var avgLabel = avgScore !== null ? avgScore + '%' : '—';
+  var avgDelta = '';
+  if (improvement !== null) {
+    avgDelta = '<span class="stat-delta ' + (improvement > 0 ? 'up' : improvement < 0 ? 'down' : 'neutral') + '">'
+      + (improvement > 0 ? '↑' : improvement < 0 ? '↓' : '→') + ' ' + Math.abs(improvement) + ' pts vs last week</span>';
+  }
+
+  html += '<div class="card stat-card">';
+  html += '<div class="card-label">Avg Performance</div>';
+  html += '<div class="stat-num green">' + avgLabel + '</div>';
+  html += '<div class="stat-sub">across all drills & sessions</div>';
+  if (avgDelta) html += avgDelta;
+  html += '</div>';
+
+  html += '<div class="card stat-card">';
+  html += '<div class="card-label">Sessions Logged</div>';
+  html += '<div class="stat-num white">' + sessDone + '</div>';
+  html += '<div class="stat-sub">total sessions submitted</div>';
+  html += '<span class="stat-delta ' + (sessDone > 0 ? 'up' : 'neutral') + '">' + (sessDone > 0 ? '✓ On track' : 'No sessions yet') + '</span>';
+  html += '</div>';
+
+  var bestDrill = findBestDrill(allSessions);
+  html += '<div class="card stat-card">';
+  html += '<div class="card-label">Top Drill</div>';
+  if (bestDrill) {
+    html += '<div class="stat-num amber">' + bestDrill.pct + '%</div>';
+    html += '<div class="stat-sub">' + esc(bestDrill.label) + '</div>';
+    html += '<span class="stat-delta up">↑ Best score</span>';
+  } else {
+    html += '<div class="stat-num white">—</div>';
+    html += '<div class="stat-sub">complete a session to see</div>';
+  }
+  html += '</div>';
+
+  // ── Drill performance card
+  html += '<div class="card drills-card">';
+  html += '<h3>Drill Performance</h3>';
+  html += '<p class="sub">Your scores across ' + (w1sessions.length > 1 ? 'multiple sessions' : 'session ' + w1sessions.length) + '</p>';
+  if (drills.length === 0) {
+    html += '<p style="color:var(--muted);font-size:13px;">Complete your first session to see drill trends here.</p>';
+  } else {
+    drills.forEach(function(label) {
+      var sessions = drillMap[label];
+      var s1 = sessions[0], s2 = sessions[1];
+      var p1 = s1 ? pct(s1.val, s1.max) : null;
+      var p2 = s2 ? pct(s2.val, s2.max) : null;
+      var latest_pct = (p2 !== null ? p2 : p1) || 0;
+
+      html += '<div class="drill-row">';
+      html += '<div class="drill-row-hd">';
+      html += '<span class="drill-row-name">' + esc(label) + '</span>';
+      html += '<span class="drill-row-pct">' + (p1 !== null ? p1 : '—') + (p2 !== null ? ' → ' + p2 : '') + '%</span>';
+      html += '</div>';
+      html += '<div class="bars">';
+      if (p1 !== null) {
+        html += '<div class="bar-wrap"><div class="bar-fill s1" style="width:0%" data-w="' + p1 + '"></div></div>';
+      }
+      if (p2 !== null) {
+        html += '<div class="bar-wrap"><div class="bar-fill s2" style="width:0%" data-w="' + p2 + '"></div></div>';
+      }
+      html += '</div>';
+      html += '</div>';
+    });
+
+    if (w1sessions.length >= 2) {
+      html += '<div class="bar-legend">';
+      html += '<div class="bar-leg-item"><div class="bar-leg-dot" style="background:rgba(29,158,117,0.45)"></div>Session 1</div>';
+      html += '<div class="bar-leg-item"><div class="bar-leg-dot" style="background:var(--accent)"></div>Session 2</div>';
+      html += '</div>';
+    }
+  }
+  html += '</div>';
+
+  // ── Coach card
+  var coachQuote = g.frustration
+    ? '"This week we\'re targeting your ' + g.frustration.toLowerCase().replace(/[.!?]+$/,'') + ' — every drill is built around that one thing."'
+    : '"Your plan is built around your game. Every drill has a reason. Trust the process."';
+
+  html += '<div class="card coach-card">';
+  html += '<div>';
+  html += '<h3>From Alfie 🏌️</h3>';
+  html += '<div class="coach-quote">' + esc(coachQuote) + '</div>';
+  html += '</div>';
+  html += '<div class="coach-sig">';
+  html += '<div class="coach-avatar">A</div>';
+  html += '<div><div class="coach-name">Alfie</div><div class="coach-title">PGA Teaching Professional</div></div>';
+  html += '</div>';
+  html += '</div>';
+
+  // ── Journey timeline
+  html += '<div class="card journey-card">';
+  html += '<h3>Your Journey</h3>';
+  html += '<div class="timeline">';
+
+  var steps = [
+    { label: 'Signed up',   icon: '✓',  date: g.week1Sent ? '' : '' },
+    { label: 'Week 1 sent', icon: '📋', date: g.week1Sent || '' },
+    { label: 'First session',icon:'🏌️', date: w1sessions[0] ? fmtDate(w1sessions[0].date) : '' },
+    { label: 'Session 2',   icon: '🔁', date: w1sessions[1] ? fmtDate(w1sessions[1].date) : '' },
+    { label: 'Week 2',      icon: '🚀', date: g.week2Sent || '' },
+  ];
+
+  var stepsDone = 0;
+  if (true)            stepsDone = 1; // signed up
+  if (g.week1Sent)     stepsDone = 2;
+  if (w1sessions[0])   stepsDone = 3;
+  if (w1sessions[1])   stepsDone = 4;
+  if (g.week2Sent)     stepsDone = 5;
+
+  steps.forEach(function(s, i) {
+    var cls = i < stepsDone ? 'done' : (i === stepsDone ? 'active' : 'locked');
+    html += '<div class="tl-item">';
+    html += '<div class="tl-dot ' + cls + '">' + (i < stepsDone ? '✓' : s.icon) + '</div>';
+    html += '<div class="tl-label" style="text-align:center">' + esc(s.label) + '</div>';
+    if (s.date) html += '<div class="tl-date">' + esc(s.date) + '</div>';
+    html += '</div>';
+  });
+
+  html += '</div>';
+  html += '</div>';
+
+  // ── Feedback snapshot (latest session)
+  if (latestParsed.q1 || latestParsed.q2 || latestParsed.q3) {
+    html += '<div class="card feedback-card">';
+    html += '<h3>Your Latest Feedback</h3>';
+    html += '<div class="fb-grid">';
+
+    var fbItems = [
+      { q: 'What clicked?',        a: latestParsed.q1 },
+      { q: 'What felt off?',       a: latestParsed.q2 },
+      { q: 'Focus for next week?', a: latestParsed.q3 },
+    ];
+    fbItems.forEach(function(f) {
+      html += '<div class="fb-item">';
+      html += '<div class="fb-q">' + esc(f.q) + '</div>';
+      html += '<div class="fb-a' + (f.a ? '' : ' empty') + '">' + esc(f.a || 'Not answered yet') + '</div>';
+      html += '</div>';
+    });
+
+    html += '</div>';
+    html += '</div>';
+  }
+
+  // ── Next plan locked card
+  html += '<div class="locked-card">';
+  html += '<div class="locked-left">';
+  html += '<div class="locked-icon">' + (canUnlock ? '🚀' : '🔒') + '</div>';
+  html += '<div>';
+  html += '<div class="locked-title">' + (canUnlock ? 'Week 2 Plan — Ready to build' : 'Week 2 Plan — Complete Week 1 first') + '</div>';
+  html += '<div class="locked-desc">' + (canUnlock
+    ? 'You told Alfie you want your next plan. He\'ll build it around your Week 1 results — your scores, your feedback, your progression.'
+    : 'Submit your Week 1 results and let Alfie know you\'re ready. Your next plan will be personalised to exactly how Week 1 went.') + '</div>';
+  html += '<div class="lock-prog">';
+  html += '<div class="lock-prog-track"><div class="lock-prog-fill" id="lock-prog" style="width:0%"></div></div>';
+  html += '<div class="lock-prog-label">' + sessDone + ' / ' + sessTarget + ' sessions</div>';
+  html += '</div>';
+  html += '</div>';
+  html += '</div>';
+  html += '<button class="btn-unlock' + (canUnlock ? '' : ' locked-state') + '" onclick="' + (canUnlock ? 'requestNextPlan()' : '') + '">';
+  html += canUnlock ? '🚀 Request Week 2' : '🔒 Locked';
+  html += '</button>';
+  html += '</div>';
+
+  html += '</div>'; // end bento
+
+  document.getElementById('page').innerHTML = html;
+
+  // Animate bars
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      // Hero progress bar
+      var hpEl = document.getElementById('hero-prog');
+      if (hpEl) hpEl.style.width = progressPct + '%';
+
+      // Lock progress bar
+      var lpEl = document.getElementById('lock-prog');
+      if (lpEl) lpEl.style.width = progressPct + '%';
+
+      // Drill bars
+      document.querySelectorAll('.bar-fill[data-w]').forEach(function(el) {
+        el.style.width = el.getAttribute('data-w') + '%';
+      });
+    });
+  });
+}
+
+// ── Helpers ────────────────────────────────────────────────────
+function computeStreak(sessions) {
+  if (!sessions || !sessions.length) return 0;
+  // Sort by date descending
+  var sorted = sessions.slice().sort(function(a,b){ return new Date(b.date)-new Date(a.date); });
+  var today   = new Date(); today.setHours(0,0,0,0);
+  var streak  = 0;
+  var cursor  = today;
+  var i = 0;
+  while (i < sorted.length) {
+    var d = new Date(sorted[i].date); d.setHours(0,0,0,0);
+    var diff = Math.round((cursor - d) / 86400000);
+    if (diff <= 1) { streak++; cursor = d; i++; }
+    else break;
+  }
+  return streak;
+}
+
+function buildStreakDots(sessions) {
+  var days = 14;
+  var today = new Date(); today.setHours(0,0,0,0);
+  var sessionDays = {};
+  (sessions || []).forEach(function(r) {
+    if (!r.date) return;
+    var d = new Date(r.date); d.setHours(0,0,0,0);
+    sessionDays[d.getTime()] = true;
+  });
+  var html = '';
+  for (var i = days - 1; i >= 0; i--) {
+    var day = new Date(today.getTime() - i * 86400000);
+    var cls = sessionDays[day.getTime()] ? (i === 0 ? 'streak-dot today' : 'streak-dot done') : 'streak-dot';
+    var title = day.toLocaleDateString('en-GB', { day:'numeric', month:'short' });
+    html += '<div class="' + cls + '" title="' + title + '"></div>';
+  }
+  return html;
+}
+
+function findBestDrill(sessions) {
+  if (!sessions || !sessions.length) return null;
+  var best = null;
+  sessions.forEach(function(r) {
+    var scores = (r.parsed && r.parsed.scores) || [];
+    scores.forEach(function(s) {
+      if (s.max && s.max > 0) {
+        var p = Math.round((s.value / s.max) * 100);
+        if (!best || p > best.pct) best = { label: s.label, pct: p };
+      }
+    });
+  });
+  return best;
+}
+
+function openPlan() {
+  // Opens the golfer profile page which has the plan files
+  window.open('golfer-profile.html', '_blank');
+}
+
+function requestNextPlan() {
+  var g = JSON.parse(localStorage.getItem('alfie_profile_golfer') || '{}');
+  var firstName = (g.name || '').split(/\s+/)[0];
+  var subject   = encodeURIComponent('Ready for Week 2 — ' + firstName);
+  var body      = encodeURIComponent('Hi Alfie,\n\nI\'ve completed my Week 1 sessions and I\'m ready for my Week 2 plan.\n\nThanks,\n' + firstName);
+  window.location.href = 'mailto:alfie.golf.trainings@gmail.com?subject=' + subject + '&body=' + body;
+}
+</script>
+</body>
+</html>

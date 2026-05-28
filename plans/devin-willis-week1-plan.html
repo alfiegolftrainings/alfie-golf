@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Devin Willis — Week 1 Practice Plan</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  background: #085041;
+  min-height: 100vh;
+  padding: 2rem 1rem 4rem;
+}
+.plan {
+  max-width: 560px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ── Decor ── */
+.decor-circles {
+  position: fixed; top: 0; right: 0;
+  width: 340px; height: 320px;
+  opacity: 0.06; pointer-events: none; z-index: 0;
+}
+.decor-dots {
+  position: fixed; top: 0; left: 0;
+  width: 60px; height: 100vh;
+  opacity: 0.07; pointer-events: none; z-index: 0; overflow: hidden;
+}
+
+/* ── Header ── */
+.plan-header { position: relative; z-index: 1; padding-bottom: 1.5rem; }
+.week-label { font-size: 10px; color: #9FE1CB; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; }
+.golfer-name { font-size: 32px; font-weight: 500; color: #fff; line-height: 1.15; margin-bottom: 2px; }
+.golfer-sub { font-size: 12px; color: #9FE1CB; margin-bottom: 1.25rem; }
+.overview-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 1.1rem; }
+.chip {
+  background: rgba(255,255,255,0.1);
+  border-radius: 8px; padding: 8px 11px;
+}
+.chip-lbl { font-size: 9px; color: #9FE1CB; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
+.chip-val { font-size: 12px; font-weight: 500; color: #fff; }
+.opening-card {
+  background: rgba(255,255,255,0.08);
+  border-left: 3px solid #5DCAA5;
+  border-radius: 0 8px 8px 0;
+  padding: 11px 14px;
+}
+.opening-card p { font-size: 12.5px; color: rgba(255,255,255,0.88); line-height: 1.7; font-style: italic; }
+
+/* ── Section label ── */
+.section-label {
+  font-size: 9px; font-weight: 600; color: #9FE1CB;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  display: flex; align-items: center; gap: 8px;
+  margin: 1.25rem 0 0.6rem;
+  position: relative; z-index: 1;
+}
+.section-label::after { content: ''; flex: 1; height: 0.5px; background: rgba(255,255,255,0.15); }
+
+/* ── Drill cards ── */
+.drill-card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 9px;
+  position: relative; z-index: 1;
+}
+.drill-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 14px;
+  border-bottom: 0.5px solid #ece9e3;
+}
+.drill-num {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: #E1F5EE;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; color: #085041;
+  flex-shrink: 0;
+}
+.drill-num.on-course { background: #085041; color: #9FE1CB; font-size: 14px; }
+.drill-name { font-size: 13px; font-weight: 500; color: #1a1a1a; flex: 1; }
+.drill-time {
+  font-size: 11px; color: #0F6E56;
+  background: #E1F5EE; border: 0.5px solid #9FE1CB;
+  padding: 3px 9px; border-radius: 5px; font-weight: 500; white-space: nowrap;
+}
+.drill-time.on-course { background: #9FE1CB; color: #085041; border-color: #5DCAA5; }
+
+.drill-body { padding: 13px 14px; display: flex; flex-direction: column; gap: 11px; }
+.micro { font-size: 9px; font-weight: 600; color: #aaa; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+.drill-text { font-size: 12px; color: #1a1a1a; line-height: 1.68; }
+.why-block { border-left: 3px solid #1D9E75; padding: 4px 0 4px 10px; }
+.why-lbl { font-size: 9px; font-weight: 600; color: #0F6E56; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 3px; }
+.why-text { font-size: 12px; color: #555; line-height: 1.62; font-style: italic; }
+
+/* ── Score boxes ── */
+.score-box {
+  background: #E1F5EE; border: 0.5px solid #9FE1CB;
+  border-radius: 8px; padding: 9px 12px;
+}
+.score-box-lbl { font-size: 9px; font-weight: 600; color: #085041; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.score-single { display: flex; align-items: center; gap: 8px; }
+.score-single input {
+  width: 64px; padding: 6px 9px; border-radius: 6px;
+  border: 1px solid #9FE1CB; background: #fff;
+  font-size: 16px; font-weight: 500; color: #085041;
+  text-align: center; outline: none;
+}
+.score-single input:focus { border-color: #1D9E75; }
+.score-single .den { font-size: 13px; color: #0F6E56; font-weight: 500; }
+.score-group-lbl { font-size: 10px; font-weight: 600; color: #0F6E56; margin-bottom: 6px; }
+.score-triple { display: flex; gap: 6px; flex-wrap: wrap; }
+.score-chip-wrap { flex: 1; min-width: 72px; }
+.score-chip-name { font-size: 9px; color: #0F6E56; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 4px; }
+.score-chip-row { display: flex; align-items: center; gap: 5px; }
+.score-chip-row input {
+  width: 48px; padding: 5px 7px; border-radius: 6px;
+  border: 1px solid #9FE1CB; background: #fff;
+  font-size: 15px; font-weight: 500; color: #085041;
+  text-align: center; outline: none;
+}
+.score-chip-row input:focus { border-color: #1D9E75; }
+.score-chip-row .den { font-size: 11px; color: #0F6E56; font-weight: 500; }
+.score-double { display: flex; gap: 8px; flex-wrap: wrap; }
+.score-double-item { flex: 1; min-width: 120px; }
+.score-double-item-lbl { font-size: 10px; color: #0F6E56; margin-bottom: 5px; }
+.score-sep { height: 0.5px; background: rgba(15,110,86,0.2); margin: 10px 0; }
+
+/* ── Feedback ── */
+.feedback-card {
+  background: #fff; border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 9px;
+  position: relative; z-index: 1;
+}
+.feedback-q { margin-bottom: 14px; }
+.feedback-q:last-child { margin-bottom: 0; }
+.feedback-qlbl { font-size: 11px; font-weight: 500; color: #555; margin-bottom: 6px; }
+.feedback-q textarea {
+  width: 100%; padding: 9px 11px;
+  border: 1px solid #ddd; border-radius: 7px;
+  font-size: 13px; color: #1a1a1a; font-family: inherit;
+  line-height: 1.55; resize: vertical; min-height: 70px;
+  outline: none;
+}
+.feedback-q textarea:focus { border-color: #1D9E75; }
+.q4-row { display: flex; gap: 8px; margin-top: 6px; }
+.q4-btn {
+  flex: 1; padding: 9px 12px; border-radius: 7px;
+  border: 1px solid #ddd; background: #fafaf8;
+  font-size: 13px; font-weight: 500; color: #888;
+  cursor: pointer; font-family: inherit; transition: all 0.12s;
+}
+.q4-btn.selected-yes { border-color: #1D9E75; background: #E1F5EE; color: #0F6E56; }
+.q4-btn.selected-no  { border-color: #BA7517; background: #faeeda; color: #854F0B; }
+
+/* ── Send button ── */
+.send-wrap { position: relative; z-index: 1; margin-top: 1.25rem; }
+.send-hint {
+  text-align: center; font-size: 11.5px; color: rgba(255,255,255,0.45);
+  margin-bottom: 10px; line-height: 1.5;
+  transition: opacity 0.2s;
+}
+.send-hint.amber { color: #FAC775; }
+.send-btn {
+  width: 100%; padding: 14px;
+  background: rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.4);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 10px;
+  font-size: 15px; font-weight: 500;
+  font-family: inherit; cursor: not-allowed;
+  transition: all 0.15s;
+}
+.send-btn.ready {
+  background: #1D9E75; color: #fff;
+  border-color: #1D9E75; cursor: pointer;
+}
+.send-btn.ready:hover { background: #0F6E56; border-color: #0F6E56; }
+
+/* ── Closing ── */
+.closing-card {
+  background: rgba(255,255,255,0.08);
+  border: 0.5px solid rgba(255,255,255,0.15);
+  border-radius: 10px; padding: 1rem 1.25rem;
+  margin-bottom: 9px;
+  position: relative; z-index: 1;
+}
+.closing-text { font-size: 12.5px; color: rgba(255,255,255,0.82); line-height: 1.72; }
+
+/* ── Footer ── */
+.plan-footer {
+  display: flex; justify-content: space-between;
+  padding-top: 1rem; margin-top: 0.5rem;
+  border-top: 0.5px solid rgba(255,255,255,0.1);
+  position: relative; z-index: 1;
+}
+.plan-footer span { font-size: 10px; color: rgba(255,255,255,0.25); }
+</style>
+</head>
+<body>
+
+<!-- Decorative SVGs -->
+<svg class="decor-circles" viewBox="0 0 340 320" aria-hidden="true">
+  <circle cx="320" cy="20" r="70"  fill="none" stroke="#fff" stroke-width="1.5"/>
+  <circle cx="320" cy="20" r="115" fill="none" stroke="#fff" stroke-width="1.5"/>
+  <circle cx="320" cy="20" r="165" fill="none" stroke="#fff" stroke-width="1.5"/>
+  <circle cx="320" cy="20" r="220" fill="none" stroke="#fff" stroke-width="1.5"/>
+  <circle cx="320" cy="20" r="280" fill="none" stroke="#fff" stroke-width="1.5"/>
+</svg>
+<div class="decor-dots" aria-hidden="true">
+  <svg width="60" height="100vh" viewBox="0 0 60 800" preserveAspectRatio="xMinYMin slice">
+    <defs><pattern id="dp" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="2" fill="#fff"/></pattern></defs>
+    <rect width="60" height="800" fill="url(#dp)"/>
+  </svg>
+</div>
+
+<div class="plan">
+
+  <!-- Header -->
+  <div class="plan-header">
+    <div class="week-label">Week 1 · Practice Plan</div>
+    <div class="golfer-name">Devin Willis</div>
+    <div class="golfer-sub">Grass range + on course</div>
+    <div class="overview-chips">
+      <div class="chip"><div class="chip-lbl">Duration</div><div class="chip-val">30 minutes</div></div>
+      <div class="chip"><div class="chip-lbl">Location</div><div class="chip-val">Grass range</div></div>
+      <div class="chip"><div class="chip-lbl">Focus</div><div class="chip-val">Fairway finder tee shot</div></div>
+    </div>
+    <div class="opening-card">
+      <p>Devin, with how often you play and how clear your goal is around tee shot accuracy, this session has one job: give you a fairway finder you actually trust when the tee shot counts. Two range drills, then a simple thing to track next time you play — which, knowing you, is probably tomorrow.</p>
+    </div>
+  </div>
+
+  <!-- Drills -->
+  <div class="section-label">Drills</div>
+
+  <!-- Drill 1 -->
+  <div class="drill-card">
+    <div class="drill-header">
+      <div class="drill-num">1</div>
+      <span class="drill-name">Fairway finder corridor (3W / 5W)</span>
+      <span class="drill-time">15 min</span>
+    </div>
+    <div class="drill-body">
+      <div>
+        <div class="micro">What to do</div>
+        <p class="drill-text">On the range, pick two clear visual markers (flags, distance signs, trees) that create a 30–35 yard "fairway" corridor. Tee the ball low with your 3 or 5 wood only. Hit 3-ball sets: before each set, pick your exact target line in that corridor, then hit three balls trying only to keep them inside the fairway, ignoring distance. After each set, step back and count how many finished inside. Do 7 sets (21 balls, with a couple to settle in).</p>
+      </div>
+      <div class="why-block">
+        <div class="why-lbl">Why this drill for you</div>
+        <p class="why-text">This builds the fairway finder shot you can reach for on tight holes — the one that keeps you in play instead of leaking right or left off the tee.</p>
+      </div>
+      <div class="score-box">
+        <div class="score-box-lbl">Score to record</div>
+        <div class="score-single">
+          <input id="score1" type="number" min="0" max="20" placeholder="—" oninput="checkReady()">
+          <span class="den">/ 20 balls in corridor</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Drill 2 -->
+  <div class="drill-card">
+    <div class="drill-header">
+      <div class="drill-num">2</div>
+      <span class="drill-name">Start-line gate — driver &amp; iron</span>
+      <span class="drill-time">15 min</span>
+    </div>
+    <div class="drill-body">
+      <div>
+        <div class="micro">What to do</div>
+        <p class="drill-text">Stick two alignment sticks about 3 feet in front of the ball to form a gate roughly 1 yard wide, aimed at the middle of your corridor. Your only job: start the ball through the gate — don't worry about curve or distance yet. Hit 10 balls with driver, then 10 with a 6 or 7 iron (same gate, same target). Take a brief pause between each ball to reset your aim. After each shot, note if it went through the gate, missed left, or missed right.</p>
+      </div>
+      <div class="why-block">
+        <div class="why-lbl">Why this drill for you</div>
+        <p class="why-text">Tee shot accuracy isn't just a driver problem — par 3s matter too. Grooving the same start-line habit across driver and iron means you're building one tee-box routine that works for every hole on your course.</p>
+      </div>
+      <div class="score-box">
+        <div class="score-box-lbl">Score to record</div>
+        <div class="score-group-lbl">Driver (10 balls)</div>
+        <div class="score-triple">
+          <div class="score-chip-wrap">
+            <div class="score-chip-name">Through gate</div>
+            <div class="score-chip-row">
+              <input id="s2dt" type="number" min="0" max="10" placeholder="—" oninput="checkReady()">
+              <span class="den">/ 10</span>
+            </div>
+          </div>
+          <div class="score-chip-wrap">
+            <div class="score-chip-name">Left</div>
+            <div class="score-chip-row">
+              <input id="s2dl" type="number" min="0" max="10" placeholder="—" oninput="checkReady()">
+              <span class="den">/ 10</span>
+            </div>
+          </div>
+          <div class="score-chip-wrap">
+            <div class="score-chip-name">Right</div>
+            <div class="score-chip-row">
+              <input id="s2dr" type="number" min="0" max="10" placeholder="—" oninput="checkReady()">
+              <span class="den">/ 10</span>
+            </div>
+          </div>
+        </div>
+        <div class="score-sep"></div>
+        <div class="score-group-lbl">6i / 7i (10 balls)</div>
+        <div class="score-triple">
+          <div class="score-chip-wrap">
+            <div class="score-chip-name">Through gate</div>
+            <div class="score-chip-row">
+              <input id="s2it" type="number" min="0" max="10" placeholder="—" oninput="checkReady()">
+              <span class="den">/ 10</span>
+            </div>
+          </div>
+          <div class="score-chip-wrap">
+            <div class="score-chip-name">Left</div>
+            <div class="score-chip-row">
+              <input id="s2il" type="number" min="0" max="10" placeholder="—" oninput="checkReady()">
+              <span class="den">/ 10</span>
+            </div>
+          </div>
+          <div class="score-chip-wrap">
+            <div class="score-chip-name">Right</div>
+            <div class="score-chip-row">
+              <input id="s2ir" type="number" min="0" max="10" placeholder="—" oninput="checkReady()">
+              <span class="den">/ 10</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Drill 3 — On course -->
+  <div class="drill-card">
+    <div class="drill-header">
+      <div class="drill-num on-course">▸</div>
+      <span class="drill-name">9-hole round tracker</span>
+      <span class="drill-time on-course">on course</span>
+    </div>
+    <div class="drill-body">
+      <div>
+        <div class="micro">What to do</div>
+        <p class="drill-text">On your next round, bring a small notepad or use your phone's notes. On every tee shot, mark two things: (1) did you hit the fairway or green? and (2) did you use your fairway finder shot from the range? That's it — no swing thoughts, no pressure. Just observe and record.</p>
+      </div>
+      <div class="why-block">
+        <div class="why-lbl">Why this matters for you</div>
+        <p class="why-text">You play nearly every day — that's a huge advantage. Most golfers only get one or two chances a week to test what they've worked on. You can start seeing results in your very next round.</p>
+      </div>
+      <div class="score-box">
+        <div class="score-box-lbl">Score to record</div>
+        <div class="score-double">
+          <div class="score-double-item">
+            <div class="score-double-item-lbl">Fairways / greens hit</div>
+            <div class="score-chip-row">
+              <input id="score3a" type="number" min="0" max="9" placeholder="—" oninput="checkReady()">
+              <span class="den">/ 9</span>
+            </div>
+          </div>
+          <div class="score-double-item">
+            <div class="score-double-item-lbl">Times used fairway finder</div>
+            <div class="score-chip-row">
+              <input id="score3b" type="number" min="0" max="9" placeholder="—" oninput="checkReady()">
+              <span class="den">/ 9</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Closing -->
+  <div class="section-label">Closing</div>
+  <div class="closing-card">
+    <p class="closing-text">Tee shot accuracy is one of those things that quietly bleeds a scorecard hole after hole. This week isn't about overhauling your swing — it's about building one corridor in your head and one start-line habit you can actually take to the first tee. And since you're out there almost every day, you'll have real data to send back faster than almost anyone.<br><br>
+    After your range session and your next round, send me a quick email with three things:<br>
+    · Your scores from the two range drills<br>
+    · Your fairway / green numbers from the round<br>
+    · What felt different, hard, or clicked<br><br>
+    Looking forward to hearing how it goes, Devin.</p>
+  </div>
+
+  <!-- Feedback -->
+  <div class="section-label">Your feedback</div>
+  <div class="feedback-card">
+    <div class="feedback-q">
+      <div class="feedback-qlbl">Q1 — What felt different, hard, or clicked?</div>
+      <textarea id="q1" placeholder="Anything that stood out during the session…" oninput="checkReady()"></textarea>
+    </div>
+    <div class="feedback-q">
+      <div class="feedback-qlbl">Q2 — Anything that didn't make sense or felt wrong?</div>
+      <textarea id="q2" placeholder="Drills, instructions, timing — anything off…" oninput="checkReady()"></textarea>
+    </div>
+    <div class="feedback-q">
+      <div class="feedback-qlbl">Q3 — One thing you want to focus on more next week?</div>
+      <textarea id="q3" placeholder="Your call on what to dial in next…" oninput="checkReady()"></textarea>
+    </div>
+    <div class="feedback-q" style="margin-bottom:0">
+      <div class="feedback-qlbl">Q4 — Ready for next week's plan?</div>
+      <div class="q4-row">
+        <button class="q4-btn" id="q4-yes" onclick="setQ4('yes')">Yes — send it</button>
+        <button class="q4-btn" id="q4-no"  onclick="setQ4('no')">Not yet — need more time</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Send -->
+  <div class="send-wrap">
+    <div class="send-hint" id="send-hint">Fill in all drill scores and answer question 4 to unlock</div>
+    <button class="send-btn" id="send-btn" onclick="sendPlan()" disabled>Send to Alfie</button>
+  </div>
+
+  <div class="plan-footer">
+    <span>Alfie Golf Trainings · Week 1</span>
+    <span>Reply to get your next plan</span>
+  </div>
+
+</div>
+
+<script>
+var q4Val = '';
+var lastSubject = ''; var lastBody = '';
+
+function setQ4(val) {
+  q4Val = val;
+  document.getElementById('q4-yes').className = 'q4-btn' + (val === 'yes' ? ' selected-yes' : '');
+  document.getElementById('q4-no').className  = 'q4-btn' + (val === 'no'  ? ' selected-no'  : '');
+  checkReady();
+}
+
+function checkReady() {
+  var s1   = document.getElementById('score1').value;
+  var s2dt = document.getElementById('s2dt').value;
+  var s2dl = document.getElementById('s2dl').value;
+  var s2dr = document.getElementById('s2dr').value;
+  var s2it = document.getElementById('s2it').value;
+  var s2il = document.getElementById('s2il').value;
+  var s2ir = document.getElementById('s2ir').value;
+  var s3a  = document.getElementById('score3a').value;
+  var s3b  = document.getElementById('score3b').value;
+
+  var scoresOk = s1 !== '' && s2dt !== '' && s2dl !== '' && s2dr !== '' &&
+                 s2it !== '' && s2il !== '' && s2ir !== '' && s3a !== '' && s3b !== '';
+  var ready = scoresOk && q4Val !== '';
+
+  var btn  = document.getElementById('send-btn');
+  var hint = document.getElementById('send-hint');
+
+  if (ready) {
+    btn.disabled = false;
+    btn.classList.add('ready');
+    hint.textContent = '';
+    hint.classList.remove('amber');
+  } else if (scoresOk && !q4Val) {
+    btn.disabled = true;
+    btn.classList.remove('ready');
+    hint.textContent = 'Almost there — answer question 4 to unlock';
+    hint.classList.add('amber');
+  } else {
+    btn.disabled = true;
+    btn.classList.remove('ready');
+    hint.textContent = 'Fill in all drill scores and answer question 4 to unlock';
+    hint.classList.remove('amber');
+  }
+}
+
+function sendPlan() {
+  var s1   = document.getElementById('score1').value;
+  var s2dt = document.getElementById('s2dt').value;
+  var s2dl = document.getElementById('s2dl').value;
+  var s2dr = document.getElementById('s2dr').value;
+  var s2it = document.getElementById('s2it').value;
+  var s2il = document.getElementById('s2il').value;
+  var s2ir = document.getElementById('s2ir').value;
+  var s3a  = document.getElementById('score3a').value;
+  var s3b  = document.getElementById('score3b').value;
+  var q1   = document.getElementById('q1').value;
+  var q2   = document.getElementById('q2').value;
+  var q3   = document.getElementById('q3').value;
+
+  var subject = encodeURIComponent('Week 1 results — Devin Willis');
+  var body = encodeURIComponent(
+    'Week 1 — Devin Willis\n\n' +
+    'Drill 1 — Fairway finder corridor (3W / 5W)\n' +
+    '  Balls in corridor:   ' + s1 + ' / 20\n\n' +
+    'Drill 2 — Start-line gate (driver & iron)\n' +
+    '  Driver (10 balls)\n' +
+    '    Through gate:  ' + s2dt + ' / 10\n' +
+    '    Missed left:   ' + s2dl + ' / 10\n' +
+    '    Missed right:  ' + s2dr + ' / 10\n' +
+    '  6i / 7i (10 balls)\n' +
+    '    Through gate:  ' + s2it + ' / 10\n' +
+    '    Missed left:   ' + s2il + ' / 10\n' +
+    '    Missed right:  ' + s2ir + ' / 10\n\n' +
+    '9-hole round tracker\n' +
+    '  Fairways / greens hit:       ' + s3a + ' / 9\n' +
+    '  Times used fairway finder:   ' + s3b + ' / 9\n\n' +
+    '---\n\n' +
+    'Q1 — What felt different, hard, or clicked:\n' + (q1 || '(no answer)') + '\n\n' +
+    'Q2 — Anything that didn\'t make sense or felt wrong:\n' + (q2 || '(no answer)') + '\n\n' +
+    'Q3 — One thing to focus on more next week:\n' + (q3 || '(no answer)') + '\n\n' +
+    'Q4 — Ready for next week\'s plan: ' + (q4Val === 'yes' ? 'Yes — send it' : 'Not yet — need more time') + '\n\n' +
+    '— Devin'
+  );
+
+  lastSubject = decodeURIComponent(subject); lastBody = decodeURIComponent(body);
+  var mailtoWorked = false;
+  function onBlur() { mailtoWorked = true; window.removeEventListener('blur', onBlur); }
+  window.addEventListener('blur', onBlur);
+  window.location.href = 'mailto:alfie.golf.trainings@gmail.com?subject=' + subject + '&body=' + body;
+  setTimeout(function() {
+    window.removeEventListener('blur', onBlur);
+    if (!mailtoWorked) {
+      document.getElementById('send-options').style.display = 'block';
+      document.getElementById('send-btn').style.display = 'none';
+      document.getElementById('send-hint').style.display = 'none';
+    }
+  }, 800);
+}
+function openGmail() {
+  var url = 'https://mail.google.com/mail/?view=cm&fs=1&to=alfie.golf.trainings@gmail.com&su=' +
+    encodeURIComponent(lastSubject) + '&body=' + encodeURIComponent(lastBody);
+  window.open(url, '_blank');
+}
+function openMailApp() {
+  window.location.href = 'mailto:alfie.golf.trainings@gmail.com?subject=' +
+    encodeURIComponent(lastSubject) + '&body=' + encodeURIComponent(lastBody);
+}
+function copyResults() {
+  var text = 'To: alfie.golf.trainings@gmail.com\nSubject: ' + lastSubject + '\n\n' + lastBody;
+  var btn = document.getElementById('copy-btn');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = '✓ Copied! Paste it into an email to alfie.golf.trainings@gmail.com';
+      btn.style.color = '#9FE1CB';
+      btn.style.borderColor = 'rgba(29,158,117,0.5)';
+    });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    btn.textContent = '✓ Copied! Paste it into an email to alfie.golf.trainings@gmail.com';
+    btn.style.color = '#9FE1CB';
+  }
+}
+</script>
+</body>
+</html>

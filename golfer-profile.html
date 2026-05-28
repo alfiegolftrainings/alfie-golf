@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Golfer Profile — Alfie Golf Trainings</title>
+<style>
+  :root {
+    --bg: #085041;
+    --primary: #1D9E75;
+    --light: #9FE1CB;
+    --pale: #E1F5EE;
+    --glass: rgba(255,255,255,0.08);
+    --glass-border: rgba(255,255,255,0.15);
+    --text: rgba(255,255,255,0.92);
+    --muted: rgba(255,255,255,0.45);
+    --amber: #ffc846;
+    --red: rgba(255,110,110,0.9);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+
+  /* ── Top bar ─────────────────────────────────────────────── */
+  .top-bar {
+    padding: 13px 24px; border-bottom: 0.5px solid var(--glass-border);
+    display: flex; align-items: center; gap: 14px;
+    position: sticky; top: 0; background: rgba(8,80,65,0.96);
+    backdrop-filter: blur(8px); z-index: 100;
+  }
+  .back-btn {
+    background: var(--glass); border: 0.5px solid var(--glass-border);
+    color: var(--light); border-radius: 8px; padding: 6px 14px;
+    font-size: 13px; cursor: pointer; font-family: inherit;
+    transition: background 0.12s; white-space: nowrap;
+  }
+  .back-btn:hover { background: rgba(255,255,255,0.14); }
+  .top-title { font-size: 15px; font-weight: 500; }
+
+  /* ── Page layout ─────────────────────────────────────────── */
+  .page-wrap { max-width: 860px; margin: 0 auto; padding: 26px 24px 80px; }
+
+  /* ── Header card ─────────────────────────────────────────── */
+  .header-card {
+    background: var(--glass); border: 0.5px solid var(--glass-border);
+    border-radius: 14px; padding: 20px 22px; margin-bottom: 18px;
+    display: flex; gap: 18px; align-items: flex-start;
+  }
+  .avatar {
+    width: 54px; height: 54px; border-radius: 50%;
+    background: rgba(29,158,117,0.22); border: 1.5px solid var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 19px; font-weight: 700; color: var(--light); flex-shrink: 0;
+  }
+  .hdr-info { flex: 1; min-width: 0; }
+  .hdr-name { font-size: 21px; font-weight: 700; margin-bottom: 7px; }
+  .badge-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .h-badge { font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 20px; }
+  .h-badge-cohort { background: rgba(29,158,117,0.2); color: var(--light); border: 0.5px solid rgba(29,158,117,0.4); }
+  .h-badge-hcp    { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); border: 0.5px solid rgba(255,255,255,0.18); }
+  .frus-quote {
+    font-size: 13px; color: rgba(255,255,255,0.62); font-style: italic;
+    margin-bottom: 11px; padding-left: 10px;
+    border-left: 2px solid var(--primary); line-height: 1.55;
+  }
+  .info-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .info-chip {
+    font-size: 11px; color: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.06); border: 0.5px solid rgba(255,255,255,0.12);
+    border-radius: 6px; padding: 3px 9px;
+  }
+
+  /* ── Timeline ────────────────────────────────────────────── */
+  .timeline-card {
+    background: var(--glass); border: 0.5px solid var(--glass-border);
+    border-radius: 14px; padding: 18px 22px; margin-bottom: 18px;
+  }
+  .card-label {
+    font-size: 10px; font-weight: 700; color: var(--light);
+    text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 15px;
+  }
+  .tl-track { display: flex; align-items: center; }
+  .tl-node  { display: flex; flex-direction: column; align-items: center; gap: 7px; min-width: 74px; }
+  .tl-dot {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+  }
+  .tl-dot.done  { background: var(--primary); color: #fff; }
+  .tl-dot.empty { background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.18); color: var(--muted); }
+  .tl-lbl       { font-size: 10px; color: var(--muted); text-align: center; line-height: 1.45; white-space: nowrap; }
+  .tl-lbl.done  { color: var(--light); }
+  .tl-line      { flex: 1; height: 1.5px; background: rgba(255,255,255,0.12); margin-bottom: 20px; }
+  .tl-line.done { background: var(--primary); }
+
+  /* ── File loader ─────────────────────────────────────────── */
+  .file-loader {
+    background: rgba(255,255,255,0.04); border: 0.5px dashed rgba(255,255,255,0.2);
+    border-radius: 10px; padding: 12px 18px; margin-bottom: 22px;
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .file-loader.loaded { background: rgba(29,158,117,0.05); border-color: rgba(29,158,117,0.35); }
+  .load-btn {
+    background: rgba(29,158,117,0.18); border: 0.5px solid var(--primary);
+    color: var(--light); border-radius: 8px; padding: 7px 15px;
+    font-size: 13px; cursor: pointer; font-family: inherit; font-weight: 500;
+    transition: background 0.12s; white-space: nowrap;
+  }
+  .load-btn:hover { background: rgba(29,158,117,0.32); }
+  .load-status { font-size: 12px; color: var(--muted); }
+
+  /* ── Section divider ─────────────────────────────────────── */
+  .section-divider {
+    font-size: 11px; font-weight: 700; color: var(--light);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
+  }
+  .section-divider::after { content: ''; flex: 1; height: 0.5px; background: rgba(255,255,255,0.15); }
+
+  /* ── Week section ────────────────────────────────────────── */
+  .week-section { margin-bottom: 32px; }
+  .week-header  { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .week-title   { font-size: 16px; font-weight: 700; }
+  .week-badge   {
+    font-size: 11px; padding: 3px 10px; border-radius: 20px;
+    background: rgba(29,158,117,0.18); color: var(--light);
+    border: 0.5px solid rgba(29,158,117,0.35);
+  }
+
+  /* ── Scores card ─────────────────────────────────────────── */
+  .scores-card {
+    background: rgba(0,0,0,0.25); border: 0.5px solid rgba(255,255,255,0.11);
+    border-radius: 12px; padding: 16px 18px; margin-bottom: 12px;
+  }
+  .compare-hint {
+    font-size: 11px; color: var(--muted); font-style: italic;
+    margin-bottom: 14px; padding-bottom: 12px;
+    border-bottom: 0.5px solid rgba(255,255,255,0.08);
+  }
+
+  /* ── Drill group within scores card ─────────────────────── */
+  .drill-group { margin-bottom: 16px; }
+  .drill-group:last-child { margin-bottom: 0; }
+  .drill-group-header {
+    font-size: 13px; font-weight: 600; color: var(--text);
+    margin-bottom: 10px; display: flex; align-items: baseline; gap: 8px;
+  }
+  .drill-group-time { font-size: 11px; color: var(--muted); font-weight: 400; }
+  .drill-group + .drill-group { padding-top: 14px; border-top: 0.5px solid rgba(255,255,255,0.07); }
+
+  /* ── Score row with twin bars ────────────────────────────── */
+  .score-row   { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .score-row:last-child { margin-bottom: 0; }
+  .score-lbl   { font-size: 11px; color: var(--light); flex: 0 0 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .bars-col    { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+  .bar-track   { height: 5px; background: rgba(255,255,255,0.09); border-radius: 3px; overflow: hidden; }
+  .bar-fill    { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+  .bar-s1-good { background: rgba(29,158,117,0.45); }
+  .bar-s1-mid  { background: rgba(255,200,70,0.45);  }
+  .bar-s1-low  { background: rgba(255,110,110,0.4);  }
+  .bar-s2-good { background: var(--primary); }
+  .bar-s2-mid  { background: var(--amber);   }
+  .bar-s2-low  { background: var(--red);     }
+  /* Single session: taller bar */
+  .bar-track.single { height: 7px; }
+
+  .score-val-col { flex: 0 0 80px; text-align: right; white-space: nowrap; }
+  .score-single-val { font-size: 12px; font-weight: 600; }
+  .score-single-val.good { color: var(--light); }
+  .score-single-val.mid  { color: var(--amber); }
+  .score-single-val.low  { color: var(--red);   }
+  .score-cmp-val { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.75); }
+  .trend-arrow   { font-size: 12px; margin-left: 4px; }
+  .trend-up   { color: var(--light); }
+  .trend-dn   { color: var(--red);   }
+  .trend-flat { color: var(--muted); }
+
+  .no-scores { font-size: 12px; color: var(--muted); font-style: italic; }
+
+  /* ── Stat cards ──────────────────────────────────────────── */
+  .stats-row  { display: flex; gap: 10px; margin-top: 16px; }
+  .stat-card  {
+    flex: 1; background: rgba(255,255,255,0.06);
+    border: 0.5px solid rgba(255,255,255,0.1); border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .stat-value { font-size: 24px; font-weight: 700; color: var(--light); line-height: 1; margin-bottom: 5px; }
+  .stat-value.amber { color: var(--amber); }
+  .stat-label { font-size: 11px; color: var(--muted); }
+
+  /* ── Session tabs (control feedback) ────────────────────── */
+  .sess-tabs {
+    display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+    margin-bottom: 0; padding: 0 0 14px;
+    border-bottom: 0.5px solid rgba(255,255,255,0.1);
+    margin-bottom: 14px;
+  }
+  .sess-tab {
+    background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14);
+    color: rgba(255,255,255,0.6); border-radius: 8px; padding: 6px 12px;
+    font-size: 12px; font-weight: 500; cursor: pointer; font-family: inherit;
+    transition: background 0.12s; white-space: nowrap; display: flex; align-items: center; gap: 7px;
+  }
+  .sess-tab:hover { background: rgba(255,255,255,0.13); }
+  .sess-tab.active { background: rgba(29,158,117,0.22); border-color: var(--primary); color: var(--light); }
+  .edit-score-btn {
+    background: none; border: none; color: rgba(255,255,255,0.35);
+    cursor: pointer; font-size: 12px; padding: 0 0 0 2px; line-height: 1;
+    transition: color 0.12s; flex-shrink: 0;
+  }
+  .edit-score-btn:hover { color: var(--amber); }
+
+  /* ── Session feedback content ────────────────────────────── */
+  .sess-content        { display: none; }
+  .sess-content.active { display: block; }
+  .fb-label {
+    font-size: 10px; font-weight: 700; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 14px;
+  }
+  .fb-q       { margin-bottom: 12px; }
+  .fb-q-lbl   { font-size: 10px; font-weight: 700; color: var(--light); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 5px; }
+  .fb-q-text  { font-size: 13px; color: rgba(255,255,255,0.78); line-height: 1.6; font-style: italic; padding-left: 12px; border-left: 2px solid rgba(29,158,117,0.45); }
+  .fb-q-empty { font-size: 12px; color: var(--muted); font-style: italic; }
+  .q4-badge   {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 11px; border-radius: 20px; font-size: 12px; font-weight: 600;
+  }
+  .q4-yes { background: rgba(29,158,117,0.2); color: var(--light); border: 0.5px solid rgba(29,158,117,0.45); }
+  .q4-no  { background: rgba(255,190,50,0.15); color: var(--amber); border: 0.5px solid rgba(255,190,50,0.4); }
+  .q4-unk { background: rgba(255,255,255,0.07); color: var(--muted); border: 0.5px solid rgba(255,255,255,0.15); }
+
+  /* ── Coach notes ─────────────────────────────────────────── */
+  .notes-card {
+    background: var(--glass); border: 0.5px solid var(--glass-border);
+    border-radius: 14px; padding: 18px 22px; margin-top: 24px;
+  }
+  .notes-text  { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.6; white-space: pre-line; }
+  .notes-empty { font-size: 13px; color: var(--muted); font-style: italic; }
+
+  /* ── Score edit modal ────────────────────────────────────── */
+  .edit-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6); z-index: 200;
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  .edit-overlay.show { display: flex; }
+  .edit-modal {
+    background: #0b6350; border: 0.5px solid rgba(255,255,255,0.2);
+    border-radius: 16px; padding: 22px 22px; max-width: 460px; width: 100%;
+    max-height: 85vh; overflow-y: auto;
+  }
+  .edit-modal-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .edit-modal-hint  { font-size: 11px; color: var(--muted); margin-bottom: 18px; line-height: 1.5; }
+  .edit-score-row   { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .edit-score-lbl   { flex: 1; font-size: 12px; color: var(--light); min-width: 0; }
+  .edit-num-input   {
+    width: 62px; padding: 6px 8px; border-radius: 7px;
+    border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1);
+    color: #fff; font-size: 14px; font-weight: 600; text-align: center;
+    font-family: inherit; outline: none;
+  }
+  .edit-num-input:focus { border-color: var(--primary); }
+  .edit-max-lbl { font-size: 12px; color: var(--muted); flex: 0 0 40px; }
+  .edit-add-row {
+    display: flex; gap: 8px; margin-top: 14px; padding-top: 14px;
+    border-top: 0.5px solid rgba(255,255,255,0.12); flex-wrap: wrap;
+  }
+  .edit-new-lbl {
+    flex: 1; padding: 6px 10px; border-radius: 7px; min-width: 120px;
+    border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1);
+    color: #fff; font-size: 12px; font-family: inherit; outline: none;
+  }
+  .edit-new-lbl:focus { border-color: var(--primary); }
+  .edit-new-max {
+    width: 52px; padding: 6px 8px; border-radius: 7px;
+    border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1);
+    color: #fff; font-size: 12px; text-align: center;
+    font-family: inherit; outline: none;
+  }
+  .edit-new-max:focus { border-color: var(--primary); }
+  .edit-add-btn {
+    padding: 6px 14px; background: rgba(255,255,255,0.1);
+    border: 0.5px solid rgba(255,255,255,0.2); border-radius: 7px;
+    color: rgba(255,255,255,0.8); font-size: 12px; cursor: pointer; font-family: inherit;
+    white-space: nowrap;
+  }
+  .edit-add-btn:hover { background: rgba(255,255,255,0.18); }
+  .edit-btns { display: flex; gap: 8px; margin-top: 18px; }
+  .edit-save-btn {
+    flex: 1; padding: 10px; background: var(--primary); border: none;
+    border-radius: 9px; color: #fff; font-size: 13px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
+  .edit-save-btn:hover { background: #18875f; }
+  .edit-cancel-btn {
+    padding: 10px 16px; background: rgba(255,255,255,0.08); border: 0.5px solid rgba(255,255,255,0.18);
+    border-radius: 9px; color: rgba(255,255,255,0.7); font-size: 13px;
+    cursor: pointer; font-family: inherit;
+  }
+  .edit-cancel-btn:hover { background: rgba(255,255,255,0.14); }
+
+  @media (max-width: 600px) {
+    .page-wrap   { padding: 18px 14px 70px; }
+    .header-card { flex-direction: column; }
+    .score-lbl   { flex: 0 0 110px; }
+    .stats-row   { flex-direction: column; }
+    .tl-node     { min-width: 54px; }
+    .tl-lbl      { font-size: 9px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <button class="back-btn" onclick="window.close()">← Dashboard</button>
+  <span class="top-title" id="page-title">Golfer Profile</span>
+</div>
+
+<div class="page-wrap" id="page-wrap">
+  <div style="text-align:center;padding:60px;color:var(--muted)">Loading profile…</div>
+</div>
+
+<!-- Score edit modal -->
+<div class="edit-overlay" id="edit-overlay" onclick="closeEditIfBg(event)">
+  <div class="edit-modal" id="edit-modal">
+    <div class="edit-modal-title" id="edit-modal-title">Edit scores</div>
+    <div class="edit-modal-hint">Override scores that didn't parse correctly from the email. Changes are saved locally and persist across sessions.</div>
+    <div id="edit-score-rows"></div>
+    <div class="edit-add-row">
+      <input class="edit-new-lbl" id="edit-new-lbl" placeholder="New score label…">
+      <input class="edit-new-max" id="edit-new-max" type="number" placeholder="/ max" min="1">
+      <button class="edit-add-btn" onclick="addEditRow()">+ Add</button>
+    </div>
+    <div class="edit-btns">
+      <button class="edit-save-btn" onclick="saveEditScores()">Save scores</button>
+      <button class="edit-cancel-btn" onclick="closeEdit()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  State
+// ═══════════════════════════════════════════════════════════════
+var golfer   = null;
+var planData = {};   // { 'week1': [{drillName, drillTime, scoreGroups:[{label,den}]}] }
+var editCtx  = { wNum: 0, sessIdx: 0 };  // current edit modal context
+
+// ═══════════════════════════════════════════════════════════════
+//  Boot
+// ═══════════════════════════════════════════════════════════════
+(function() {
+  try {
+    var raw = localStorage.getItem('alfie_profile_golfer');
+    if (!raw) {
+      document.getElementById('page-wrap').innerHTML =
+        '<p style="color:var(--muted);padding:40px">No golfer data found. Open this page from the dashboard.</p>';
+      return;
+    }
+    golfer = JSON.parse(raw);
+    render();
+    tryAutoLoad();
+  } catch(e) {
+    document.getElementById('page-wrap').innerHTML =
+      '<p style="color:var(--muted);padding:40px">Error loading profile: ' + e.message + '</p>';
+  }
+})();
+
+// ═══════════════════════════════════════════════════════════════
+//  Helpers
+// ═══════════════════════════════════════════════════════════════
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function initials(name) {
+  return (name||'?').split(/\s+/).slice(0,2).map(function(p){ return p[0].toUpperCase(); }).join('');
+}
+function fmtDate(iso) {
+  if (!iso) return '—';
+  try { return new Date(iso).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }); }
+  catch(e) { return iso; }
+}
+function fmtDateShort(iso) {
+  if (!iso) return '?';
+  try { return new Date(iso).toLocaleDateString('en-GB', { day:'numeric', month:'short' }); }
+  catch(e) { return '?'; }
+}
+function scoreCls(v, max) {
+  var p = max > 0 ? v / max : 0;
+  return p >= 0.7 ? 'good' : p >= 0.4 ? 'mid' : 'low';
+}
+function scorePct(v, max) {
+  return max > 0 ? Math.min(100, Math.round(v / max * 100)) : 0;
+}
+function norm(str) {
+  return (str||'').toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+function groupByWeek(results) {
+  var map = {};
+  (results||[]).forEach(function(r) {
+    var w = r.week || 1;
+    if (!map[w]) map[w] = [];
+    map[w].push(r);
+  });
+  Object.keys(map).forEach(function(w) {
+    map[w].sort(function(a,b){ return new Date(a.date||0) - new Date(b.date||0); });
+  });
+  return map;
+}
+
+// ── Score override localStorage ───────────────────────────────
+function scoreOverrideKey(wNum, sessIdx) {
+  var fn = (golfer.name||'').split(/\s+/)[0].toLowerCase();
+  return 'alfie_score_override_' + fn + '_w' + wNum + '_s' + sessIdx;
+}
+function getScoreOverride(wNum, sessIdx) {
+  try { return JSON.parse(localStorage.getItem(scoreOverrideKey(wNum, sessIdx))) || null; }
+  catch(e) { return null; }
+}
+function setScoreOverride(wNum, sessIdx, scores) {
+  localStorage.setItem(scoreOverrideKey(wNum, sessIdx), JSON.stringify(scores));
+}
+function getEffectiveScores(r, wNum, sessIdx) {
+  var override = getScoreOverride(wNum, sessIdx);
+  if (override && override.length) return override;
+  return (r.parsed && r.parsed.scores) ? r.parsed.scores : [];
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  Main render
+// ═══════════════════════════════════════════════════════════════
+function render() {
+  document.getElementById('page-title').textContent = golfer.name;
+  var weekMap  = groupByWeek(golfer.results);
+  var weekNums = Object.keys(weekMap).map(Number).sort(function(a,b){ return a-b; });
+
+  var html = '';
+  html += buildHeader();
+  html += buildTimeline(weekMap);
+  html += buildFileLoader();
+  html += '<div class="section-divider">Training weeks</div>';
+
+  if (!weekNums.length) {
+    html += '<div style="color:var(--muted);font-size:13px;padding:10px 0 30px">No results received yet.</div>';
+  } else {
+    weekNums.forEach(function(wn) { html += buildWeekSection(wn, weekMap[wn]); });
+  }
+
+  html += buildNotes();
+  document.getElementById('page-wrap').innerHTML = html;
+}
+
+function rerenderWeeks() {
+  var weekMap  = groupByWeek(golfer.results);
+  var weekNums = Object.keys(weekMap).map(Number).sort(function(a,b){ return a-b; });
+  var sections = document.querySelectorAll('.week-section');
+  var tempDiv  = document.createElement('div');
+  tempDiv.innerHTML = weekNums.map(function(wn){ return buildWeekSection(wn, weekMap[wn]); }).join('');
+  var newSec   = tempDiv.querySelectorAll('.week-section');
+  sections.forEach(function(sec, i){ if (newSec[i]) sec.parentNode.replaceChild(newSec[i], sec); });
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  Section builders
+// ═══════════════════════════════════════════════════════════════
+
+function buildHeader() {
+  var chips = [];
+  if (golfer.duration)   chips.push('⏱ ' + golfer.duration);
+  if (golfer.sessions)   chips.push('📅 ' + golfer.sessions + '/wk');
+  if (golfer.facilities) chips.push('🏌️ ' + golfer.facilities.substring(0,55) + (golfer.facilities.length > 55 ? '…' : ''));
+  if (golfer.contact)    chips.push('✉️ ' + golfer.contact);
+
+  return '<div class="header-card">' +
+    '<div class="avatar">' + esc(initials(golfer.name)) + '</div>' +
+    '<div class="hdr-info">' +
+      '<div class="hdr-name">' + esc(golfer.name) + '</div>' +
+      '<div class="badge-row">' +
+        (golfer.cohort   ? '<span class="h-badge h-badge-cohort">Cohort ' + esc(golfer.cohort) + '</span>' : '') +
+        (golfer.handicap ? '<span class="h-badge h-badge-hcp">HCP ' + esc(golfer.handicap) + '</span>' : '') +
+      '</div>' +
+      (golfer.frustration ? '<div class="frus-quote">"' + esc(golfer.frustration) + '"</div>' : '') +
+      (chips.length ? '<div class="info-chips">' + chips.map(function(c){ return '<span class="info-chip">' + esc(c) + '</span>'; }).join('') + '</div>' : '') +
+    '</div>' +
+  '</div>';
+}
+
+function buildTimeline(weekMap) {
+  var w1res = weekMap[1] ? weekMap[1].length : 0;
+  var w2res = weekMap[2] ? weekMap[2].length : 0;
+  function node(done, icon, lbl) {
+    return '<div class="tl-node">' +
+      '<div class="tl-dot ' + (done ? 'done' : 'empty') + '">' + (done ? icon : '') + '</div>' +
+      '<div class="tl-lbl ' + (done ? 'done' : '') + '">' + lbl + '</div>' +
+    '</div>';
+  }
+  function line(done) { return '<div class="tl-line ' + (done ? 'done' : '') + '"></div>'; }
+  return '<div class="timeline-card"><div class="card-label">Journey</div><div class="tl-track">' +
+    node(true,             '✓', 'Signed<br>up') +
+    line(!!golfer.week1Sent) +
+    node(!!golfer.week1Sent, '✓', 'W1 plan<br>sent') +
+    line(w1res > 0) +
+    node(w1res > 0, w1res, w1res + ' result' + (w1res !== 1 ? 's' : '') + '<br>received') +
+    line(!!golfer.week2Sent) +
+    node(!!golfer.week2Sent, '✓', 'W2 plan<br>sent') +
+    line(w2res > 0) +
+    node(w2res > 0, w2res, w2res + ' result' + (w2res !== 1 ? 's' : '') + '<br>received') +
+  '</div></div>';
+}
+
+function buildFileLoader() {
+  return '<div class="file-loader" id="file-loader-wrap">' +
+    '<button class="load-btn" id="load-btn" onclick="pickDirectory()">📂 Connect plan folder</button>' +
+    '<span class="load-status" id="load-status">Auto-loading plan files…</span>' +
+  '</div>';
+}
+
+// ── Week section ──────────────────────────────────────────────
+function buildWeekSection(wNum, sessions) {
+  var wid = 'w' + wNum;
+  var multi = sessions.length > 1;
+
+  // ① Scores card — always shows all sessions in comparison
+  var scoresHtml = buildScoresCard(wNum, sessions);
+
+  // ② Session tabs (control feedback below)
+  var tabsHtml = sessions.map(function(r, i) {
+    return '<button class="sess-tab' + (i === 0 ? ' active' : '') + '" ' +
+      'id="' + wid + 't' + i + '" onclick="selSess(\'' + wid + '\',' + i + ')">' +
+      'Session ' + (i+1) + ' · ' + fmtDateShort(r.date) +
+      '<span class="edit-score-btn" onclick="event.stopPropagation();openEdit(' + wNum + ',' + i + ')" title="Edit scores">✏</span>' +
+    '</button>';
+  }).join('');
+
+  // ③ Feedback panels per session
+  var feedbackHtml = sessions.map(function(r, i) {
+    return '<div class="sess-content' + (i === 0 ? ' active' : '') + '" id="' + wid + 's' + i + '">' +
+      buildFeedback(r, wNum, i + 1) +
+    '</div>';
+  }).join('');
+
+  return '<div class="week-section">' +
+    '<div class="week-header">' +
+      '<span class="week-title">Week ' + wNum + '</span>' +
+      '<span class="week-badge">' + sessions.length + ' session' + (sessions.length > 1 ? 's' : '') + '</span>' +
+    '</div>' +
+    scoresHtml +
+    '<div class="sess-tabs">' + tabsHtml + '</div>' +
+    feedbackHtml +
+  '</div>';
+}
+
+// ── Scores card (all sessions compared) ──────────────────────
+function buildScoresCard(wNum, sessions) {
+  var multi  = sessions.length > 1;
+  var wKey   = 'week' + wNum;
+  var drills = planData[wKey];
+
+  // Collect effective scores per session
+  var sessScores = sessions.map(function(r, i) {
+    return getEffectiveScores(r, wNum, i);
+  });
+
+  var html = '<div class="scores-card">';
+
+  if (multi) {
+    html += '<div class="compare-hint">Bars show S1 (dim) → S2 (bright). Trend arrow shows direction from session 1 to session 2.</div>';
+  }
+
+  if (drills && drills.length) {
+    // Group by drill
+    drills.forEach(function(drill, di) {
+      html += '<div class="drill-group">';
+      html += '<div class="drill-group-header">' + esc(drill.drillName) +
+        (drill.drillTime ? '<span class="drill-group-time">· ' + esc(drill.drillTime) + '</span>' : '') + '</div>';
+
+      // For each score group in this drill, find matching scores across all sessions
+      var anyScore = false;
+      drill.scoreGroups.forEach(function(sg) {
+        var sgKey = norm(sg.label);
+        var perSess = sessScores.map(function(scores) {
+          var hit = null;
+          scores.forEach(function(s) {
+            var sk = norm(s.label);
+            if (!hit && (sk === sgKey || sk.includes(sgKey) || sgKey.includes(sk))) hit = s;
+          });
+          return hit;
+        });
+        if (perSess.every(function(h){ return !h; })) return; // no match anywhere
+        anyScore = true;
+        html += buildScoreRow(sg.label, perSess, multi);
+      });
+
+      if (!anyScore) {
+        // Fallback: show unmatched scores from first session with data
+        var fallback = false;
+        sessScores.forEach(function(scores, si) {
+          if (fallback || !scores.length) return;
+          fallback = true;
+          scores.forEach(function(s) {
+            var row = sessions.map(function(_, idx) {
+              return sessScores[idx].find(function(x){ return norm(x.label) === norm(s.label); }) || null;
+            });
+            html += buildScoreRow(s.label, row, multi);
+          });
+        });
+        if (!fallback) html += '<div class="no-scores">No scores available for this drill.</div>';
+      }
+
+      html += '</div>';
+    });
+  } else {
+    // No plan data — flat list grouped loosely
+    var allLabels = [];
+    sessScores.forEach(function(scores) {
+      scores.forEach(function(s) {
+        if (!allLabels.find(function(l){ return norm(l) === norm(s.label); })) allLabels.push(s.label);
+      });
+    });
+    if (!allLabels.length) {
+      html += '<div class="no-scores">No score data. Use ✏ to add scores manually.</div>';
+    } else {
+      if (!planData[wKey]) {
+        html += '<div class="compare-hint" style="margin-bottom:12px">Load plan files above to group scores by drill name.</div>';
+      }
+      allLabels.forEach(function(lbl) {
+        var row = sessScores.map(function(scores) {
+          return scores.find(function(s){ return norm(s.label) === norm(lbl); }) || null;
+        });
+        html += buildScoreRow(lbl, row, multi);
+      });
+    }
+  }
+
+  // Stats cards
+  html += buildStatsCards(sessions, sessScores);
+  html += '</div>';
+  return html;
+}
+
+// ── Single score row (single or twin bars) ────────────────────
+function buildScoreRow(label, perSess, multi) {
+  // perSess = array aligned to sessions: [{label,value,max} or null]
+  var s0 = perSess[0];
+  var s1 = perSess.length > 1 ? perSess[1] : null;
+
+  if (!s0 && !s1) return '';
+
+  var html = '<div class="score-row">';
+  html += '<div class="score-lbl">' + esc(label) + '</div>';
+  html += '<div class="bars-col">';
+
+  if (multi && s0 && s1) {
+    // Twin bars
+    var cls0 = scoreCls(s0.value, s0.max);
+    var cls1 = scoreCls(s1.value, s1.max);
+    var pct0 = scorePct(s0.value, s0.max);
+    var pct1 = scorePct(s1.value, s1.max);
+    html += '<div class="bar-track"><div class="bar-fill bar-s1-' + cls0 + '" style="width:' + pct0 + '%"></div></div>';
+    html += '<div class="bar-track"><div class="bar-fill bar-s2-' + cls1 + '" style="width:' + pct1 + '%"></div></div>';
+    html += '</div>';
+
+    // Value + trend
+    var diff = (s1.value / s1.max) - (s0.value / s0.max);
+    var arrow = diff > 0.03 ? '<span class="trend-arrow trend-up">↑</span>'
+              : diff < -0.03 ? '<span class="trend-arrow trend-dn">↓</span>'
+              : '<span class="trend-arrow trend-flat">→</span>';
+    html += '<div class="score-val-col"><span class="score-cmp-val">' +
+      s0.value + ' → ' + s1.value + '/' + (s1.max || s0.max) + '</span>' + arrow + '</div>';
+  } else {
+    // Single bar
+    var sc  = s0 || s1;
+    var cls = scoreCls(sc.value, sc.max);
+    var pct = scorePct(sc.value, sc.max);
+    html += '<div class="bar-track single"><div class="bar-fill bar-s2-' + cls + '" style="width:' + pct + '%"></div></div>';
+    html += '</div>';
+    html += '<div class="score-val-col"><span class="score-single-val ' + cls + '">' + sc.value + '/' + sc.max + '</span></div>';
+  }
+
+  html += '</div>';
+  return html;
+}
+
+// ── Stats cards ───────────────────────────────────────────────
+function buildStatsCards(sessions, sessScores) {
+  if (!sessScores.length) return '';
+
+  // Avg % of most recent session
+  var latestScores = sessScores[sessScores.length - 1];
+  var avgPct = null;
+  if (latestScores.length) {
+    var total = latestScores.reduce(function(s, sc){ return s + scorePct(sc.value, sc.max); }, 0);
+    avgPct = Math.round(total / latestScores.length);
+  }
+
+  // Total improvement points (sum of value deltas) when ≥2 sessions
+  var improvePts = null;
+  if (sessScores.length >= 2) {
+    var s0s = sessScores[0], s1s = sessScores[sessScores.length - 1];
+    var delta = 0, matched = 0;
+    s0s.forEach(function(s0) {
+      var s1 = s1s.find(function(x){ return norm(x.label) === norm(s0.label); });
+      if (s1) { delta += (s1.value - s0.value); matched++; }
+    });
+    if (matched > 0) improvePts = delta;
+  }
+
+  var html = '<div class="stats-row">';
+  if (avgPct !== null) {
+    var sessLabel = sessions.length > 1 ? 'avg score (session ' + sessions.length + ')' : 'avg score';
+    html += '<div class="stat-card">' +
+      '<div class="stat-value' + (avgPct >= 70 ? '' : avgPct >= 40 ? ' amber' : '') + '">' + avgPct + '%</div>' +
+      '<div class="stat-label">' + sessLabel + '</div>' +
+    '</div>';
+  }
+  if (improvePts !== null) {
+    var sign = improvePts >= 0 ? '+' : '';
+    html += '<div class="stat-card">' +
+      '<div class="stat-value' + (improvePts >= 0 ? '' : ' amber') + '">' + sign + improvePts + ' pts</div>' +
+      '<div class="stat-label">improvement session 1→' + sessions.length + '</div>' +
+    '</div>';
+  }
+  html += '</div>';
+  return html;
+}
+
+// ── Feedback per session ──────────────────────────────────────
+function buildFeedback(r, wNum, sessNum) {
+  var p = r.parsed;
+  var dateStr = fmtDate(r.date);
+  var html = '<div class="fb-label">Feedback — Week ' + wNum + ' · Session ' + sessNum +
+    (dateStr !== '—' ? ' · ' + dateStr : '') + '</div>';
+  if (!p) return html + '<div class="fb-q-empty">No feedback data.</div>';
+
+  function fbRow(num, lbl, val) {
+    return '<div class="fb-q"><div class="fb-q-lbl">Q' + num + ' — ' + lbl + '</div>' +
+      (val && val.length > 3
+        ? '<div class="fb-q-text">"' + esc(val) + '"</div>'
+        : '<div class="fb-q-empty">No response</div>') +
+    '</div>';
+  }
+  html += fbRow(1, 'What clicked', p.q1);
+  html += fbRow(2, 'What felt wrong', p.q2);
+  html += fbRow(3, 'Focus next week', p.q3);
+
+  var q4cls = p.q4 === 'yes' ? 'q4-yes' : p.q4 === 'no' ? 'q4-no' : 'q4-unk';
+  var q4txt = p.q4 === 'yes' ? '✓ Ready for Week ' + (wNum + 1)
+            : p.q4 === 'no'  ? '⏸ Not yet'
+            : '—';
+  html += '<div class="fb-q"><div class="fb-q-lbl">Q4 — Ready for next week?</div>' +
+    '<span class="q4-badge ' + q4cls + '">' + q4txt + '</span></div>';
+
+  return html;
+}
+
+function buildNotes() {
+  return '<div class="notes-card"><div class="card-label">Coach notes</div>' +
+    (golfer.notes && golfer.notes.trim()
+      ? '<div class="notes-text">' + esc(golfer.notes) + '</div>'
+      : '<div class="notes-empty">No notes recorded for this golfer.</div>') +
+  '</div>';
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  Tab interaction
+// ═══════════════════════════════════════════════════════════════
+function selSess(wid, idx) {
+  document.querySelectorAll('[id^="' + wid + 't"]').forEach(function(el){ el.classList.remove('active'); });
+  document.querySelectorAll('[id^="' + wid + 's"]').forEach(function(el){ el.classList.remove('active'); });
+  var tab  = document.getElementById(wid + 't' + idx);
+  var cont = document.getElementById(wid + 's' + idx);
+  if (tab)  tab.classList.add('active');
+  if (cont) cont.classList.add('active');
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  Score edit modal
+// ═══════════════════════════════════════════════════════════════
+function openEdit(wNum, sessIdx) {
+  var weekMap  = groupByWeek(golfer.results);
+  var sessions = weekMap[wNum] || [];
+  var r        = sessions[sessIdx];
+  if (!r) return;
+
+  editCtx = { wNum: wNum, sessIdx: sessIdx };
+  var scores = getEffectiveScores(r, wNum, sessIdx);
+
+  // Build score groups from plan data if available
+  var wKey   = 'week' + wNum;
+  var drills = planData[wKey];
+  var labels = [];
+  if (drills) {
+    drills.forEach(function(d) { d.scoreGroups.forEach(function(sg){ labels.push({ label: sg.label, den: sg.den }); }); });
+  }
+
+  // Merge: start with plan labels, fill values from scores; then add any extra parsed scores
+  var rows = [];
+  if (labels.length) {
+    labels.forEach(function(l) {
+      var match = scores.find(function(s){ return norm(s.label) === norm(l.label); });
+      var maxVal = match ? match.max : (parseInt((l.den||'').replace(/\//,'').trim()) || '');
+      rows.push({ label: l.label, value: match ? match.value : '', max: maxVal });
+    });
+    // Extra scores not in plan labels
+    scores.forEach(function(s) {
+      var inLabels = labels.find(function(l){ return norm(l.label) === norm(s.label); });
+      if (!inLabels) rows.push({ label: s.label, value: s.value, max: s.max });
+    });
+  } else {
+    // No plan data — show parsed scores as-is
+    scores.forEach(function(s) { rows.push({ label: s.label, value: s.value, max: s.max }); });
+    if (!rows.length) rows.push({ label: '', value: '', max: '' });
+  }
+
+  document.getElementById('edit-modal-title').textContent =
+    'Edit scores — Week ' + wNum + ', Session ' + (sessIdx + 1) + ' · ' + fmtDateShort(r.date);
+
+  var html = rows.map(function(row, i) {
+    return '<div class="edit-score-row" id="erow-' + i + '">' +
+      '<div class="edit-score-lbl">' + esc(row.label) + '</div>' +
+      '<input class="edit-num-input" id="eval-' + i + '" type="number" min="0" ' +
+        'max="' + (row.max || 999) + '" value="' + esc(String(row.value)) + '" placeholder="—">' +
+      '<div class="edit-max-lbl">/ ' + (row.max !== '' ? row.max : '?') + '</div>' +
+      '<input type="hidden" id="elbl-' + i + '" value="' + esc(row.label) + '">' +
+      '<input type="hidden" id="emax-' + i + '" value="' + (row.max !== '' ? row.max : '') + '">' +
+    '</div>';
+  }).join('');
+
+  document.getElementById('edit-score-rows').innerHTML = html;
+  document.getElementById('edit-new-lbl').value = '';
+  document.getElementById('edit-new-max').value = '';
+  document.getElementById('edit-overlay').classList.add('show');
+}
+
+function addEditRow() {
+  var lbl = document.getElementById('edit-new-lbl').value.trim();
+  var max = document.getElementById('edit-new-max').value.trim();
+  if (!lbl) return;
+
+  var container = document.getElementById('edit-score-rows');
+  var i = container.querySelectorAll('.edit-score-row').length;
+  var div = document.createElement('div');
+  div.className = 'edit-score-row';
+  div.id = 'erow-' + i;
+  div.innerHTML =
+    '<div class="edit-score-lbl">' + esc(lbl) + '</div>' +
+    '<input class="edit-num-input" id="eval-' + i + '" type="number" min="0" value="" placeholder="—">' +
+    '<div class="edit-max-lbl">/ ' + (max || '?') + '</div>' +
+    '<input type="hidden" id="elbl-' + i + '" value="' + esc(lbl) + '">' +
+    '<input type="hidden" id="emax-' + i + '" value="' + esc(max) + '">';
+  container.appendChild(div);
+  document.getElementById('edit-new-lbl').value = '';
+  document.getElementById('edit-new-max').value = '';
+  document.getElementById('eval-' + i).focus();
+}
+
+function saveEditScores() {
+  var rows = document.querySelectorAll('.edit-score-row');
+  var scores = [];
+  rows.forEach(function(row, i) {
+    var lbl = document.getElementById('elbl-' + i);
+    var val = document.getElementById('eval-' + i);
+    var max = document.getElementById('emax-' + i);
+    if (!lbl || !val) return;
+    var v = parseFloat(val.value);
+    var m = parseFloat(max ? max.value : '');
+    if (!isNaN(v) && lbl.value) {
+      scores.push({ label: lbl.value, value: v, max: isNaN(m) ? 0 : m });
+    }
+  });
+  setScoreOverride(editCtx.wNum, editCtx.sessIdx, scores);
+  closeEdit();
+  rerenderWeeks();
+}
+
+function closeEdit() {
+  document.getElementById('edit-overlay').classList.remove('show');
+}
+function closeEditIfBg(e) {
+  if (e.target === document.getElementById('edit-overlay')) closeEdit();
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  File System Access API + IndexedDB persistence
+// ═══════════════════════════════════════════════════════════════
+function idbOpen() {
+  return new Promise(function(resolve, reject) {
+    var req = indexedDB.open('alfie-golf-profile', 1);
+    req.onupgradeneeded = function(e) { e.target.result.createObjectStore('fs'); };
+    req.onsuccess  = function(e) { resolve(e.target.result); };
+    req.onerror    = function()  { reject(req.error); };
+  });
+}
+async function idbSave(handle) {
+  try {
+    var db = await idbOpen();
+    return new Promise(function(resolve) {
+      var tx = db.transaction('fs', 'readwrite');
+      tx.objectStore('fs').put(handle, 'planDir');
+      tx.oncomplete = resolve;
+    });
+  } catch(e) { /* silent */ }
+}
+async function idbLoad() {
+  try {
+    var db = await idbOpen();
+    return new Promise(function(resolve) {
+      var tx  = db.transaction('fs', 'readonly');
+      var req = tx.objectStore('fs').get('planDir');
+      req.onsuccess = function() { resolve(req.result || null); };
+      req.onerror   = function() { resolve(null); };
+    });
+  } catch(e) { return null; }
+}
+
+async function tryAutoLoad() {
+  if (!('showDirectoryPicker' in window)) {
+    setLoadStatus('⚠ File System Access not supported. Use Chrome or Edge.');
+    return;
+  }
+  var handle = await idbLoad();
+  if (!handle) {
+    setLoadStatus('Click "Connect plan folder" once to load drill names (remembered for next time).');
+    return;
+  }
+  try {
+    var perm = await handle.queryPermission({ mode: 'read' });
+    if (perm === 'granted') {
+      setLoadStatus('Loading plan files…');
+      await loadFromDir(handle);
+      return;
+    }
+    setLoadStatus('Click to re-allow plan file access.');
+    var btn = document.getElementById('load-btn');
+    if (btn) { btn.textContent = '🔓 Re-allow access'; btn.onclick = function(){ requestStoredPerm(handle); }; }
+  } catch(e) {
+    setLoadStatus('Click "Connect plan folder" to load drill names.');
+  }
+}
+
+async function requestStoredPerm(handle) {
+  try {
+    var perm = await handle.requestPermission({ mode: 'read' });
+    if (perm === 'granted') { setLoadStatus('Loading…'); await loadFromDir(handle); }
+    else { setLoadStatus('Access denied.'); }
+  } catch(e) { setLoadStatus('⚠ ' + e.message); }
+}
+
+async function pickDirectory() {
+  if (!('showDirectoryPicker' in window)) { setLoadStatus('⚠ Use Chrome or Edge.'); return; }
+  try {
+    var dir = await window.showDirectoryPicker({ mode: 'read' });
+    await idbSave(dir);
+    setLoadStatus('Scanning…');
+    await loadFromDir(dir);
+  } catch(e) {
+    if (e.name !== 'AbortError') setLoadStatus('⚠ ' + e.message);
+  }
+}
+
+async function loadFromDir(dir) {
+  var firstName = golfer.name.split(/\s+/)[0].toLowerCase();
+  var found = {};
+  for await (var [name, handle] of dir.entries()) {
+    if (handle.kind !== 'directory') continue;
+    if (!name.toLowerCase().includes(firstName)) continue;
+    for await (var [fname, fh] of handle.entries()) {
+      if (fh.kind !== 'file') continue;
+      var wm = fname.match(/week(\d+)-plan\.html$/i);
+      if (!wm) continue;
+      try {
+        var text  = await (await fh.getFile()).text();
+        var drills = parsePlanHtml(text);
+        if (drills.length) found['week' + parseInt(wm[1])] = drills;
+      } catch(e) { /* skip */ }
+    }
+    break;
+  }
+  var n = Object.keys(found).length;
+  if (n > 0) {
+    Object.assign(planData, found);
+    setLoadStatus('✓ ' + n + ' plan file' + (n > 1 ? 's' : '') + ' loaded');
+    var wrap = document.getElementById('file-loader-wrap');
+    if (wrap) wrap.classList.add('loaded');
+    rerenderWeeks();
+  } else {
+    setLoadStatus('⚠ No plan files found for ' + golfer.name + '.');
+  }
+}
+
+function setLoadStatus(msg) {
+  var el = document.getElementById('load-status');
+  if (el) el.textContent = msg;
+}
+
+function parsePlanHtml(html) {
+  var doc   = new DOMParser().parseFromString(html, 'text/html');
+  var cards = doc.querySelectorAll('.drill-card');
+  var out   = [];
+  cards.forEach(function(card) {
+    var groups = [];
+    card.querySelectorAll('.score-group-lbl').forEach(function(el) {
+      var lbl = el.textContent.trim();
+      var den = '';
+      var par = el.parentElement;
+      if (par) { var d = par.querySelector('.den'); if (d) den = d.textContent.trim(); }
+      groups.push({ label: lbl, den: den });
+    });
+    if (!groups.length) {
+      var bl = card.querySelector('.score-box-lbl');
+      var de = card.querySelector('.den');
+      groups.push({ label: bl ? bl.textContent.trim() : 'Score', den: de ? de.textContent.trim() : '' });
+    }
+    out.push({
+      drillName:   (card.querySelector('.drill-name') || {}).textContent || 'Drill',
+      drillTime:   (card.querySelector('.drill-time') || {}).textContent || '',
+      scoreGroups: groups
+    });
+  });
+  return out;
+}
+</script>
+</body>
+</html>

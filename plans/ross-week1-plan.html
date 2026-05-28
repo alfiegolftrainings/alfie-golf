@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ross — Week 1 Practice Plan</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  background: #085041;
+  min-height: 100vh;
+  padding: 2rem 1rem 4rem;
+}
+.card {
+  max-width: 560px;
+  margin: 0 auto;
+  background: #085041;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+}
+.decor-circles {
+  position: absolute; top: 0; right: 0;
+  width: 300px; height: 280px;
+  opacity: 0.07; pointer-events: none; z-index: 0;
+}
+.decor-dots {
+  position: absolute; top: 0; left: 0;
+  width: 60px; height: 100%;
+  opacity: 0.07; pointer-events: none; z-index: 0; overflow: hidden;
+}
+.header {
+  padding: 2rem 2rem 1.5rem;
+  position: relative; z-index: 1;
+}
+.week-label {
+  font-size: 10px; font-weight: 600; color: #9FE1CB;
+  letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px;
+}
+.golfer-name {
+  font-size: 28px; font-weight: 500; color: #fff;
+  line-height: 1.2; margin-bottom: 2px;
+}
+.sub-meta { font-size: 12px; color: #9FE1CB; margin-bottom: 1.25rem; }
+.chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 1rem; }
+.chip { background: rgba(255,255,255,0.1); border-radius: 7px; padding: 8px 10px; }
+.chip-lbl { font-size: 9px; color: #9FE1CB; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 2px; }
+.chip-val { font-size: 12px; font-weight: 500; color: #fff; }
+.opening {
+  background: rgba(255,255,255,0.08);
+  border-left: 3px solid #5DCAA5;
+  border-radius: 0 7px 7px 0;
+  padding: 10px 14px;
+}
+.opening p { font-size: 12px; color: rgba(255,255,255,0.88); line-height: 1.7; font-style: italic; }
+.drills {
+  padding: 0 1.5rem;
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; gap: 9px;
+}
+.section-label {
+  font-size: 9px; font-weight: 600; color: #9FE1CB;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  display: flex; align-items: center; gap: 8px; margin-bottom: 2px;
+}
+.section-label::after {
+  content: ''; flex: 1; height: 0.5px; background: rgba(255,255,255,0.15);
+}
+.drill-card { background: #fff; border-radius: 9px; overflow: hidden; }
+.drill-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; border-bottom: 0.5px solid #e9e7e1;
+}
+.drill-num {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: #E1F5EE; display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; color: #085041; flex-shrink: 0;
+}
+.drill-name { font-size: 13px; font-weight: 600; color: #1a1a1a; flex: 1; }
+.drill-time {
+  font-size: 11px; color: #0F6E56; background: #E1F5EE;
+  border: 0.5px solid #9FE1CB; padding: 2px 8px;
+  border-radius: 5px; font-weight: 500; white-space: nowrap;
+}
+.drill-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+.micro {
+  font-size: 9px; font-weight: 600; color: #aaa;
+  text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 4px;
+}
+.drill-text { font-size: 12px; color: #1a1a1a; line-height: 1.7; }
+ol.drill-steps {
+  font-size: 12px; color: #1a1a1a; line-height: 1.7;
+  padding-left: 18px; display: flex; flex-direction: column; gap: 4px;
+}
+ol.drill-steps li { padding-left: 4px; }
+.why-block { border-left: 3px solid #1D9E75; padding: 4px 0 4px 10px; }
+.why-lbl {
+  font-size: 9px; font-weight: 600; color: #0F6E56;
+  text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 3px;
+}
+.why-text { font-size: 12px; color: #555; line-height: 1.65; font-style: italic; }
+.score-box {
+  background: #E1F5EE; border: 0.5px solid #9FE1CB;
+  border-radius: 7px; padding: 10px 12px;
+}
+.score-lbl {
+  font-size: 9px; font-weight: 600; color: #085041;
+  text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px;
+}
+.score-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.score-row:last-child { margin-bottom: 0; }
+.score-field-lbl { font-size: 11px; color: #0F6E56; font-weight: 500; }
+input[type="number"] {
+  width: 58px; padding: 5px 8px;
+  border: 1.5px solid #9FE1CB; border-radius: 5px;
+  font-size: 13px; font-weight: 600; color: #085041;
+  background: #fff; text-align: center; font-family: inherit; outline: none;
+}
+input[type="number"]:focus { border-color: #1D9E75; }
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+.score-denom { font-size: 13px; color: #085041; font-weight: 500; }
+/* ── Feedback ── */
+.feedback-card {
+  background: #fff; border-radius: 10px;
+  padding: 14px 16px; margin-bottom: 9px;
+  position: relative; z-index: 1;
+}
+.feedback-q { margin-bottom: 14px; }
+.feedback-q:last-child { margin-bottom: 0; }
+.feedback-qlbl { font-size: 11px; font-weight: 500; color: #555; margin-bottom: 6px; }
+.feedback-q textarea {
+  width: 100%; padding: 9px 11px;
+  border: 1px solid #ddd; border-radius: 7px;
+  font-size: 13px; color: #1a1a1a; font-family: inherit;
+  line-height: 1.55; resize: vertical; min-height: 70px; outline: none;
+}
+.feedback-q textarea:focus { border-color: #1D9E75; }
+.q4-row { display: flex; gap: 8px; margin-top: 6px; }
+.q4-btn {
+  flex: 1; padding: 9px 12px; border-radius: 7px;
+  border: 1px solid #ddd; background: #fafaf8;
+  font-size: 13px; font-weight: 500; color: #888;
+  cursor: pointer; font-family: inherit; transition: all 0.12s;
+}
+.q4-btn.selected-yes { border-color: #1D9E75; background: #E1F5EE; color: #0F6E56; }
+.q4-btn.selected-no  { border-color: #BA7517; background: #faeeda; color: #854F0B; }
+/* ── Send button ── */
+.send-wrap { padding: 0 1.5rem; position: relative; z-index: 1; margin-top: 1.25rem; }
+.send-hint {
+  text-align: center; font-size: 11.5px; color: rgba(255,255,255,0.45);
+  margin-bottom: 10px; line-height: 1.5; transition: opacity 0.2s;
+}
+.send-hint.amber { color: #FAC775; }
+.send-btn {
+  width: 100%; padding: 14px;
+  background: rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.4);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 10px; font-size: 15px; font-weight: 500;
+  font-family: inherit; cursor: not-allowed; transition: all 0.15s;
+}
+.send-btn.ready { background: #1D9E75; color: #fff; border-color: #1D9E75; cursor: pointer; }
+.send-btn.ready:hover { background: #0F6E56; border-color: #0F6E56; }
+.closing { padding: 1.25rem 1.5rem 0; position: relative; z-index: 1; }
+.closing-card {
+  background: rgba(255,255,255,0.08);
+  border: 0.5px solid rgba(255,255,255,0.15);
+  border-radius: 9px; padding: 1rem 1.25rem;
+}
+.closing-text { font-size: 12px; color: rgba(255,255,255,0.82); line-height: 1.75; }
+.footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 1.5rem 1.25rem; margin-top: 1rem;
+  border-top: 0.5px solid rgba(255,255,255,0.1);
+  position: relative; z-index: 1;
+}
+.footer span { font-size: 10px; color: rgba(255,255,255,0.28); }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <svg class="decor-circles" viewBox="0 0 300 280" aria-hidden="true">
+    <circle cx="280" cy="20" r="60"  fill="none" stroke="#fff" stroke-width="1.5"/>
+    <circle cx="280" cy="20" r="100" fill="none" stroke="#fff" stroke-width="1.5"/>
+    <circle cx="280" cy="20" r="145" fill="none" stroke="#fff" stroke-width="1.5"/>
+    <circle cx="280" cy="20" r="195" fill="none" stroke="#fff" stroke-width="1.5"/>
+    <circle cx="280" cy="20" r="250" fill="none" stroke="#fff" stroke-width="1.5"/>
+  </svg>
+  <div class="decor-dots">
+    <svg width="60" height="2000" viewBox="0 0 60 2000" preserveAspectRatio="xMinYMin">
+      <defs>
+        <pattern id="dp" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse">
+          <circle cx="3" cy="3" r="2" fill="#fff"/>
+        </pattern>
+      </defs>
+      <rect width="60" height="2000" fill="url(#dp)"/>
+    </svg>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="week-label">Week 1 · Practice Plan</div>
+    <div class="golfer-name">Ross</div>
+    <div class="sub-meta">Driving range bays (tracking system) + Putting green</div>
+    <div class="chips">
+      <div class="chip"><div class="chip-lbl">Duration</div><div class="chip-val">90 minutes</div></div>
+      <div class="chip"><div class="chip-lbl">Location</div><div class="chip-val">Range + Putting green</div></div>
+      <div class="chip"><div class="chip-lbl">Focus</div><div class="chip-val">Tee shot process &amp; dispersion</div></div>
+    </div>
+    <div class="opening">
+      <p>Ross, "inconsistency, especially off the tee" is one of the most honest descriptions of a 20 handicap game — you've got shots that work, but no reliable way to repeat them. Playing 2–4 rounds a month without a structured practice framework means the range hasn't had a chance to fix what the course keeps exposing. This week's plan uses your tracking system as the feedback tool it was built for, with two focused range drills and a putting circuit to close — so you leave with actual numbers, not just impressions.</p>
+    </div>
+  </div>
+
+  <!-- Drills -->
+  <div class="drills">
+    <div class="section-label">Drills</div>
+
+    <!-- Drill 1 -->
+    <div class="drill-card">
+      <div class="drill-header">
+        <div class="drill-num">1</div>
+        <span class="drill-name">Setup Anchor</span>
+        <span class="drill-time">20 min</span>
+      </div>
+      <div class="drill-body">
+        <div>
+          <div class="micro">What to do</div>
+          <ol class="drill-steps">
+            <li>Lay an alignment rod on the ground along your toe line — parallel to your ball-to-target line — to guide your stance every time you step in.</li>
+            <li>Place a head cover on the far side of the ball (outside, away from your feet). If you clip it during the swing, your club came from outside the target line — a classic out-to-in path that produces the pull or slice most 20 handicaps live with.</li>
+            <li>Before every shot, stand behind the ball and pick a small intermediate target 3 feet ahead on the target line (a divot, a tee stub, a blade of grass). Step in, align the clubface to that spot first, then build your stance to the rod — every time.</li>
+            <li>Hit 20 balls (driver or 3-wood) applying this exact sequence on every single shot. Do not skip it — the routine is the drill.</li>
+            <li>After each set of 5, glance at the tracker and note the lateral spread. Jot it down — and record the number of times you clip the head cover.</li>
+          </ol>
+        </div>
+        <div class="why-block">
+          <div class="why-lbl">Why this drill for you</div>
+          <p class="why-text">Tee shot inconsistency at 20 handicap almost always starts before the club moves. Different aim, different ball position, different weight shift on setup — the ball flight looks random but the root is a setup that changes shot to shot. The tracker will show you whether your 5-ball clusters tighten as the routine becomes automatic. The head cover adds a second feedback loop: if you're clipping it, your path is the issue, not just your aim.</p>
+        </div>
+        <div class="score-box">
+          <div class="score-lbl">Score to record</div>
+          <div class="score-row">
+            <span class="score-field-lbl">Best 5-ball lateral spread:</span>
+            <input type="number" id="s1a" min="0" max="999" placeholder="—" oninput="checkReady()">
+            <span class="score-denom">yds</span>
+          </div>
+          <div class="score-row">
+            <span class="score-field-lbl">Worst 5-ball lateral spread:</span>
+            <input type="number" id="s1b" min="0" max="999" placeholder="—" oninput="checkReady()">
+            <span class="score-denom">yds</span>
+          </div>
+          <div class="score-row">
+            <span class="score-field-lbl">Head cover touched:</span>
+            <input type="number" id="s1c" min="0" max="20" placeholder="—" oninput="checkReady()">
+            <span class="score-denom">/ 20</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Drill 2 -->
+    <div class="drill-card">
+      <div class="drill-header">
+        <div class="drill-num">2</div>
+        <span class="drill-name">Driver Corridor</span>
+        <span class="drill-time">40 min</span>
+      </div>
+      <div class="drill-body">
+        <div>
+          <div class="micro">What to do</div>
+          <ol class="drill-steps">
+            <li>Pick a target on the range. Using the tracker's alignment aid (or two distant markers), define a corridor 40 yards wide — 20 yards either side of your target line.</li>
+            <li>Apply the full pre-shot routine from Drill 1 on every single ball. No exceptions.</li>
+            <li>Hit 30 driver balls. After each shot, check the tracker: inside or outside the corridor?</li>
+            <li>After every 10 shots, pause and look at your misses. Are they mostly to one side? That's your miss pattern — note it, then make one small aim or alignment adjustment (not a swing change) for the next set.</li>
+            <li>Final 10 balls: commit to the routine with zero mid-swing adjustments. Let the process work.</li>
+          </ol>
+        </div>
+        <div class="why-block">
+          <div class="why-lbl">Why this drill for you</div>
+          <p class="why-text">A 40-yard corridor off the tee is the measurable version of "finding fairways." Right now, the inconsistency you're feeling has no number attached to it — the tracker changes that. At 20 handicap, the gap between your best and worst tee shots is likely 50+ yards sideways. Today's goal isn't to fix the swing; it's to find out where your shots actually go when the process is consistent, so there's a real baseline to beat next session.</p>
+        </div>
+        <div class="score-box">
+          <div class="score-lbl">Score to record</div>
+          <div class="score-row">
+            <span class="score-field-lbl">Balls inside the 40-yard corridor:</span>
+            <input type="number" id="s2" min="0" max="30" placeholder="—" oninput="checkReady()">
+            <span class="score-denom">/ 30</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Drill 3 -->
+    <div class="drill-card">
+      <div class="drill-header">
+        <div class="drill-num">3</div>
+        <span class="drill-name">Clock Putting Circuit</span>
+        <span class="drill-time">30 min</span>
+      </div>
+      <div class="drill-body">
+        <div>
+          <div class="micro">What to do</div>
+          <ol class="drill-steps">
+            <li>After a few minutes of free warm-up putts to get a feel for the green speed, place 4 tees around one hole at 4 feet — north, south, east, and west positions.</li>
+            <li>Putt each position in order. Hole all 4 = 1 circuit completed.</li>
+            <li>Complete 5 full circuits = 20 putts total.</li>
+            <li>On any putt you miss, note whether the ball missed left or right of the hole (face angle miss) or whether you misjudged the speed — rolling too far past or pulling up short (speed control miss). One adjustment only per circuit.</li>
+          </ol>
+        </div>
+        <div class="why-block">
+          <div class="why-lbl">Why this drill for you</div>
+          <p class="why-text">You have a putting green available and 30 minutes — this is exactly the kind of short, repeatable drill that builds confidence without burning mental energy. Consistency off the tee and consistency on the green share the same root: a reliable process before the stroke. Finishing today's session here ties the theme together.</p>
+        </div>
+        <div class="score-box">
+          <div class="score-lbl">Score to record</div>
+          <div class="score-row">
+            <span class="score-field-lbl">Putts holed:</span>
+            <input type="number" id="s3" min="0" max="20" placeholder="—" oninput="checkReady()">
+            <span class="score-denom">/ 20</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Feedback -->
+  <div class="closing">
+    <div class="section-label" style="margin-bottom:0.6rem">Your feedback</div>
+    <div class="feedback-card">
+      <div class="feedback-q">
+        <div class="feedback-qlbl">Q1 — What felt different, hard, or clicked?</div>
+        <textarea id="q1" placeholder="Anything that stood out during the session…" oninput="checkReady()"></textarea>
+      </div>
+      <div class="feedback-q">
+        <div class="feedback-qlbl">Q2 — Anything that didn't make sense or felt wrong?</div>
+        <textarea id="q2" placeholder="Drills, instructions, timing — anything off…" oninput="checkReady()"></textarea>
+      </div>
+      <div class="feedback-q">
+        <div class="feedback-qlbl">Q3 — One thing you want to focus on more next week?</div>
+        <textarea id="q3" placeholder="Your call on what to dial in next…" oninput="checkReady()"></textarea>
+      </div>
+      <div class="feedback-q" style="margin-bottom:0">
+        <div class="feedback-qlbl">Q4 — Ready for next week's plan?</div>
+        <div class="q4-row">
+          <button class="q4-btn" id="q4-yes" onclick="setQ4('yes')">Yes — send it</button>
+          <button class="q4-btn" id="q4-no"  onclick="setQ4('no')">Not yet — need more time</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Send -->
+  <div class="send-wrap">
+    <div class="send-hint" id="send-hint">Fill in all drill scores and answer question 4 to unlock</div>
+    <button class="send-btn" id="send-btn" onclick="sendPlan()" disabled>Send to Alfie</button>
+  </div>
+
+  <!-- Closing -->
+  <div class="closing">
+    <div class="section-label" style="margin-bottom:8px">Closing</div>
+    <div class="closing-card">
+      <p class="closing-text">Ross, you came in today without a structured practice framework — and you're leaving with one. The tracking system is only as useful as the process feeding it, and that's what this week builds. Come back next session with your corridor score, your lateral spread numbers, and your head cover count. One more thing: at the end of Drill 2, if your tracker shows a dispersion map of all 30 balls, take a screenshot and send it to me — that picture will tell us exactly where to focus next.</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span>Alfie Golf Trainings · Week 1</span>
+    <span>Reply to get your next plan</span>
+  </div>
+
+</div>
+
+<script>
+var q4Val = '';
+var lastSubject = ''; var lastBody = '';
+
+function setQ4(val) {
+  q4Val = val;
+  document.getElementById('q4-yes').className = 'q4-btn' + (val === 'yes' ? ' selected-yes' : '');
+  document.getElementById('q4-no').className  = 'q4-btn' + (val === 'no'  ? ' selected-no'  : '');
+  checkReady();
+}
+
+function checkReady() {
+  var s1a = document.getElementById('s1a').value;
+  var s1b = document.getElementById('s1b').value;
+  var s1c = document.getElementById('s1c').value;
+  var s2  = document.getElementById('s2').value;
+  var s3  = document.getElementById('s3').value;
+
+  var scoresOk = s1a !== '' && s1b !== '' && s1c !== '' && s2 !== '' && s3 !== '';
+  var ready = scoresOk && q4Val !== '';
+
+  var btn  = document.getElementById('send-btn');
+  var hint = document.getElementById('send-hint');
+
+  if (ready) {
+    btn.disabled = false;
+    btn.classList.add('ready');
+    hint.textContent = '';
+    hint.classList.remove('amber');
+  } else if (scoresOk && !q4Val) {
+    btn.disabled = true;
+    btn.classList.remove('ready');
+    hint.textContent = 'Almost there — answer question 4 to unlock';
+    hint.classList.add('amber');
+  } else {
+    btn.disabled = true;
+    btn.classList.remove('ready');
+    hint.textContent = 'Fill in all drill scores and answer question 4 to unlock';
+    hint.classList.remove('amber');
+  }
+}
+
+function sendPlan() {
+  var s1a = document.getElementById('s1a').value;
+  var s1b = document.getElementById('s1b').value;
+  var s1c = document.getElementById('s1c').value;
+  var s2  = document.getElementById('s2').value;
+  var s3  = document.getElementById('s3').value;
+  var q1  = document.getElementById('q1').value;
+  var q2  = document.getElementById('q2').value;
+  var q3  = document.getElementById('q3').value;
+
+  var subject = encodeURIComponent('Week 1 results — Ross');
+  var body = encodeURIComponent(
+    'Week 1 — Ross\n\n' +
+    'Drill 1 — Setup Anchor:\n' +
+    '  Best 5-ball lateral spread:  ' + s1a + ' yds\n' +
+    '  Worst 5-ball lateral spread: ' + s1b + ' yds\n' +
+    '  Head cover touched:          ' + s1c + ' / 20\n\n' +
+    'Drill 2 — Driver Corridor:\n' +
+    '  Balls inside the 40-yard corridor: ' + s2 + ' / 30\n\n' +
+    'Drill 3 — Clock Putting Circuit:\n' +
+    '  Putts holed: ' + s3 + ' / 20\n\n' +
+    '---\n\n' +
+    'Q1 — What felt different, hard, or clicked:\n' + (q1 || '(no answer)') + '\n\n' +
+    'Q2 — Anything that didn\'t make sense or felt wrong:\n' + (q2 || '(no answer)') + '\n\n' +
+    'Q3 — One thing to focus on more next week:\n' + (q3 || '(no answer)') + '\n\n' +
+    'Q4 — Ready for next week\'s plan: ' + (q4Val === 'yes' ? 'Yes — send it' : 'Not yet — need more time') + '\n\n' +
+    '— Ross'
+  );
+
+  lastSubject = decodeURIComponent(subject); lastBody = decodeURIComponent(body);
+  var mailtoWorked = false;
+  function onBlur() { mailtoWorked = true; window.removeEventListener('blur', onBlur); }
+  window.addEventListener('blur', onBlur);
+  window.location.href = 'mailto:alfie.golf.trainings@gmail.com?subject=' + subject + '&body=' + body;
+  setTimeout(function() {
+    window.removeEventListener('blur', onBlur);
+    if (!mailtoWorked) {
+      document.getElementById('send-options').style.display = 'block';
+      document.getElementById('send-btn').style.display = 'none';
+      document.getElementById('send-hint').style.display = 'none';
+    }
+  }, 800);
+}
+function openGmail() {
+  var url = 'https://mail.google.com/mail/?view=cm&fs=1&to=alfie.golf.trainings@gmail.com&su=' +
+    encodeURIComponent(lastSubject) + '&body=' + encodeURIComponent(lastBody);
+  window.open(url, '_blank');
+}
+function openMailApp() {
+  window.location.href = 'mailto:alfie.golf.trainings@gmail.com?subject=' +
+    encodeURIComponent(lastSubject) + '&body=' + encodeURIComponent(lastBody);
+}
+function copyResults() {
+  var text = 'To: alfie.golf.trainings@gmail.com\nSubject: ' + lastSubject + '\n\n' + lastBody;
+  var btn = document.getElementById('copy-btn');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = '✓ Copied! Paste it into an email to alfie.golf.trainings@gmail.com';
+      btn.style.color = '#9FE1CB';
+      btn.style.borderColor = 'rgba(29,158,117,0.5)';
+    });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    btn.textContent = '✓ Copied! Paste it into an email to alfie.golf.trainings@gmail.com';
+    btn.style.color = '#9FE1CB';
+  }
+}
+</script>
+</body>
+</html>

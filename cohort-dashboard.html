@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alfie — Cohort Results Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg:        #085041;
+    --green:     #1D9E75;
+    --light:     #9FE1CB;
+    --pale:      #E1F5EE;
+    --card-bg:   rgba(255,255,255,0.08);
+    --card-bd:   rgba(255,255,255,0.15);
+    --text:      #ffffff;
+    --text-muted:rgba(255,255,255,0.55);
+    --amber:     rgba(255,200,100,0.85);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 32px 16px;
+    border-bottom: 0.5px solid var(--card-bd);
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 100;
+  }
+  .header-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .logo-circle {
+    width: 40px; height: 40px;
+    background: var(--green);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .header h1 {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+  }
+  .header-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .header-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  select.cohort-pick {
+    background: var(--card-bg);
+    border: 0.5px solid var(--card-bd);
+    color: var(--text);
+    padding: 7px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    outline: none;
+  }
+  select.cohort-pick option { background: #085041; }
+
+  .btn-refresh {
+    background: var(--green);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: opacity .15s;
+  }
+  .btn-refresh:hover { opacity: .85; }
+  .btn-refresh:disabled { opacity: .4; cursor: not-allowed; }
+
+  .sheet-url-row {
+    padding: 10px 32px;
+    background: rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sheet-url-row label { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+  .sheet-url-row input {
+    flex: 1;
+    background: var(--card-bg);
+    border: 0.5px solid var(--card-bd);
+    color: var(--text);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-family: monospace;
+    outline: none;
+  }
+  .sheet-url-row input::placeholder { color: var(--text-muted); }
+
+  /* ── Status bar ── */
+  #status-bar {
+    padding: 8px 32px;
+    font-size: 12px;
+    color: var(--text-muted);
+    min-height: 30px;
+  }
+  #status-bar.loading { color: var(--light); }
+  #status-bar.error   { color: var(--amber); }
+
+  /* ── Layout ── */
+  .dashboard {
+    padding: 24px 32px 48px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* ── KPI Cards ── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .kpi-card {
+    background: var(--card-bg);
+    border: 0.5px solid var(--card-bd);
+    border-radius: 14px;
+    padding: 18px 20px;
+  }
+  .kpi-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    margin-bottom: 8px;
+  }
+  .kpi-value {
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--light);
+    line-height: 1;
+  }
+  .kpi-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 5px;
+  }
+
+  /* ── Section headings ── */
+  .section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--light);
+    text-transform: uppercase;
+    letter-spacing: .9px;
+    margin-bottom: 14px;
+  }
+
+  /* ── Charts row ── */
+  .charts-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  @media (max-width: 900px) {
+    .charts-row { grid-template-columns: 1fr; }
+  }
+  .chart-card {
+    background: var(--card-bg);
+    border: 0.5px solid var(--card-bd);
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .chart-card canvas { max-height: 220px; }
+
+  /* ── Funnel ── */
+  .funnel-card {
+    background: var(--card-bg);
+    border: 0.5px solid var(--card-bd);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+  }
+  .funnel-steps {
+    display: flex;
+    gap: 0;
+    align-items: stretch;
+    margin-top: 16px;
+  }
+  .funnel-step {
+    flex: 1;
+    text-align: center;
+    position: relative;
+  }
+  .funnel-step + .funnel-step::before {
+    content: '›';
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 22px;
+    color: var(--text-muted);
+  }
+  .funnel-bar-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 8px;
+  }
+  .funnel-bar {
+    width: 60%;
+    background: rgba(255,255,255,0.1);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .funnel-fill {
+    background: var(--green);
+    border-radius: 6px;
+    transition: height .6s ease;
+  }
+  .funnel-n {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--light);
+  }
+  .funnel-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+  .funnel-pct {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* ── Table ── */
+  .table-card {
+    background: var(--card-bg);
+    border: 0.5px solid var(--card-bd);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 28px;
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  thead th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--light);
+    text-transform: uppercase;
+    letter-spacing: .7px;
+    padding: 0 10px 10px;
+    border-bottom: 0.5px solid var(--card-bd);
+  }
+  tbody tr {
+    border-bottom: 0.5px solid rgba(255,255,255,0.06);
+    transition: background .1s;
+  }
+  tbody tr:hover { background: rgba(255,255,255,0.04); }
+  tbody tr:last-child { border-bottom: none; }
+  td {
+    padding: 10px 10px;
+    vertical-align: middle;
+    color: rgba(255,255,255,0.85);
+  }
+  .badge {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge-active  { background: rgba(29,158,117,.25); color: var(--light); }
+  .badge-sent    { background: rgba(255,200,100,.2);  color: var(--amber); }
+  .badge-pending { background: rgba(255,255,255,.08); color: var(--text-muted); }
+  .badge-yes     { background: rgba(29,158,117,.3);   color: #9FE1CB; }
+  .badge-no      { background: rgba(255,100,100,.2);  color: #ffaaaa; }
+  .badge-unknown { background: rgba(255,190,50,.2);   color: #ffc846; }
+  .profile-btn {
+    background: rgba(255,255,255,0.07);
+    border: 0.5px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.75);
+    border-radius: 7px;
+    padding: 5px 11px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: inherit;
+    transition: background 0.12s, color 0.12s;
+  }
+  .profile-btn:hover { background: rgba(29,158,117,0.3); color: #9FE1CB; border-color: #1D9E75; }
+  .score-pill {
+    display: inline-block;
+    background: rgba(255,255,255,.1);
+    border-radius: 10px;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+  }
+  .score-pill.good { color: var(--light); }
+  .score-pill.mid  { color: var(--amber); }
+  .score-pill.low  { color: #ffaaaa; }
+
+  /* ── Qualitative section ── */
+  .qual-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  @media (max-width: 900px) {
+    .qual-grid { grid-template-columns: 1fr; }
+  }
+  .qual-card {
+    background: var(--card-bg);
+    border: 0.5px solid var(--card-bd);
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .qual-q-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--light);
+    text-transform: uppercase;
+    letter-spacing: .7px;
+    margin-bottom: 12px;
+  }
+  .qual-item {
+    border-bottom: 0.5px solid rgba(255,255,255,.06);
+    padding: 8px 0;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: rgba(255,255,255,.8);
+  }
+  .qual-item:last-child { border-bottom: none; }
+  .qual-name {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 3px;
+  }
+  .qual-empty {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* ── Empty / loading states ── */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+  }
+  .empty-state .icon { font-size: 40px; margin-bottom: 12px; }
+  .empty-state p { font-size: 14px; }
+
+  /* ── Last updated ── */
+  .last-updated {
+    text-align: right;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  /* Decorative SVG background */
+  .bg-deco {
+    position: fixed;
+    top: 0; right: 0;
+    width: 300px; height: 300px;
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- Decorative background circles -->
+<svg class="bg-deco" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="300" cy="0" r="250" fill="none" stroke="#fff" stroke-width="1"/>
+  <circle cx="300" cy="0" r="200" fill="none" stroke="#fff" stroke-width="1"/>
+  <circle cx="300" cy="0" r="150" fill="none" stroke="#fff" stroke-width="1"/>
+  <circle cx="300" cy="0" r="100" fill="none" stroke="#fff" stroke-width="1"/>
+</svg>
+
+<!-- ── Header ── -->
+<div class="header">
+  <div class="header-logo">
+    <div class="logo-circle">⛳</div>
+    <div>
+      <h1>Alfie Golf Trainings</h1>
+      <div class="header-sub">Cohort Results Dashboard</div>
+    </div>
+  </div>
+  <div class="header-controls">
+    <select class="cohort-pick" id="cohort-select" onchange="onCohortChange()">
+      <option value="">All cohorts</option>
+      <option value="1">Cohort 1</option>
+      <option value="2">Cohort 2</option>
+    </select>
+    <button class="btn-refresh" id="btn-refresh" onclick="loadData()">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M13.65 2.35A8 8 0 1 0 15 8h-2a6 6 0 1 1-1.05-3.4L10 6h5V1l-1.35 1.35z" fill="currentColor"/>
+      </svg>
+      Refresh
+    </button>
+  </div>
+</div>
+
+<!-- ── Sheet URL row ── -->
+<div class="sheet-url-row">
+  <label>Apps Script URL</label>
+  <input type="text" id="sheet-url" placeholder="Paste your Apps Script /exec URL here…" oninput="saveUrl()">
+</div>
+
+<div id="status-bar"></div>
+
+<!-- ── Dashboard body ── -->
+<div class="dashboard" id="dashboard" style="display:none">
+  <div class="last-updated" id="last-updated"></div>
+
+  <!-- KPIs -->
+  <div class="section-title">At a glance</div>
+  <div class="kpi-grid" id="kpi-grid"></div>
+
+  <!-- Funnel -->
+  <div class="funnel-card">
+    <div class="section-title">Engagement funnel</div>
+    <div class="funnel-steps" id="funnel-steps"></div>
+  </div>
+
+  <!-- Charts -->
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="section-title">Submissions per golfer</div>
+      <canvas id="chart-sessions"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="section-title">Submissions over time</div>
+      <canvas id="chart-timeline"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="section-title">Q4 — Ready for next week?</div>
+      <canvas id="chart-q4"></canvas>
+    </div>
+  </div>
+
+  <!-- Golfer table -->
+  <div class="table-card">
+    <div class="section-title">Golfer breakdown</div>
+    <table id="golfer-table">
+      <thead>
+        <tr>
+          <th>Cohort</th>
+          <th>#</th>
+          <th>Golfer</th>
+          <th>Handicap</th>
+          <th>Sessions/wk</th>
+          <th>Duration</th>
+          <th>Plan Sent</th>
+          <th>Submissions</th>
+          <th>Last Submission</th>
+          <th>Q4 (latest)</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="golfer-tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- Qualitative responses -->
+  <div class="section-title">What golfers are saying</div>
+  <div class="qual-grid">
+    <div class="qual-card">
+      <div class="qual-q-label">Q1 — What felt different, hard, or clicked?</div>
+      <div id="qual-q1"></div>
+    </div>
+    <div class="qual-card">
+      <div class="qual-q-label">Q2 — Anything that didn't make sense?</div>
+      <div id="qual-q2"></div>
+    </div>
+    <div class="qual-card">
+      <div class="qual-q-label">Q3 — One thing to focus on more next week?</div>
+      <div id="qual-q3"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Persistent URL ──────────────────────────────────────────
+var KEY = 'alfie_dashboard_sheet_url';
+var sheetUrl = localStorage.getItem(KEY) || '';
+
+(function init() {
+  var inp = document.getElementById('sheet-url');
+  inp.value = sheetUrl;
+  if (sheetUrl) loadData();
+})();
+
+function saveUrl() {
+  sheetUrl = document.getElementById('sheet-url').value.trim();
+  localStorage.setItem(KEY, sheetUrl);
+}
+
+// ── Cohort filter ───────────────────────────────────────────
+var selectedCohort = '';
+var rawGolfers = [];
+
+function onCohortChange() {
+  selectedCohort = document.getElementById('cohort-select').value;
+  if (rawGolfers.length) renderDashboard(rawGolfers);
+}
+
+// ── Data loading ────────────────────────────────────────────
+var chartSessions = null, chartTimeline = null, chartQ4 = null;
+
+async function loadData() {
+  if (!sheetUrl) {
+    setStatus('Paste your Apps Script URL above to load data.', '');
+    return;
+  }
+  setStatus('Loading data from Google Sheet + Gmail…', 'loading');
+  document.getElementById('btn-refresh').disabled = true;
+  document.getElementById('dashboard').style.display = 'none';
+
+  try {
+    var url = sheetUrl + '?' + new URLSearchParams({ action: 'getDashboardData' }).toString();
+    var r = await fetch(url);
+    var data = await r.json();
+
+    if (data.error) throw new Error(data.error);
+
+    rawGolfers = data.golfers || [];
+
+    // ── Assign golfer IDs and sort by cohort then sheet row ────────────────
+    // Sort: cohort ascending, then rowIndex ascending within each cohort
+    rawGolfers.sort(function(a, b) {
+      var ca = String(a.cohort || '99').padStart(4, '0');
+      var cb = String(b.cohort || '99').padStart(4, '0');
+      if (ca !== cb) return ca < cb ? -1 : 1;
+      return (a.rowIndex || 0) - (b.rowIndex || 0);
+    });
+    // Assign sequential NN within each cohort (01, 02, …)
+    var cohortCounters = {};
+    rawGolfers.forEach(function(g) {
+      var c = g.cohort || '?';
+      if (!cohortCounters[c]) cohortCounters[c] = 0;
+      cohortCounters[c]++;
+      g.golferNum = String(cohortCounters[c]).padStart(2, '0');
+    });
+    // ────────────────────────────────────────────────────────────────────────
+
+    // ── Merge manual results from localStorage ──────────────────────────────
+    // For any golfer who has no Gmail result for a given week, check localStorage
+    // under key "firstName_wN". Gmail results always take precedence.
+    try {
+      var manualStore = JSON.parse(localStorage.getItem('alfie_manual_results') || '{}');
+      if (Object.keys(manualStore).length > 0) {
+        rawGolfers.forEach(function(g) {
+          var firstName = g.name.split(/\s+/)[0].toLowerCase();
+          for (var wk = 1; wk <= 4; wk++) {
+            var key = firstName + '_w' + wk;
+            if (!manualStore[key]) continue;
+            // Support both old single-entry format and new array format
+            var manualSessions = Array.isArray(manualStore[key])
+              ? manualStore[key]
+              : [manualStore[key]];
+            // For each manual session, only add if no Gmail result already covers that session
+            // (Gmail results take precedence — if any Gmail result exists for this week, skip)
+            var gmailHasWeek = g.results.some(function(r){ return r.week === wk && !r.manual; });
+            if (!gmailHasWeek) {
+              manualSessions.forEach(function(s) { g.results.push(s); });
+            }
+          }
+          // Sort all results by date so latest-session logic works correctly
+          g.results.sort(function(a,b){ return new Date(a.date||0) - new Date(b.date||0); });
+        });
+      }
+    } catch(e) {
+      console.warn('Manual results merge failed:', e);
+    }
+    // ────────────────────────────────────────────────────────────────────────
+
+    setStatus('', '');
+    renderDashboard(rawGolfers);
+    document.getElementById('last-updated').textContent =
+      'Last refreshed: ' + new Date().toLocaleString();
+    document.getElementById('dashboard').style.display = 'block';
+
+  } catch(err) {
+    setStatus('Error: ' + err.message, 'error');
+  }
+  document.getElementById('btn-refresh').disabled = false;
+}
+
+function setStatus(msg, cls) {
+  var el = document.getElementById('status-bar');
+  el.textContent = msg;
+  el.className = cls || '';
+}
+
+// ── Q4 helper — one answer per golfer, based on most recent session ──────────
+// Sorts all of a golfer's results by date and returns the Q4 of the latest one.
+// This ensures multiple sessions in the same week don't count twice in charts.
+function getGolferLatestQ4(g) {
+  if (!g.results || !g.results.length) return 'unknown';
+  var sorted = g.results.slice().sort(function(a, b) {
+    return new Date(a.date || 0) - new Date(b.date || 0);
+  });
+  var last = sorted[sorted.length - 1];
+  return (last.parsed && last.parsed.q4) ? last.parsed.q4 : 'unknown';
+}
+
+// ── Main render ─────────────────────────────────────────────
+function renderDashboard(golfers) {
+  // Filter by cohort
+  var gs = selectedCohort
+    ? golfers.filter(function(g){ return g.cohort === selectedCohort; })
+    : golfers;
+
+  renderKPIs(gs);
+  renderFunnel(gs);
+  renderSessionsChart(gs);
+  renderTimelineChart(gs);
+  renderQ4Chart(gs);
+  renderTable(gs);
+  renderQual(gs);
+}
+
+// ── KPIs ────────────────────────────────────────────────────
+function renderKPIs(gs) {
+  var total      = gs.length;
+  var planSent   = gs.filter(function(g){ return g.week1Sent; }).length;
+  var responded  = gs.filter(function(g){ return g.results && g.results.length > 0; }).length;
+  var totalSubs  = gs.reduce(function(a,g){ return a + (g.results ? g.results.length : 0); }, 0);
+  var avgSubs    = responded > 0 ? (totalSubs / responded).toFixed(1) : '—';
+
+  var q4yes      = 0, q4counted = 0;
+  gs.forEach(function(g) {
+    if (!g.results || !g.results.length) return;
+    var q4 = getGolferLatestQ4(g);
+    if (q4 !== 'unknown') {
+      q4counted++;
+      if (q4 === 'yes') q4yes++;
+    }
+  });
+  var wk2conv  = q4counted > 0 ? Math.round(q4yes / q4counted * 100) + '%' : '—';
+  var activRate = planSent > 0 ? Math.round(responded / planSent * 100) + '%' : '—';
+  var wk2sent  = gs.filter(function(g){ return g.week2Sent; }).length;
+
+  var kpis = [
+    { label: 'Total golfers',    value: total,    sub: 'in selection' },
+    { label: 'W1 plans sent',    value: planSent, sub: 'Week 1 emails out' },
+    { label: 'Submitted scores', value: responded,sub: 'at least 1 response' },
+    { label: 'Activation rate',  value: activRate, sub: 'submitted / sent' },
+    { label: 'Week 2 intent',    value: wk2conv,  sub: '"Yes" on Q4 (latest)' },
+    { label: 'W2 plans sent',    value: wk2sent,  sub: 'Week 2 emails out' }
+  ];
+
+  document.getElementById('kpi-grid').innerHTML = kpis.map(function(k) {
+    return '<div class="kpi-card">' +
+      '<div class="kpi-label">' + k.label + '</div>' +
+      '<div class="kpi-value">' + k.value + '</div>' +
+      '<div class="kpi-sub">' + k.sub + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+// ── Funnel ──────────────────────────────────────────────────
+function renderFunnel(gs) {
+  var total     = gs.length;
+  var sent      = gs.filter(function(g){ return g.week1Sent; }).length;
+  var opened    = gs.filter(function(g){ return g.results && g.results.length > 0; }).length; // proxy
+  var responded = opened;
+  var wantWk2   = gs.filter(function(g){
+    return getGolferLatestQ4(g) === 'yes';
+  }).length;
+  var wk2sent   = gs.filter(function(g){ return g.week2Sent; }).length;
+
+  var steps = [
+    { label: 'Signed up',     n: total,     base: total },
+    { label: 'W1 sent',       n: sent,      base: total },
+    { label: 'Submitted',     n: responded, base: total },
+    { label: 'Want Week 2',   n: wantWk2,   base: total },
+    { label: 'W2 sent',       n: wk2sent,   base: total }
+  ];
+
+  document.getElementById('funnel-steps').innerHTML = steps.map(function(s) {
+    var pct = total > 0 ? Math.round(s.n / s.base * 100) : 0;
+    var h   = Math.max(pct, 8);
+    return '<div class="funnel-step">' +
+      '<div class="funnel-bar-wrap">' +
+        '<div class="funnel-bar" style="height:80px">' +
+          '<div class="funnel-fill" style="height:' + h + '%;background:#1D9E75"></div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="funnel-n">' + s.n + '</div>' +
+      '<div class="funnel-label">' + s.label + '</div>' +
+      '<div class="funnel-pct">' + pct + '%</div>' +
+    '</div>';
+  }).join('');
+}
+
+// ── Sessions chart (horizontal bar) ─────────────────────────
+function renderSessionsChart(gs) {
+  var labels = [];
+  var counts = [];
+  gs.forEach(function(g) {
+    labels.push(g.name.split(' ')[0]);
+    counts.push(g.results ? g.results.length : 0);
+  });
+
+  var ctx = document.getElementById('chart-sessions').getContext('2d');
+  if (chartSessions) chartSessions.destroy();
+  chartSessions = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Submissions',
+        data: counts,
+        backgroundColor: 'rgba(29,158,117,0.7)',
+        borderColor: '#1D9E75',
+        borderWidth: 1,
+        borderRadius: 4
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: {
+          ticks: { color: 'rgba(255,255,255,0.5)', stepSize: 1 },
+          grid:  { color: 'rgba(255,255,255,0.06)' },
+          border:{ color: 'rgba(255,255,255,0.1)' }
+        },
+        y: {
+          ticks: { color: 'rgba(255,255,255,0.7)', font: { size: 11 } },
+          grid:  { display: false },
+          border:{ color: 'rgba(255,255,255,0.1)' }
+        }
+      }
+    }
+  });
+}
+
+// ── Timeline chart (line) ────────────────────────────────────
+function renderTimelineChart(gs) {
+  // Aggregate submissions by date
+  var dateCounts = {};
+  gs.forEach(function(g) {
+    if (!g.results) return;
+    g.results.forEach(function(r) {
+      var d = r.date ? r.date.substring(0, 10) : null;
+      if (!d) return;
+      dateCounts[d] = (dateCounts[d] || 0) + 1;
+    });
+  });
+
+  var sorted = Object.keys(dateCounts).sort();
+  var labels = sorted.map(function(d) {
+    var dt = new Date(d);
+    return dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+  });
+  var vals = sorted.map(function(d) { return dateCounts[d]; });
+
+  // Cumulative
+  var cumVals = [];
+  var running = 0;
+  vals.forEach(function(v) { running += v; cumVals.push(running); });
+
+  var ctx = document.getElementById('chart-timeline').getContext('2d');
+  if (chartTimeline) chartTimeline.destroy();
+  chartTimeline = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels.length ? labels : ['No data'],
+      datasets: [{
+        label: 'Cumulative submissions',
+        data: cumVals.length ? cumVals : [0],
+        borderColor: '#9FE1CB',
+        backgroundColor: 'rgba(159,225,203,0.12)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 4,
+        pointBackgroundColor: '#9FE1CB'
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: {
+          ticks: { color: 'rgba(255,255,255,0.5)', font: { size: 10 } },
+          grid:  { color: 'rgba(255,255,255,0.06)' },
+          border:{ color: 'rgba(255,255,255,0.1)' }
+        },
+        y: {
+          ticks: { color: 'rgba(255,255,255,0.5)', stepSize: 1 },
+          grid:  { color: 'rgba(255,255,255,0.06)' },
+          border:{ color: 'rgba(255,255,255,0.1)' }
+        }
+      }
+    }
+  });
+}
+
+// ── Q4 doughnut ──────────────────────────────────────────────
+function renderQ4Chart(gs) {
+  // Total pie = ALL golfers in the cohort selection
+  var yes = 0, no = 0, noSubmit = 0;
+  gs.forEach(function(g) {
+    var q4 = getGolferLatestQ4(g);
+    if (q4 === 'yes')               yes++;
+    else if (q4 === 'no')           no++;
+    else                            noSubmit++; // no results or Q4 unparseable
+  });
+
+  var ctx = document.getElementById('chart-q4').getContext('2d');
+  if (chartQ4) chartQ4.destroy();
+  chartQ4 = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Yes — send it', 'Not yet', 'Didn\'t submit'],
+      datasets: [{
+        data: [yes, no, noSubmit],
+        backgroundColor: ['rgba(29,158,117,0.8)', 'rgba(255,100,100,0.5)', 'rgba(255,190,50,0.5)'],
+        borderColor:     ['#1D9E75', '#ff6464', 'rgba(255,190,50,0.7)'],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      cutout: '65%',
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            color: 'rgba(255,255,255,0.6)',
+            font: { size: 11 },
+            padding: 12,
+            boxWidth: 12
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              var total = gs.length;
+              var val = context.parsed;
+              var pct = total > 0 ? Math.round(val / total * 100) : 0;
+              return ' ' + context.label + ': ' + val + ' (' + pct + '%)';
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+// ── Golfer table ─────────────────────────────────────────────
+function renderTable(gs) {
+  var tbody = document.getElementById('golfer-tbody');
+  if (!gs.length) {
+    tbody.innerHTML = '<tr><td colspan="12" style="text-align:center;color:var(--text-muted);padding:30px">No golfers found for this selection.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = gs.map(function(g) {
+    var subs   = g.results ? g.results.length : 0;
+    // Sort by date to get the truly most recent session (handles multiple sessions per week)
+    var sortedR = subs > 0 ? g.results.slice().sort(function(a,b){ return new Date(a.date||0)-new Date(b.date||0); }) : [];
+    var last   = sortedR.length ? sortedR[sortedR.length - 1] : null;
+    var lastDt = last ? new Date(last.date).toLocaleDateString('en-GB', { day:'numeric', month:'short' }) : '—';
+    var q4val  = getGolferLatestQ4(g);
+    var q4badge = '<span class="badge badge-' + q4val + '">' +
+      (q4val === 'yes' ? '✓ Yes' : q4val === 'no' ? '✗ Not yet' : '—') + '</span>';
+
+    // Status
+    var status, statusBadge;
+    if (subs > 0)        { status = 'active';  statusBadge = '<span class="badge badge-active">Active</span>'; }
+    else if (g.week1Sent){ status = 'sent';    statusBadge = '<span class="badge badge-sent">Awaiting</span>'; }
+    else                  { status = 'pending'; statusBadge = '<span class="badge badge-pending">Pending</span>'; }
+
+    // Score summary from latest submission
+    var scoreHtml = '—';
+    if (last && last.parsed && last.parsed.scores && last.parsed.scores.length) {
+      scoreHtml = last.parsed.scores.slice(0, 2).map(function(s) {
+        var pct = s.max > 0 ? s.value / s.max : 0;
+        var cls = pct >= .7 ? 'good' : pct >= .4 ? 'mid' : 'low';
+        return '<span class="score-pill ' + cls + '">' + s.value + '/' + s.max + '</span>';
+      }).join(' ');
+    }
+
+    return '<tr>' +
+      '<td style="text-align:center;font-family:monospace;font-size:13px;font-weight:700">' + esc(String(g.cohort || '—').padStart(2,'0')) + '</td>' +
+      '<td style="text-align:center;font-family:monospace;font-size:13px;font-weight:700">' + esc(g.golferNum || '—') + '</td>' +
+      '<td><strong>' + esc(g.name) + '</strong>' +
+        (g.frustration ? '<br><span style="font-size:11px;color:var(--text-muted)">' + esc(g.frustration.substring(0,40)) + (g.frustration.length > 40 ? '…' : '') + '</span>' : '') +
+      '</td>' +
+      '<td>' + esc(g.handicap || '—') + '</td>' +
+      '<td>' + esc(g.sessions || '—') + '</td>' +
+      '<td>' + esc(g.duration || '—') + '</td>' +
+      '<td>' + esc(g.week1Sent || '—') + '</td>' +
+      '<td style="text-align:center"><strong>' + subs + '</strong></td>' +
+      '<td>' + lastDt + '</td>' +
+      '<td>' + q4badge + '</td>' +
+      '<td>' + statusBadge + '</td>' +
+      '<td><button class="profile-btn" onclick="openProfile(' + g.rowIndex + ')">Profile ↗</button></td>' +
+    '</tr>';
+  }).join('');
+}
+
+// ── Golfer profile ───────────────────────────────────────────
+function openProfile(rowIndex) {
+  var g = rawGolfers.find(function(x){ return x.rowIndex === rowIndex; });
+  if (!g) return;
+  localStorage.setItem('alfie_profile_golfer', JSON.stringify(g));
+  window.open('golfer-profile.html', '_blank');
+}
+
+// ── Qualitative responses ────────────────────────────────────
+function renderQual(gs) {
+  var q1s = [], q2s = [], q3s = [];
+  gs.forEach(function(g) {
+    if (!g.results || !g.results.length) return;
+    var firstName = g.name.split(' ')[0];
+    // Show only the most recent result per golfer to avoid duplication
+    var r = g.results[g.results.length - 1];
+    if (!r.parsed) return;
+    if (r.parsed.q1 && r.parsed.q1.length > 5)
+      q1s.push({ name: firstName + ' · Wk' + r.week, text: r.parsed.q1 });
+    if (r.parsed.q2 && r.parsed.q2.length > 5)
+      q2s.push({ name: firstName + ' · Wk' + r.week, text: r.parsed.q2 });
+    if (r.parsed.q3 && r.parsed.q3.length > 5)
+      q3s.push({ name: firstName + ' · Wk' + r.week, text: r.parsed.q3 });
+  });
+
+  function buildItems(arr, elId) {
+    var el = document.getElementById(elId);
+    if (!arr.length) {
+      el.innerHTML = '<p class="qual-empty">No responses yet.</p>';
+      return;
+    }
+    el.innerHTML = arr.map(function(a) {
+      return '<div class="qual-item">"' + esc(a.text) + '"<div class="qual-name">— ' + esc(a.name) + '</div></div>';
+    }).join('');
+  }
+
+  buildItems(q1s, 'qual-q1');
+  buildItems(q2s, 'qual-q2');
+  buildItems(q3s, 'qual-q3');
+}
+
+// ── Utilities ────────────────────────────────────────────────
+function esc(str) {
+  return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>
