@@ -524,7 +524,7 @@
 
   <script>
     /* ── Config ───────────────────────────────────────────────── */
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzkQCL_sV5A-XbGzHsqkyWFVzmmOcfslLE9VtT7hnLikD3vR85fsM35jJhVqBT8fuiUsQ/exec';
+    const APPS_SCRIPT_URL = 'https://alfie-api.alfie-golf.workers.dev/';
 
     /* ── App state ────────────────────────────────────────────── */
     let GOLFER   = null;
@@ -1047,5 +1047,97 @@
       </div>`;
     }
 
+
     function closeModal() {
-      docum
+      document.getElementById('modal-overlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function selectTile(btn) {
+      const group = btn.dataset.group;
+      document.querySelectorAll(`.q-tile[data-group="${group}"]`).forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      checkReady();
+    }
+
+    function checkReady() {
+      const inputs  = [...document.querySelectorAll('.score-input')];
+      const scOk    = inputs.every(i => i.value !== '');
+      const groups  = ['q1','q2','q3'];
+      const tilesOk = groups.every(g => document.querySelector(`.q-tile[data-group="${g}"].selected`));
+      const btn     = document.getElementById('modal-submit');
+      if (btn) btn.disabled = !(scOk && tilesOk);
+    }
+
+    async function submitSession() {
+      const btn = document.getElementById('modal-submit');
+      btn.disabled = true;
+      btn.textContent = 'Saving…';
+
+      const drills = DRILLS.map((d, i) => ({
+        name:  d.name,
+        max:   d.max,
+        score: Number(document.getElementById(`sc-${i}`)?.value || 0),
+      }));
+      const q1 = document.querySelector('.q-tile[data-group="q1"].selected')?.dataset.value || '';
+      const q2 = document.querySelector('.q-tile[data-group="q2"].selected')?.dataset.value || '';
+      const q3 = document.querySelector('.q-tile[data-group="q3"].selected')?.dataset.value || '';
+      const sessionNum = SESSIONS.length + 1;
+      const date = new Date().toISOString();
+
+      try {
+        await apiPost('submitSession', {
+          slug: SLUG, week: 1, session: sessionNum, date,
+          drills, scores: drills.map(d => ({ label: d.name, value: d.score, max: d.max })),
+          q1, q2, q3, q4: 'unknown',
+        });
+
+        SESSIONS.push({
+          week: 1, session: sessionNum, date,
+          drills: drills.map(d => ({ name: d.name, score: d.score, max: d.max })),
+          parsed: { scores: drills.map(d => ({ label: d.name, value: d.score, max: d.max })), q1, q2, q3, q4: 'unknown' },
+        });
+
+        closeModal();
+        renderState2();
+      } catch (err) {
+        const errEl = document.getElementById('modal-error');
+        if (errEl) errEl.textContent = 'Error saving — please try again.';
+        btn.disabled = false;
+        btn.textContent = 'Submit scores & feedback';
+      }
+    }
+
+    async function requestWeek2() {
+      const ids = ['btn-w2-hero','btn-w2-card'];
+      const btns = ids.map(id => document.getElementById(id)).filter(Boolean);
+      btns.forEach(b => { b.disabled = true; b.textContent = 'Sending…'; });
+
+      try {
+        await apiPost('requestWeek2', { slug: SLUG });
+        WEEK2_REQUESTED = true;
+        btns.forEach(b => { b.textContent = 'Request sent ✓'; });
+        const conf = document.getElementById('w2-confirm');
+        if (conf) conf.style.display = 'block';
+      } catch (err) {
+        btns.forEach(b => { b.disabled = false; b.textContent = '🚀 Request Week 2'; });
+      }
+    }
+
+    async function apiPost(action, body) {
+      const r = await fetch(APPS_SCRIPT_URL + '?action=' + encodeURIComponent(action), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      return r.json();
+    }
+
+    function firstNameOf(name) { return (name || '').split(' ')[0] || name; }
+    function initialsOf(name)  {
+      return (name || '').split(' ').map(w => w[0] || '').join('').toUpperCase().slice(0,2) || '?';
+    }
+
+  </script>
+</body>
+</html>

@@ -310,7 +310,7 @@ function sendPlan() {
   var mailtoWorked = false;
   function onBlur() { mailtoWorked = true; window.removeEventListener('blur', onBlur); }
   window.addEventListener('blur', onBlur);
-  window.location.href = 'mailto:alfie.golf.trainings@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  window.location.href = 'mailto:trainings@alfie-golf.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
   setTimeout(function() {
     window.removeEventListener('blur', onBlur);
     if (!mailtoWorked) {
@@ -321,20 +321,20 @@ function sendPlan() {
   }, 800);
 }
 function openGmail() {
-  var url = 'https://mail.google.com/mail/?view=cm&fs=1&to=alfie.golf.trainings@gmail.com&su=' +
+  var url = 'https://mail.google.com/mail/?view=cm&fs=1&to=trainings@alfie-golf.com&su=' +
     encodeURIComponent(lastSubject) + '&body=' + encodeURIComponent(lastBody);
   window.open(url, '_blank');
 }
 function openMailApp() {
-  window.location.href = 'mailto:alfie.golf.trainings@gmail.com?subject=' +
+  window.location.href = 'mailto:trainings@alfie-golf.com?subject=' +
     encodeURIComponent(lastSubject) + '&body=' + encodeURIComponent(lastBody);
 }
 function copyResults() {
-  var text = 'To: alfie.golf.trainings@gmail.com\nSubject: ' + lastSubject + '\n\n' + lastBody;
+  var text = 'To: trainings@alfie-golf.com\nSubject: ' + lastSubject + '\n\n' + lastBody;
   var btn = document.getElementById('copy-btn');
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(function() {
-      btn.textContent = '\u2713 Copied! Paste it into an email to alfie.golf.trainings@gmail.com';
+      btn.textContent = '\u2713 Copied! Paste it into an email to trainings@alfie-golf.com';
       btn.style.color = '#9FE1CB';
       btn.style.borderColor = 'rgba(29,158,117,0.5)';
     });
@@ -347,7 +347,7 @@ function copyResults() {
     ta.select();
     document.execCommand('copy');
     document.body.removeChild(ta);
-    btn.textContent = '\u2713 Copied! Paste it into an email to alfie.golf.trainings@gmail.com';
+    btn.textContent = '\u2713 Copied! Paste it into an email to trainings@alfie-golf.com';
     btn.style.color = '#9FE1CB';
   }
 }

@@ -296,7 +296,7 @@ function sendPlan() {
   var mailtoWorked = false;
   function onBlur() { mailtoWorked = true; window.removeEventListener('blur', onBlur); }
   window.addEventListener('blur', onBlur);
-  window.location.href = 'mailto:alfie.golf.trainings@gmail.com?subject=' +
+  window.location.href = 'mailto:trainings@alfie-golf.com?subject=' +
     encodeURIComponent(parts.subject) + '&body=' + encodeURIComponent(parts.raw);
   setTimeout(function() {
     window.removeEventListener('blur', onBlur);
@@ -310,7 +310,7 @@ function sendPlan() {
 
 function openGmail() {
   var parts = buildEmailParts();
-  var url = 'https://mail.google.com/mail/?view=cm&to=alfie.golf.trainings@gmail.com' +
+  var url = 'https://mail.google.com/mail/?view=cm&to=trainings@alfie-golf.com' +
     '&su=' + encodeURIComponent(parts.subject) +
     '&body=' + encodeURIComponent(parts.raw);
   window.open(url, '_blank');
@@ -318,16 +318,16 @@ function openGmail() {
 
 function openMailApp() {
   var parts = buildEmailParts();
-  window.location.href = 'mailto:alfie.golf.trainings@gmail.com?subject=' +
+  window.location.href = 'mailto:trainings@alfie-golf.com?subject=' +
     encodeURIComponent(parts.subject) + '&body=' + encodeURIComponent(parts.raw);
 }
 
 function copyResults() {
   var parts = buildEmailParts();
-  var text = 'To: alfie.golf.trainings@gmail.com\nSubject: ' + parts.subject + '\n\n' + parts.raw;
+  var text = 'To: trainings@alfie-golf.com\nSubject: ' + parts.subject + '\n\n' + parts.raw;
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(function() {
-      alert('Results copied to clipboard. Paste into an email to alfie.golf.trainings@gmail.com');
+      alert('Results copied to clipboard. Paste into an email to trainings@alfie-golf.com');
     });
   } else {
     var ta = document.createElement('textarea');
@@ -336,7 +336,7 @@ function copyResults() {
     ta.select();
     document.execCommand('copy');
     document.body.removeChild(ta);
-    alert('Results copied to clipboard. Paste into an email to alfie.golf.trainings@gmail.com');
+    alert('Results copied to clipboard. Paste into an email to trainings@alfie-golf.com');
   }
 }
 </script>

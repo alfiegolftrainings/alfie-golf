@@ -1,6 +1,6 @@
 // ══════════════════════════════════════════════════════════════════
 //  Alfie Golf Trainings — Apps Script
-//  Owner: alfie.golf.trainings@gmail.com
+//  Owner: trainings@alfie-golf.com
 // ══════════════════════════════════════════════════════════════════
 
 var SHEET_ID   = '1FaZ-NhnoLUJx-__-nvaELy2iQsuDIlEJl8LhPZ_gZBk';

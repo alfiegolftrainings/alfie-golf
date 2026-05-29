@@ -355,7 +355,7 @@ function sendPlan() {
   function onBlur() { mailtoWorked = true; window.removeEventListener('blur', onBlur); }
   window.addEventListener('blur', onBlur);
 
-  window.location.href = 'mailto:alfie.golf.trainings@gmail.com?subject=' +
+  window.location.href = 'mailto:trainings@alfie-golf.com?subject=' +
     encodeURIComponent(parts.subject) + '&body=' + encodeURIComponent(parts.raw);
 </body>
 </html>
