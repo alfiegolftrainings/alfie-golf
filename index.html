@@ -520,6 +520,19 @@
     </div>
   </div>
 
+  <!-- ── "Keep working together" confirmation modal ───────────── -->
+  <div id="kwt-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:200; align-items:center; justify-content:center;">
+    <div class="modal-card" style="text-align:center; padding:36px 28px;">
+      <button class="modal-close" onclick="closeKwt()">×</button>
+      <div style="font-size:48px; margin-bottom:16px;">🏌️</div>
+      <div class="modal-title" style="margin-bottom:8px;">Message sent to Alfie!</div>
+      <p style="font-size:13px; color:rgba(255,255,255,0.62); line-height:1.65; margin-bottom:28px;">
+        Alfie will be in touch soon to discuss how to keep your game moving forward.
+      </p>
+      <button class="btn btn-primary" style="width:100%;" onclick="closeKwt()">Got it</button>
+    </div>
+  </div>
+
   <!-- ── "How this works" modal ────────────────────────────────── -->
   <div id="info-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.60); z-index:200; align-items:center; justify-content:center;">
     <div class="modal-card">
@@ -747,16 +760,23 @@
       `);
     }
 
-    /* ── State 2: in progress ────────────────────────────────── */
+    /* ── State 2: in progress (Week 1 or Week 2) ───────────────── */
     function renderState2() {
-      const firstName   = firstNameOf(GOLFER.name);
-      const n           = SESSIONS.length;
-      const pct         = Math.min(Math.round((n / 4) * 100), 100);
-      const latest      = SESSIONS[n - 1];
-      const planUrl     = '/plans/' + (GOLFER.planWeek1 || '#');
+      const isWeek2         = !!GOLFER.week2Sent;
+      const weekLabel       = isWeek2 ? 'Week 2' : 'Week 1';
+      const firstName       = firstNameOf(GOLFER.name);
+      const n               = SESSIONS.length;
+      const pct             = Math.min(Math.round((n / 4) * 100), 100);
+      const latest          = SESSIONS[n - 1];
+      const planUrl         = isWeek2
+        ? '/plans/' + (GOLFER.planWeek2 || GOLFER.planWeek1 || '#')
+        : '/plans/' + (GOLFER.planWeek1 || '#');
       const { avg, topDrill, topPct, drillsDone } = computeStats();
-      const w2disabled  = WEEK2_REQUESTED ? 'disabled' : '';
-      const w2label     = WEEK2_REQUESTED ? 'Request sent ✓' : '🚀 Request Week 2';
+      const w2disabled      = WEEK2_REQUESTED ? 'disabled' : '';
+      const w2label         = WEEK2_REQUESTED ? 'Request sent ✓' : '🚀 Request Week 2';
+
+      // Week 2: only unlock "keep working" after first Week 2 session logged
+      const hasWeek2Session = SESSIONS.some(s => String(s.week) === '2');
 
       // Hero body — scores from latest session
       const scoreLines = latest.drills
@@ -769,25 +789,64 @@
         ? scoreLines.join('. ') + '. Solid starting point — keep going.'
         : 'Great work completing your session. Keep the momentum going.';
 
+      // Hero amber button — Week 2 shows "keep working" (gated), Week 1 shows "Request Week 2"
+      const heroAmberBtn = isWeek2
+        ? (hasWeek2Session
+            ? `<button class="btn btn-amber" onclick="keepWorkingTogether()">Want to keep working together?</button>`
+            : `<button class="btn btn-locked" disabled>🔒 Locked</button>`)
+        : `<button class="btn btn-amber" id="btn-w2-hero" onclick="requestWeek2()" ${w2disabled}>${w2label}</button>`;
+
+      // Bottom card — Week 2 shows "keep working" (gated), Week 1 shows "Request Week 2"
+      const bottomCard = isWeek2 ? `
+        <div class="week2-card ${hasWeek2Session ? 'unlocked' : ''}">
+          <div class="week2-left">
+            <div class="week2-icon">${hasWeek2Session ? '🤝' : '🔒'}</div>
+            <div>
+              <div class="week2-title">Want to keep working together?</div>
+              <div class="week2-sub">${hasWeek2Session
+                ? 'Let Alfie know and we\'ll put together your next plan.'
+                : 'Log your first Week 2 session to unlock.'}</div>
+            </div>
+          </div>
+          <div class="week2-right">
+            ${hasWeek2Session
+              ? `<button class="btn btn-amber" onclick="keepWorkingTogether()">Yes, let's continue →</button>`
+              : `<button class="btn btn-locked" disabled>🔒 Locked</button>`}
+          </div>
+        </div>` : `
+        <div class="week2-card unlocked">
+          <div class="week2-left">
+            <div class="week2-icon">🚀</div>
+            <div>
+              <div class="week2-title">Week 2 plan — ready to request</div>
+              <div class="week2-sub">You've logged a session. Tap to request Week 2.</div>
+            </div>
+          </div>
+          <div class="week2-right">
+            <div class="week2-confirm" id="w2-confirm">Sent! Alfie will be in touch. ✓</div>
+            <button class="btn btn-amber" id="btn-w2-card" onclick="requestWeek2()" ${w2disabled}>${w2label}</button>
+          </div>
+        </div>`;
+
       set('view-dashboard', `
         <div class="greeting">
           <h1>${timeGreeting()}, ${firstName} 👋</h1>
-          <p>Week 1 · Here's how your training is looking.</p>
+          <p>${weekLabel} · Here's how your training is looking.</p>
         </div>
 
         <div class="bento">
 
           <!-- Hero -->
           <div class="card card-hero">
-            <div class="hero-badge"><div class="hero-badge-dot"></div>Week 1 · Session ${n} done</div>
+            <div class="hero-badge"><div class="hero-badge-dot"></div>${weekLabel} · Session ${n} done</div>
             <div class="hero-headline">Session ${n} done. Here's how you did.</div>
             <div class="hero-body">${heroBody}</div>
             <div class="progress-row"><span>${n} of 4 sessions logged</span><span>${pct}%</span></div>
             <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
             <div class="hero-actions">
               <button class="btn btn-primary" onclick="openModal()">Log session ${n + 1}</button>
-              <a href="${planUrl}" class="btn btn-secondary">Open Week 1 plan</a>
-              <button class="btn btn-amber" id="btn-w2-hero" onclick="requestWeek2()" ${w2disabled}>${w2label}</button>
+              <a href="${planUrl}" class="btn btn-secondary">Open ${weekLabel} plan</a>
+              ${heroAmberBtn}
             </div>
           </div>
 
@@ -855,20 +914,7 @@
 
         </div><!-- /bento -->
 
-        <!-- Week 2 unlocked -->
-        <div class="week2-card unlocked">
-          <div class="week2-left">
-            <div class="week2-icon">🚀</div>
-            <div>
-              <div class="week2-title">Week 2 plan — ready to request</div>
-              <div class="week2-sub">You've logged a session. Tap to request Week 2.</div>
-            </div>
-          </div>
-          <div class="week2-right">
-            <div class="week2-confirm" id="w2-confirm">Sent! Alfie will be in touch. ✓</div>
-            <button class="btn btn-amber" id="btn-w2-card" onclick="requestWeek2()" ${w2disabled}>${w2label}</button>
-          </div>
-        </div>
+        ${bottomCard}
       `);
     }
 
@@ -1148,6 +1194,27 @@
         btn.disabled = false;
         btn.textContent = 'Submit scores & feedback';
       }
+    }
+
+    async function keepWorkingTogether() {
+      // Disable all KWT buttons immediately
+      document.querySelectorAll('[onclick="keepWorkingTogether()"]').forEach(b => {
+        b.disabled = true; b.textContent = 'Sending…';
+      });
+      try {
+        await apiPost('keepWorkingTogether', { slug: SLUG });
+      } catch (e) { /* fail silently — show modal regardless */ }
+      // Show confirmation
+      const el = document.getElementById('kwt-overlay');
+      if (el) { el.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+      // Update buttons to sent state
+      document.querySelectorAll('[onclick="keepWorkingTogether()"]').forEach(b => {
+        b.textContent = 'Sent ✓'; b.classList.remove('btn-amber'); b.classList.add('btn-secondary');
+      });
+    }
+    function closeKwt() {
+      const el = document.getElementById('kwt-overlay');
+      if (el) { el.style.display = 'none'; document.body.style.overflow = ''; }
     }
 
     async function requestWeek2() {
