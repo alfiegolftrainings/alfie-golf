@@ -620,7 +620,12 @@ function getGolferLatestQ4(g) {
     return new Date(a.date || 0) - new Date(b.date || 0);
   });
   var last = sorted[sorted.length - 1];
-  return (last.parsed && last.parsed.q4) ? last.parsed.q4 : 'unknown';
+  var raw = (last.parsed && last.parsed.q4) ? last.parsed.q4 : 'unknown';
+  // Normalize: "Yes — send it" → 'yes', "Not yet — …" → 'no'
+  var lower = raw.toLowerCase();
+  if (lower.startsWith('yes')) return 'yes';
+  if (lower.startsWith('no'))  return 'no';
+  return 'unknown';
 }
 
 // ── Main render ─────────────────────────────────────────────
