@@ -163,9 +163,9 @@
     .btn:active:not(:disabled) { transform: scale(0.97); }
     .btn-primary   { background: var(--green); color: #fff; box-shadow: 0 2px 12px rgba(29,158,117,0.35); }
     .btn-secondary {
-      background: rgba(255,255,255,0.08);
-      border: 0.5px solid rgba(255,255,255,0.16);
-      color: rgba(255,255,255,0.78);
+      background: rgba(255,255,255,0.14);
+      border: 0.5px solid rgba(255,255,255,0.28);
+      color: rgba(255,255,255,0.92);
     }
     .btn-amber     { background: var(--amber); color: var(--amber-text); box-shadow: 0 2px 12px rgba(255,200,70,0.25); }
     .btn-locked    {
@@ -685,7 +685,7 @@
             <div class="hero-actions">
               <a href="${planUrl}" class="btn btn-primary">Open my plan</a>
               <button class="btn btn-secondary" onclick="openInfo()">How this works</button>
-              <a href="${planUrl}" class="btn btn-amber">Log training session</a>
+              <button class="btn btn-amber" onclick="openModal()">Log training session</button>
             </div>
           </div>
 
