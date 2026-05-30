@@ -648,6 +648,7 @@
             <div class="hero-actions">
               <a href="${planUrl}" class="btn btn-primary">Open my plan</a>
               <button class="btn btn-secondary" onclick="openInfo()">How this works</button>
+              <a href="${planUrl}" class="btn btn-amber">Log training session</a>
             </div>
           </div>
 
@@ -695,7 +696,7 @@
               <div class="coach-avatar">A</div>
               <div>
                 <div class="coach-name">Alfie</div>
-                <div class="coach-title">PGA Teaching Pro</div>
+                <div class="coach-title">Golf Coach</div>
               </div>
             </div>
           </div>
@@ -811,7 +812,7 @@
               <div class="coach-avatar">A</div>
               <div>
                 <div class="coach-name">Alfie</div>
-                <div class="coach-title">PGA Teaching Pro</div>
+                <div class="coach-title">Golf Coach</div>
               </div>
             </div>
           </div>
@@ -968,10 +969,14 @@
 
     /* ── Feedback snapshot ────────────────────────────────────── */
     function feedbackHtml(session) {
+      // q1–q3 may be top-level (locally submitted) or nested in parsed (loaded from D1)
+      const q1 = session.q1 || session.parsed?.q1 || '—';
+      const q2 = session.q2 || session.parsed?.q2 || '—';
+      const q3 = session.q3 || session.parsed?.q3 || '—';
       const qs = [
-        { label: 'How it went',    value: session.q1 || '—' },
-        { label: 'Instructions',   value: session.q2 || '—' },
-        { label: 'Focus next week', value: session.q3 || '—' },
+        { label: 'How it went',    value: q1 },
+        { label: 'Instructions',   value: q2 },
+        { label: 'Focus next week', value: q3 },
       ];
       return `<div class="feedback-grid">${qs.map(q => `
         <div>
@@ -1053,6 +1058,15 @@
       document.body.style.overflow = '';
     }
 
+    function openInfo() {
+      const el = document.getElementById('info-overlay');
+      if (el) { el.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+    }
+    function closeInfo() {
+      const el = document.getElementById('info-overlay');
+      if (el) { el.style.display = 'none'; document.body.style.overflow = ''; }
+    }
+
     function selectTile(btn) {
       const group = btn.dataset.group;
       document.querySelectorAll(`.q-tile[data-group="${group}"]`).forEach(b => b.classList.remove('selected'));
@@ -1066,7 +1080,11 @@
       const groups  = ['q1','q2','q3'];
       const tilesOk = groups.every(g => document.querySelector(`.q-tile[data-group="${g}"].selected`));
       const btn     = document.getElementById('modal-submit');
-      if (btn) btn.disabled = !(scOk && tilesOk);
+      if (btn) {
+        const ready = scOk && tilesOk;
+        btn.disabled = !ready;
+        btn.classList.toggle('ready', ready);
+      }
     }
 
     async function submitSession() {
