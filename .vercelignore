@@ -1,0 +1,13 @@
+# Skill bundles (binary zip archives — not needed on Vercel)
+*.skill
+
+# Local scripts and data files
+*.js
+*.json
+!vercel.json
+
+# Reference docs
+docs/
+
+# Local tools
+plan-builder.html
