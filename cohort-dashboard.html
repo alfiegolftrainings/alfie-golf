@@ -95,26 +95,14 @@
   .btn-refresh:hover { opacity: .85; }
   .btn-refresh:disabled { opacity: .4; cursor: not-allowed; }
 
-  .sheet-url-row {
-    padding: 10px 32px;
-    background: rgba(0,0,0,0.15);
+  .worker-url-row {
+    padding: 8px 32px;
+    background: rgba(0,0,0,0.12);
     display: flex;
     align-items: center;
     gap: 10px;
   }
-  .sheet-url-row label { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
-  .sheet-url-row input {
-    flex: 1;
-    background: var(--card-bg);
-    border: 0.5px solid var(--card-bd);
-    color: var(--text);
-    padding: 6px 10px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-family: monospace;
-    outline: none;
-  }
-  .sheet-url-row input::placeholder { color: var(--text-muted); }
+  .worker-url-row label { font-size: 11px; color: var(--text-muted); white-space: nowrap; font-family: monospace; }
 
   /* ── Status bar ── */
   #status-bar {
@@ -420,8 +408,8 @@
   <div class="header-controls">
     <select class="cohort-pick" id="cohort-select" onchange="onCohortChange()">
       <option value="">All cohorts</option>
-      <option value="1">Cohort 1</option>
-      <option value="2">Cohort 2</option>
+      <option value="C01" selected>Cohort 1</option>
+      <option value="C02">Cohort 2</option>
     </select>
     <button class="btn-refresh" id="btn-refresh" onclick="loadData()">
       <svg width="13" height="13" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -432,10 +420,9 @@
   </div>
 </div>
 
-<!-- ── Sheet URL row ── -->
-<div class="sheet-url-row">
-  <label>Apps Script URL</label>
-  <input type="text" id="sheet-url" placeholder="Paste your Apps Script /exec URL here…" oninput="saveUrl()">
+<!-- ── Worker URL indicator ── -->
+<div class="worker-url-row">
+  <label>⚡ alfie-api.alfie-golf.workers.dev</label>
 </div>
 
 <div id="status-bar"></div>
@@ -513,60 +500,82 @@
 </div>
 
 <script>
-// ── Persistent URL ──────────────────────────────────────────
-var KEY = 'alfie_dashboard_sheet_url';
-var sheetUrl = localStorage.getItem(KEY) || '';
+// ── Config ──────────────────────────────────────────────────
+var WORKER = 'https://alfie-api.alfie-golf.workers.dev/';
+
+// ── Boot ────────────────────────────────────────────────────
+var selectedCohort = 'C01';
+var rawGolfers = [];
+var chartSessions = null, chartTimeline = null, chartQ4 = null;
 
 (function init() {
-  var inp = document.getElementById('sheet-url');
-  inp.value = sheetUrl;
-  if (sheetUrl) loadData();
+  selectedCohort = document.getElementById('cohort-select').value;
+  loadData();
 })();
-
-function saveUrl() {
-  sheetUrl = document.getElementById('sheet-url').value.trim();
-  localStorage.setItem(KEY, sheetUrl);
-}
-
-// ── Cohort filter ───────────────────────────────────────────
-var selectedCohort = '';
-var rawGolfers = [];
 
 function onCohortChange() {
   selectedCohort = document.getElementById('cohort-select').value;
-  if (rawGolfers.length) renderDashboard(rawGolfers);
+  loadData();
 }
 
 // ── Data loading ────────────────────────────────────────────
-var chartSessions = null, chartTimeline = null, chartQ4 = null;
-
 async function loadData() {
-  if (!sheetUrl) {
-    setStatus('Paste your Apps Script URL above to load data.', '');
-    return;
-  }
-  setStatus('Loading data from Google Sheet + Gmail…', 'loading');
+  setStatus('Loading from D1…', 'loading');
   document.getElementById('btn-refresh').disabled = true;
   document.getElementById('dashboard').style.display = 'none';
 
   try {
-    var url = sheetUrl + '?' + new URLSearchParams({ action: 'getDashboardData' }).toString();
-    var r = await fetch(url);
-    var data = await r.json();
+    // 1. Get list of golfers (optionally filtered by cohort)
+    var listUrl = WORKER + '?action=listGolfers' + (selectedCohort ? '&cohort=' + encodeURIComponent(selectedCohort) : '');
+    var listData = await fetch(listUrl).then(function(r){ return r.json(); });
+    var slugList = listData.golfers || [];
 
-    if (data.error) throw new Error(data.error);
+    if (!slugList.length) {
+      setStatus('No golfers found for this cohort.', 'error');
+      document.getElementById('btn-refresh').disabled = false;
+      return;
+    }
 
-    rawGolfers = data.golfers || [];
+    // 2. Fetch profile + results for each golfer in parallel
+    rawGolfers = await Promise.all(slugList.map(async function(item) {
+      var slug = item.slug;
+      var profileUrl = WORKER + '?action=getGolferBySlug&slug=' + encodeURIComponent(slug);
+      var resultsUrl = WORKER + '?action=getGolferResults&slug=' + encodeURIComponent(slug);
+      var [profile, resultsData] = await Promise.all([
+        fetch(profileUrl).then(function(r){ return r.json(); }),
+        fetch(resultsUrl).then(function(r){ return r.json(); })
+      ]);
 
-    // ── Assign golfer IDs and sort by cohort then sheet row ────────────────
-    // Sort: cohort ascending, then rowIndex ascending within each cohort
-    rawGolfers.sort(function(a, b) {
-      var ca = String(a.cohort || '99').padStart(4, '0');
-      var cb = String(b.cohort || '99').padStart(4, '0');
-      if (ca !== cb) return ca < cb ? -1 : 1;
-      return (a.rowIndex || 0) - (b.rowIndex || 0);
-    });
-    // Assign sequential NN within each cohort (01, 02, …)
+      var allRows = resultsData.sessions || [];
+      // Filter out sentinel rows (week=2, session=0 = Week 2 requested marker)
+      var results = allRows.filter(function(s){
+        return !(String(s.week) === '2' && String(s.session) === '0');
+      });
+      var week2Requested = allRows.some(function(s){
+        return String(s.week) === '2' && String(s.session) === '0';
+      });
+
+      return {
+        slug:           slug,
+        name:           profile.name  || item.name || slug,
+        email:          profile.email || item.email || '',
+        cohort:         cohortFromSlug(slug),
+        handicap:       profile.handicap    || '—',
+        frustration:    profile.frustration || '',
+        week1Sent:      profile.week1Sent   || '',
+        week2Sent:      profile.week2Sent   || '',
+        planWeek1:      profile.planWeek1   || '',
+        sessions:       '—',   // sessions_per_week — Worker enhancement pending
+        duration:       '—',   // session_duration  — Worker enhancement pending
+        results:        results,
+        week2Requested: week2Requested,
+      };
+    }));
+
+    // 3. Sort by slug (already ordered by cohort + number in slug)
+    rawGolfers.sort(function(a, b){ return a.slug < b.slug ? -1 : 1; });
+
+    // 4. Assign sequential display numbers within cohort
     var cohortCounters = {};
     rawGolfers.forEach(function(g) {
       var c = g.cohort || '?';
@@ -574,38 +583,6 @@ async function loadData() {
       cohortCounters[c]++;
       g.golferNum = String(cohortCounters[c]).padStart(2, '0');
     });
-    // ────────────────────────────────────────────────────────────────────────
-
-    // ── Merge manual results from localStorage ──────────────────────────────
-    // For any golfer who has no Gmail result for a given week, check localStorage
-    // under key "firstName_wN". Gmail results always take precedence.
-    try {
-      var manualStore = JSON.parse(localStorage.getItem('alfie_manual_results') || '{}');
-      if (Object.keys(manualStore).length > 0) {
-        rawGolfers.forEach(function(g) {
-          var firstName = g.name.split(/\s+/)[0].toLowerCase();
-          for (var wk = 1; wk <= 4; wk++) {
-            var key = firstName + '_w' + wk;
-            if (!manualStore[key]) continue;
-            // Support both old single-entry format and new array format
-            var manualSessions = Array.isArray(manualStore[key])
-              ? manualStore[key]
-              : [manualStore[key]];
-            // For each manual session, only add if no Gmail result already covers that session
-            // (Gmail results take precedence — if any Gmail result exists for this week, skip)
-            var gmailHasWeek = g.results.some(function(r){ return r.week === wk && !r.manual; });
-            if (!gmailHasWeek) {
-              manualSessions.forEach(function(s) { g.results.push(s); });
-            }
-          }
-          // Sort all results by date so latest-session logic works correctly
-          g.results.sort(function(a,b){ return new Date(a.date||0) - new Date(b.date||0); });
-        });
-      }
-    } catch(e) {
-      console.warn('Manual results merge failed:', e);
-    }
-    // ────────────────────────────────────────────────────────────────────────
 
     setStatus('', '');
     renderDashboard(rawGolfers);
@@ -614,9 +591,18 @@ async function loadData() {
     document.getElementById('dashboard').style.display = 'block';
 
   } catch(err) {
-    setStatus('Error: ' + err.message, 'error');
+    setStatus('Error loading data: ' + err.message, 'error');
   }
   document.getElementById('btn-refresh').disabled = false;
+}
+
+// ── Cohort from slug ─────────────────────────────────────────
+function cohortFromSlug(slug) {
+  var m = slug.match(/^c0(\w+)-/i);
+  if (!m) return '?';
+  var x = m[1].toUpperCase();
+  if (x === '0') return 'Test';
+  return 'C0' + x;
 }
 
 function setStatus(msg, cls) {
@@ -639,10 +625,8 @@ function getGolferLatestQ4(g) {
 
 // ── Main render ─────────────────────────────────────────────
 function renderDashboard(golfers) {
-  // Filter by cohort
-  var gs = selectedCohort
-    ? golfers.filter(function(g){ return g.cohort === selectedCohort; })
-    : golfers;
+  // No client-side cohort filter needed — data is already loaded per cohort
+  var gs = golfers;
 
   renderKPIs(gs);
   renderFunnel(gs);
@@ -932,17 +916,14 @@ function renderTable(gs) {
       '<td>' + lastDt + '</td>' +
       '<td>' + q4badge + '</td>' +
       '<td>' + statusBadge + '</td>' +
-      '<td><button class="profile-btn" onclick="openProfile(' + g.rowIndex + ')">Profile ↗</button></td>' +
+      '<td><button class="profile-btn" onclick="openProfile(\'' + esc(g.slug) + '\')">Dashboard ↗</button></td>' +
     '</tr>';
   }).join('');
 }
 
 // ── Golfer profile ───────────────────────────────────────────
-function openProfile(rowIndex) {
-  var g = rawGolfers.find(function(x){ return x.rowIndex === rowIndex; });
-  if (!g) return;
-  localStorage.setItem('alfie_profile_golfer', JSON.stringify(g));
-  window.open('golfer-profile.html', '_blank');
+function openProfile(slug) {
+  window.open('https://alfie-golf.com/' + encodeURIComponent(slug), '_blank');
 }
 
 // ── Qualitative responses ────────────────────────────────────
@@ -953,13 +934,13 @@ function renderQual(gs) {
     var firstName = g.name.split(' ')[0];
     // Show only the most recent result per golfer to avoid duplication
     var r = g.results[g.results.length - 1];
-    if (!r.parsed) return;
-    if (r.parsed.q1 && r.parsed.q1.length > 5)
-      q1s.push({ name: firstName + ' · Wk' + r.week, text: r.parsed.q1 });
-    if (r.parsed.q2 && r.parsed.q2.length > 5)
-      q2s.push({ name: firstName + ' · Wk' + r.week, text: r.parsed.q2 });
-    if (r.parsed.q3 && r.parsed.q3.length > 5)
-      q3s.push({ name: firstName + ' · Wk' + r.week, text: r.parsed.q3 });
+    // q1–q3 may be in parsed (from D1) or top-level (locally submitted)
+    var q1 = (r.parsed && r.parsed.q1) || r.q1 || '';
+    var q2 = (r.parsed && r.parsed.q2) || r.q2 || '';
+    var q3 = (r.parsed && r.parsed.q3) || r.q3 || '';
+    if (q1.length > 5) q1s.push({ name: firstName + ' · Wk' + r.week, text: q1 });
+    if (q2.length > 5) q2s.push({ name: firstName + ' · Wk' + r.week, text: q2 });
+    if (q3.length > 5) q3s.push({ name: firstName + ' · Wk' + r.week, text: q3 });
   });
 
   function buildItems(arr, elId) {
