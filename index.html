@@ -383,8 +383,15 @@
     }
     .info-text { font-size: 12px; color: rgba(255,255,255,0.75); line-height: 1.55; padding-top: 2px; }
 
-    /* ── Mobile ─────────────────────────────────────────────────── */
-    @media (max-width: 700px) {
+    /* ── Tablet (≤ 860px) ───────────────────────────────────────── */
+    @media (max-width: 860px) {
+      .card-hero, .card-sessions,
+      .card-drills, .card-coach { grid-column: span 12; }
+      .feedback-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ── Mobile (≤ 680px) ───────────────────────────────────────── */
+    @media (max-width: 680px) {
       #app { padding: 20px 16px 80px; }
 
       /* All bento items full-width */
@@ -392,37 +399,32 @@
       .card-drills, .card-coach,
       .card-timeline, .card-feedback { grid-column: span 12; }
 
-      /* Stats row full-width on mobile */
-      .stats-row { grid-template-columns: repeat(3, 1fr); }
-
       /* Card polish */
       .card { border-radius: 16px; padding: 18px; }
 
-      /* Hero: bigger, more impact */
+      /* Hero */
       .card-hero { padding: 20px; }
       .hero-headline { font-size: 18px; }
       .hero-body { font-size: 12px; }
 
-      /* Hero actions: primary full-width, secondary text-style */
+      /* Hero actions: all full-width stacked */
       .hero-actions { flex-direction: column; gap: 10px; }
-      .hero-actions .btn-primary { width: 100%; padding: 14px; font-size: 14px; border-radius: 12px; }
+      .hero-actions .btn { width: 100%; padding: 14px; font-size: 14px; border-radius: 12px; justify-content: center; text-align: center; }
       .hero-actions .btn-secondary {
-        width: 100%; padding: 12px; font-size: 12px; border-radius: 12px;
+        padding: 12px; font-size: 12px;
         background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12);
       }
-      .hero-actions .btn-amber { width: 100%; padding: 14px; font-size: 14px; border-radius: 12px; }
 
-      /* Ring card: smaller ring on mobile */
+      /* Ring card */
       .ring-count { font-size: 28px; }
 
-      /* Stats: 3-col on mobile (compact enough with smaller numbers) */
-      .stats-row { grid-template-columns: repeat(3, 1fr); }
+      /* Stats */
       .stat-num { font-size: 22px; }
 
       /* Feedback: single column */
-      .feedback-grid  { grid-template-columns: 1fr; gap: 14px; }
+      .feedback-grid { grid-template-columns: 1fr; gap: 14px; }
 
-      /* Timeline: scrollable if needed */
+      /* Timeline: horizontally scrollable */
       .timeline-track { overflow-x: auto; padding-bottom: 6px; gap: 0; }
       .milestone { min-width: 56px; }
       .milestone-label { font-size: 8px; }
@@ -432,9 +434,31 @@
       .greeting p  { font-size: 12px; }
 
       /* Week 2 card */
-      .week2-card { border-radius: 16px; padding: 18px; }
+      .week2-card { flex-direction: column; align-items: flex-start; border-radius: 16px; padding: 18px; }
       .week2-right { width: 100%; }
-      .week2-right .btn-amber { width: 100%; padding: 13px; border-radius: 12px; font-size: 13px; }
+      .week2-right .btn { width: 100%; padding: 13px; border-radius: 12px; font-size: 13px; }
+    }
+
+    /* ── Very small phones (≤ 380px) ───────────────────────────── */
+    @media (max-width: 380px) {
+      .stat-num { font-size: 18px; }
+      .stat-detail, .stat-highlight { font-size: 9px; }
+      .ring-count { font-size: 24px; }
+      .hero-headline { font-size: 16px; }
+    }
+
+    /* ── Landscape on short screens ─────────────────────────────── */
+    @media (max-height: 500px) and (orientation: landscape) {
+      nav { height: 40px; }
+      #app { padding-top: 12px; padding-bottom: 40px; }
+      .greeting { margin-bottom: 12px; }
+      .greeting h1 { font-size: 16px; }
+      .card { padding: 14px; }
+      .card-hero { padding: 16px; }
+      .hero-headline { font-size: 15px; }
+      .hero-body { font-size: 11px; margin-bottom: 12px; }
+      .progress-track { margin-bottom: 12px; }
+      .bento { gap: 10px; margin-bottom: 10px; }
     }
   </style>
 </head>
