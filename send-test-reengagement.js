@@ -1,0 +1,103 @@
+// send-test-reengagement.js
+// Usage: RESEND_API_KEY=re_xxx node send-test-reengagement.js
+
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
+if (!RESEND_API_KEY) {
+  console.error('Missing RESEND_API_KEY. Run as: RESEND_API_KEY=re_xxx node send-test-reengagement.js');
+  process.exit(1);
+}
+
+const NAME     = 'Fabio';
+const PLAN_URL = 'https://alfie-golf.com/plans/adi-dobson-week1-plan.html';
+
+const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin:0;padding:0;background:#f4f4f4;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f4;padding:32px 0;">
+  <tr>
+    <td align="center">
+      <table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.10);">
+        <tr>
+          <td style="background:#085041;padding:36px 40px 28px;text-align:center;">
+            <div style="font-size:36px;margin-bottom:14px;">🏌️</div>
+            <div style="color:#ffffff;font-size:22px;font-weight:700;letter-spacing:-0.3px;margin-bottom:6px;">
+              Still with us, ${NAME}?
+            </div>
+            <div style="color:#9FE1CB;font-size:14px;">
+              Week 1 · Your plan is still here
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="background:#ffffff;padding:36px 40px 32px;">
+            <p style="margin:0 0 18px;font-size:16px;color:#1a1a1a;line-height:1.6;">Hi ${NAME},</p>
+            <p style="margin:0 0 18px;font-size:15px;color:#333333;line-height:1.7;">
+              I noticed I haven't heard back from you since sending your Week 1 practice plan — just wanted to check in and make sure it actually reached you.
+            </p>
+            <p style="margin:0 0 18px;font-size:15px;color:#333333;line-height:1.7;">
+              If you've had a chance to try it, I'd genuinely love to know how it went — even just a quick note. And if life got in the way and you haven't gotten to it yet, no worries at all. Your plan is still there whenever you're ready.
+            </p>
+            <p style="margin:0 0 28px;font-size:15px;color:#333333;line-height:1.7;">
+              If this isn't the right time, or the concierge test isn't quite what you were expecting, just reply and let me know — no hard feelings, and I really do appreciate you signing up.
+            </p>
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td align="center" style="padding-bottom:28px;">
+                  <a href="${PLAN_URL}" style="display:inline-block;background:#1D9E75;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;padding:14px 32px;border-radius:8px;letter-spacing:-0.1px;">
+                    Open my plan &rarr;
+                  </a>
+                </td>
+              </tr>
+            </table>
+            <p style="margin:0;font-size:14px;color:#666666;line-height:1.6;">
+              Any questions, just reply to this email.<br>Talk soon,
+            </p>
+            <p style="margin:6px 0 0;font-size:14px;color:#333333;font-weight:600;">Fabio</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="background:#f9f9f9;padding:20px 40px;border-top:1px solid #eeeeee;text-align:center;">
+            <p style="margin:0 0 4px;font-size:12px;color:#999999;">Fabio · Alfie Golf Trainings</p>
+            <p style="margin:0 0 8px;font-size:12px;">
+              <a href="mailto:trainings@alfie-golf.com" style="color:#1D9E75;text-decoration:none;">trainings@alfie-golf.com</a>
+            </p>
+            <p style="margin:0;font-size:11px;color:#bbbbbb;">
+              Can't click the button?
+              <a href="${PLAN_URL}" style="color:#1D9E75;text-decoration:none;">Click here</a>
+              or copy: ${PLAN_URL}
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>`;
+
+fetch('https://api.resend.com/emails', {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${RESEND_API_KEY}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    from:    'Fabio <trainings@alfie-golf.com>',
+    to:      ['fabio.pengue@gmail.com'],
+    subject: `Still in, ${NAME}? Your Week 1 plan is still here`,
+    html:    html
+  })
+})
+.then(r => r.json())
+.then(data => {
+  if (data.id) {
+    console.log('✅ Test email sent! ID:', data.id);
+  } else {
+    console.error('❌ Error:', JSON.stringify(data, null, 2));
+  }
+})
+.catch(err => console.error('❌ Request failed:', err.message));

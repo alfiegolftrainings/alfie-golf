@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Week 1 Practice Plan — Adi Dobson</title>
+<title>Week 1 Practice Plan — Joon D</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -50,7 +50,7 @@ body {
 .score-box-label { font-size: 10px; font-weight: 500; color: #085041; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; }
 .score-single { display: flex; align-items: center; gap: 10px; }
 .score-desc { font-size: 13px; color: #0F6E56; flex: 1; }
-.score-triple { display: flex; gap: 8px; flex-wrap: wrap; }
+.score-double { display: flex; gap: 10px; flex-wrap: wrap; }
 .score-chip { display: flex; align-items: center; gap: 6px; background: #fff; border: 0.5px solid #9FE1CB; border-radius: 6px; padding: 5px 10px; }
 .score-chip-label { font-size: 12px; color: #0F6E56; }
 .score-input {
@@ -60,11 +60,12 @@ body {
   -moz-appearance: textfield;
 }
 .score-input.wide { width: 48px; }
-.score-input.narrow { width: 32px; }
+.score-input.narrow { width: 40px; }
 .score-input::-webkit-outer-spin-button,
 .score-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .score-input::placeholder { color: #9FE1CB; font-size: 14px; }
 .score-denom { font-size: 13px; color: #0F6E56; font-weight: 500; }
+.score-note { font-size: 11px; color: #0F6E56; font-style: italic; margin-top: 6px; }
 .feedback-section { padding: 1.25rem 1.5rem 0; position: relative; z-index: 1; }
 .feedback-card { background: rgba(255,255,255,0.08); border: 0.5px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 1.25rem 1.5rem; }
 .feedback-intro { font-size: 13px; color: rgba(255,255,255,0.88); line-height: 1.7; margin-bottom: 1.25rem; }
@@ -117,15 +118,15 @@ body {
 
   <div class="header">
     <div class="week-label">Week 1 · Practice Plan</div>
-    <div class="golfer-name">Adi Dobson</div>
-    <div class="plan-meta">May 2026 &nbsp;·&nbsp; Driving range + chipping area</div>
+    <div class="golfer-name">Joon D</div>
+    <div class="plan-meta">May 2026 &nbsp;·&nbsp; Driving range with tracking system</div>
     <div class="chips">
       <div class="chip"><div class="chip-label">Duration</div><div class="chip-value">30 min</div></div>
       <div class="chip"><div class="chip-label">Drills</div><div class="chip-value">3 this week</div></div>
-      <div class="chip"><div class="chip-label">Focus</div><div class="chip-value">Distance control + start line</div></div>
+      <div class="chip"><div class="chip-label">Focus</div><div class="chip-value">Tempo + hands-ahead feel</div></div>
     </div>
     <div class="opening">
-      <p>Adi, you said "approach play" is the thing costing you shots — and at your level, it's the single fastest place to make the scorecard look better. This session isn't about swing changes. It's about building three reliable carry distances and a consistent start line so when you're 80 yards out, you're thinking about the target, not hoping for the best.</p>
+      <p>Joon — I hear you: "Topping balls when I try to hit them too hard." There's no need to force it — if contact is right, the club will do the work. This session trains a hands-ahead feel and controlled tempo so harder intent produces clean, low long-iron contact, not tops.</p>
     </div>
   </div>
 
@@ -136,36 +137,24 @@ body {
     <div class="drill-card">
       <div class="drill-header">
         <div class="drill-num">1</div>
-        <span class="drill-name">3 Stock Distances Ladder</span>
-        <span class="drill-time">12 min</span>
+        <span class="drill-name">Tempo ladder — half and three-quarter swings</span>
+        <span class="drill-time">10 min</span>
       </div>
       <div class="drill-body">
         <div>
           <div class="micro-label">What to do</div>
-          <p class="drill-text">Choose three targets you can clearly see from the range or chipping area — one short (roughly 40–50 yards), one medium (60–70 yards), one long (80–90 yards). Hit 3 balls to the short target, 3 to medium, 3 to long — then repeat that sequence once more for 18 balls total. Use the same club, the same tempo, and the same finish position for each distance. The goal isn't perfection — it's making your misses predictable. A shot that finishes 5 yards short every time is far more useful on the course than one that's random. Count a ball as successful if it lands within a green-sized zone around your target.</p>
+          <p class="drill-text">Using a 4- or 5-iron, hit 12 half-swings (finish at waist height) then 12 three-quarter swings (finish at shoulder height). Count "1–2" out loud on every shot to lock a steady tempo — if you feel yourself rushing, stop, take a breath, and reset before the next ball. Check the tracker after each shot: you're looking for a lower, more penetrating ball flight compared to your usual full swing. That's the signal contact is clean.</p>
         </div>
         <div class="why-block">
           <div class="why-label">Why this drill for you</div>
-          <p class="why-text">Distance control is the hidden half of approach play. You can aim perfectly and still miss every green if you don't know exactly how far your wedge carries at a smooth tempo. Three owned distances means three situations where you step up knowing the answer — not guessing.</p>
+          <p class="why-text">Slowing the tempo removes the rush that causes topping — you're training your body to feel what "in control" looks like before asking it to do more.</p>
         </div>
         <div class="score-box">
-          <div class="score-box-label">Score to record</div>
-          <div class="score-triple">
-            <div class="score-chip">
-              <span class="score-chip-label">Short</span>
-              <input type="number" class="score-input narrow" id="score1a" min="0" max="6" placeholder="·" oninput="checkReady()">
-              <span class="score-denom">/ 6</span>
-            </div>
-            <div class="score-chip">
-              <span class="score-chip-label">Medium</span>
-              <input type="number" class="score-input narrow" id="score1b" min="0" max="6" placeholder="·" oninput="checkReady()">
-              <span class="score-denom">/ 6</span>
-            </div>
-            <div class="score-chip">
-              <span class="score-chip-label">Long</span>
-              <input type="number" class="score-input narrow" id="score1c" min="0" max="6" placeholder="·" oninput="checkReady()">
-              <span class="score-denom">/ 6</span>
-            </div>
+          <div class="score-single">
+            <span class="score-box-label" style="margin-bottom:0">Score to record</span>
+            <span class="score-desc">Shots with lower, penetrating flight on tracker:</span>
+            <input type="number" class="score-input wide" id="score1" min="0" max="24" placeholder="·" oninput="checkReady()">
+            <span class="score-denom">/ 24</span>
           </div>
         </div>
       </div>
@@ -175,24 +164,31 @@ body {
     <div class="drill-card">
       <div class="drill-header">
         <div class="drill-num">2</div>
-        <span class="drill-name">Start-Line Gate</span>
+        <span class="drill-name">Hands-ahead contact drill</span>
         <span class="drill-time">10 min</span>
       </div>
       <div class="drill-body">
         <div>
           <div class="micro-label">What to do</div>
-          <p class="drill-text">Push two alignment sticks into the ground 3 feet in front of your ball, one on each side, forming a gate roughly a clubhead-width wider than your ball. If you don't have alignment sticks, two tees pushed firmly into the ground work as a fallback. Pick a target between 80 and 130 yards — a flag, a post, anything with a clear line. Hit 12 shots with your most common approach club and focus on one thing only: does the ball start through the gate on your intended line? Distance is irrelevant here. Direction is everything. If you clip a stick or tee, stop completely, walk behind the ball to re-check your alignment, then go again.</p>
+          <p class="drill-text">With a 5-iron, hit 20 controlled swings while focusing on one feel: hands leading the clubhead through impact, as if you're trying to keep the grip end of the club pointing at your left hip through the hitting zone. Check the tracker after each shot — the goal is the lowest apex you can achieve while still getting reasonable carry. If you start topping, shorten the backswing until contact comes back, then gradually extend again. Record apex only on clean contacts — skip any topped or thinned shots.</p>
         </div>
         <div class="why-block">
           <div class="why-label">Why this drill for you</div>
-          <p class="why-text">Most approach misses happen before the ball has gone 20 yards — the face isn't square and the ball leaks offline immediately. The gate exposes that instantly and gives you something concrete to fix, rather than guessing from where the ball ended up 100 yards away.</p>
+          <p class="why-text">Feeling the hands lead through impact is the sensation that produces ball-first contact — the direct fix for topping when you try to hit harder.</p>
         </div>
         <div class="score-box">
-          <div class="score-single">
-            <span class="score-box-label" style="margin-bottom:0">Score to record</span>
-            <span class="score-desc">Started through gate:</span>
-            <input type="number" class="score-input wide" id="score2" min="0" max="12" placeholder="·" oninput="checkReady()">
-            <span class="score-denom">/ 12</span>
+          <div class="score-box-label">Score to record &nbsp;<span style="font-weight:400;font-style:italic;text-transform:none;letter-spacing:0">(clean contacts only)</span></div>
+          <div class="score-double">
+            <div class="score-chip">
+              <span class="score-chip-label">Lowest apex</span>
+              <input type="number" class="score-input narrow" id="score2a" min="0" max="999" placeholder="·" oninput="checkReady()">
+              <span class="score-denom">ft</span>
+            </div>
+            <div class="score-chip">
+              <span class="score-chip-label">Highest apex</span>
+              <input type="number" class="score-input narrow" id="score2b" min="0" max="999" placeholder="·" oninput="checkReady()">
+              <span class="score-denom">ft</span>
+            </div>
           </div>
         </div>
       </div>
@@ -202,24 +198,24 @@ body {
     <div class="drill-card">
       <div class="drill-header">
         <div class="drill-num">3</div>
-        <span class="drill-name">Up-and-Down Par Challenge</span>
-        <span class="drill-time">8 min</span>
+        <span class="drill-name">Committed full swings to a landing zone</span>
+        <span class="drill-time">10 min</span>
       </div>
       <div class="drill-body">
         <div>
           <div class="micro-label">What to do</div>
-          <p class="drill-text">Move to the chipping area. Drop 2 balls in each of 4 different spots around the green — pick spots that simulate realistic approach misses, not flat easy lies. Try to include: one tight lie just short of the green, one from light rough, one slightly uphill, one slightly downhill. For each ball: play a chip or pitch onto the green, then putt out as if it's a real hole. Your target is to get up-and-down — chip inside 6 feet and hole the putt. If you take 3 strokes from any spot, note it and move on without dwelling on it.</p>
+          <p class="drill-text">Pick a target on the range and set a carry distance with your 5-iron. Hit 15 full swings to that zone using the same tempo and hands-ahead feel from drills 1 and 2. Use the tracker after each shot and count only balls that land within ±10 yards of your intended carry. If you start topping, go back to the "1–2" count from drill 1 — don't add swing speed, add rhythm.</p>
         </div>
         <div class="why-block">
           <div class="why-label">Why this drill for you</div>
-          <p class="why-text">Even the best ball-strikers miss greens. The golfers who shoot lower scores aren't necessarily the ones who hit more greens — they're the ones who save bogey when they miss. At a 20 handicap, converting approach misses into bogeys instead of doubles is one of the fastest ways to drop shots off your card without changing your swing.</p>
+          <p class="why-text">This is where you transfer the tempo and contact feel into a committed full swing — the goal isn't to swing easier, it's to prove you can swing fully without topping when the mechanics are right.</p>
         </div>
         <div class="score-box">
           <div class="score-single">
             <span class="score-box-label" style="margin-bottom:0">Score to record</span>
-            <span class="score-desc">Up-and-downs made:</span>
-            <input type="number" class="score-input wide" id="score3" min="0" max="8" placeholder="·" oninput="checkReady()">
-            <span class="score-denom">/ 8</span>
+            <span class="score-desc">Shots within ±10 yards of target:</span>
+            <input type="number" class="score-input wide" id="score3" min="0" max="15" placeholder="·" oninput="checkReady()">
+            <span class="score-denom">/ 15</span>
           </div>
         </div>
       </div>
@@ -231,7 +227,7 @@ body {
   <div class="feedback-section">
     <div class="feedback-card">
       <p class="feedback-intro">
-        The approach has probably been costing you for a while. This week isn't about perfect shots — it's about making your approach outcomes more predictable and your misses more recoverable.
+        Topping long irons under pressure is one of the most common issues at your level — and one of the most fixable once the contact pattern clicks. This week is about building the feel, not locking in a perfect swing — expect one or two moments where it suddenly feels easy. That's the signal.
         <span class="feedback-hint">Fill in your scores above, answer the four questions below, then tap Send. Takes about 2 minutes.</span>
       </p>
       <div class="feedback-question">
@@ -250,7 +246,7 @@ body {
         <div class="feedback-q-label"><span class="q-num">4</span>Would you like a new plan next week — built on your own progression?</div>
         <div class="yn-row">
           <button type="button" class="yn-btn yn-yes" id="yn-yes" onclick="selectYN('yes')">Yes, please!</button>
-          <button class="yn-btn yn-no"  id="yn-no"  onclick="selectYN('no')">Not this week</button>
+          <button type="button" class="yn-btn yn-no"  id="yn-no"  onclick="selectYN('no')">Not this week</button>
         </div>
       </div>
     </div>
@@ -262,7 +258,7 @@ body {
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       Send my scores &amp; feedback
     </button>
-    <p class="send-hint" id="send-hint">Fill in all five scores and answer question 4 to unlock</p>
+    <p class="send-hint" id="send-hint">Fill in all four scores and answer question 4 to unlock</p>
   </div>
 
   <!-- SEND OPTIONS (shown if no email client handles the mailto) -->
@@ -299,12 +295,11 @@ function selectYN(v) {
 }
 
 function checkReady() {
-  var s1a = document.getElementById('score1a').value;
-  var s1b = document.getElementById('score1b').value;
-  var s1c = document.getElementById('score1c').value;
-  var s2  = document.getElementById('score2').value;
+  var s1  = document.getElementById('score1').value;
+  var s2a = document.getElementById('score2a').value;
+  var s2b = document.getElementById('score2b').value;
   var s3  = document.getElementById('score3').value;
-  var scoresOk = s1a !== '' && s1b !== '' && s1c !== '' && s2 !== '' && s3 !== '';
+  var scoresOk = s1 !== '' && s2a !== '' && s2b !== '' && s3 !== '';
   var ynOk = ynAnswer !== '';
   var ready = scoresOk && ynOk;
   document.getElementById('send-btn').disabled = !ready;
@@ -314,7 +309,7 @@ function checkReady() {
     hint.style.color = 'rgba(255,255,255,0.32)';
   } else {
     var missing = [];
-    if (!scoresOk) missing.push('all five scores');
+    if (!scoresOk) missing.push('all four scores');
     if (!ynOk)     missing.push('question 4');
     hint.textContent = 'Fill in ' + missing.join(' and ') + ' to unlock';
     hint.style.color = 'rgba(255,200,100,0.6)';
@@ -322,37 +317,35 @@ function checkReady() {
 }
 
 function sendFeedback() {
-  var s1a = document.getElementById('score1a').value || '—';
-  var s1b = document.getElementById('score1b').value || '—';
-  var s1c = document.getElementById('score1c').value || '—';
-  var s2  = document.getElementById('score2').value  || '—';
+  var s1  = document.getElementById('score1').value  || '—';
+  var s2a = document.getElementById('score2a').value || '—';
+  var s2b = document.getElementById('score2b').value || '—';
   var s3  = document.getElementById('score3').value  || '—';
-  var felt    = document.getElementById('q-felt').value.trim()     || '(no response)';
-  var thoughts= document.getElementById('q-thoughts').value.trim() || '(no response)';
-  var focus   = document.getElementById('q-focus').value.trim()    || '(no response)';
-  var nextPlan= ynAnswer === 'yes' ? 'Yes — I would love a new plan next week!'
-              : ynAnswer === 'no'  ? 'Not this week, thanks.'
-              : '(not answered)';
+  var felt     = document.getElementById('q-felt').value.trim()     || '(no response)';
+  var thoughts = document.getElementById('q-thoughts').value.trim() || '(no response)';
+  var focus    = document.getElementById('q-focus').value.trim()    || '(no response)';
+  var nextPlan = ynAnswer === 'yes' ? 'Yes — I would love a new plan next week!'
+               : ynAnswer === 'no'  ? 'Not this week, thanks.'
+               : '(not answered)';
 
   var body =
     'Hi Fabio,\n\n' +
     'Here are my Week 1 scores and feedback:\n\n' +
     '── SCORES ──────────────────────────────\n' +
-    'Drill 1 — 3 Stock Distances Ladder\n' +
-    '  Short:   ' + s1a + ' / 6\n' +
-    '  Medium:  ' + s1b + ' / 6\n' +
-    '  Long:    ' + s1c + ' / 6\n\n' +
-    'Drill 2 — Start-Line Gate:    ' + s2 + ' / 12\n' +
-    'Drill 3 — Up-and-Down:        ' + s3 + ' / 8\n\n' +
+    'Drill 1 — Tempo ladder:               ' + s1  + ' / 24\n' +
+    'Drill 2 — Hands-ahead contact drill\n' +
+    '  Lowest apex (clean contacts):   ' + s2a + ' ft\n' +
+    '  Highest apex (clean contacts):  ' + s2b + ' ft\n' +
+    'Drill 3 — Full swings to landing zone: ' + s3  + ' / 15\n\n' +
     '── FEEDBACK ────────────────────────────\n' +
     '1. What felt different, hard, or clicked:\n' + felt + '\n\n' +
     '2. What I thought of the training:\n' + thoughts + '\n\n' +
     '3. What I\'d like to focus on more:\n' + focus + '\n\n' +
     '4. New plan next week:\n' + nextPlan + '\n\n' +
     '────────────────────────────────────────\n' +
-    'Adi';
+    'Joon';
 
-  var subject = encodeURIComponent('Week 1 Scores & Feedback — Adi Dobson');
+  var subject = encodeURIComponent('Week 1 Scores & Feedback — Joon D');
   lastSubject = decodeURIComponent(subject); lastBody = body;
   var mailtoWorked = false;
   function onBlur() { mailtoWorked = true; window.removeEventListener('blur', onBlur); }

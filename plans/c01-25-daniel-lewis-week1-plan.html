@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lester — Week 1 Practice Plan</title>
+  <title>Daniel Lewis — Week 1 Practice Plan</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -62,7 +62,7 @@
     .feedback-section { position: relative; z-index: 1; }
     .feedback-card { background: rgba(255,255,255,0.08); border: 0.5px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 1.25rem 1.5rem; }
     .feedback-intro { font-size: 13px; color: rgba(255,255,255,0.88); line-height: 1.7; margin-bottom: 1.25rem; }
-    .feedback-hint { display: block; margin-top: 8px; font-size: 12px; color: rgba(255,255,255,0.45); font-style: italic; }
+    .feedback-hint { display: block; font-size: 12px; color: rgba(255,255,255,0.45); font-style: italic; margin-bottom: 1.25rem; }
     .feedback-question { margin-bottom: 16px; }
     .feedback-question:last-child { margin-bottom: 0; }
     .feedback-q-label { font-size: 11px; font-weight: 500; color: #9FE1CB; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 7px; display: flex; align-items: center; gap: 8px; }
@@ -111,24 +111,24 @@
     <!-- HEADER -->
     <div class="plan-header">
       <div class="week-label">Week 1 · Practice Plan</div>
-      <div class="golfer-name">Lester</div>
+      <div class="golfer-name">Daniel Lewis</div>
       <div class="golfer-sub">Personalised by Alfie Golf Trainings</div>
       <div class="overview-chips">
         <div class="chip">
           <div class="chip-lbl">Duration</div>
-          <div class="chip-val">60 min</div>
-        </div>
+          <div class="chip-val">30 min</div>
+        </div><!-- END chip -->
         <div class="chip">
           <div class="chip-lbl">Location</div>
-          <div class="chip-val">Chipping area &amp; putting green</div>
-        </div>
+          <div class="chip-val">Grass driving range</div>
+        </div><!-- END chip -->
         <div class="chip">
           <div class="chip-lbl">Focus</div>
-          <div class="chip-val">Landing zone &amp; distance control</div>
-        </div>
+          <div class="chip-val">Weight transfer &amp; low point</div>
+        </div><!-- END chip -->
       </div><!-- END overview-chips -->
       <div class="opening-card">
-        <p>Lester, "not being able to get chip shots to stop" at 10 yards is one of the most common short game frustrations — and it almost always comes down to where the ball is landing, not just how it's being hit. When a chip runs through the green, it's usually because the ball is touching down short of the putting surface and releasing across it, rather than landing on the green and checking with the loft of the club. This week we're going to fix the landing zone first, then build your distance control zone by zone — systematically, like a game you can actually win.</p>
+        <p>"Approach shots (5–7 iron)" — that's the frustration in a nutshell, and the numbers confirm it precisely. GIR between 0% and 28% over 8 rounds tells us those mid-irons are the biggest single stroke-loser in your bag right now. You broke 90 this season for the first time, which means the rest of your game is solid enough to do it — but until those 5–7 irons start finding greens more consistently, the ceiling stays where it is. Because your sessions are only 30 minutes and this is our first structured training together, I'm giving you a single drill this week — one focused rep is worth more than three scattered ones. If we move forward and you can extend your sessions a little, we'll start layering in more. For now, this is the right place to start.</p>
       </div><!-- END opening-card -->
     </div><!-- END plan-header -->
 
@@ -139,48 +139,7 @@
     <div class="drill-card">
       <div class="drill-header">
         <div class="drill-num">1</div>
-        <div class="drill-name">Landing Zone Chip — Sand Wedge</div>
-        <div class="drill-time">30 min</div>
-      </div><!-- END drill-header -->
-      <div class="drill-body">
-
-        <div>
-          <div class="micro">What to do</div>
-          <div class="drill-text">
-            1. Set up at your chipping area with a 10-yard target (a hole on the practice green or a tee in the ground).<br><br>
-            2. Place a tee in the putting surface approximately 2 feet past the fringe — this is your landing zone marker. Your chip must land on or past this tee, on the green itself, not on the fringe or short.<br><br>
-            3. Use your sand wedge (or most lofted wedge available). Set up with the ball in the centre of your stance, hands very slightly ahead of the ball, weight slightly favouring your lead foot.<br><br>
-            4. Make a smooth, unhurried swing. The goal is height — you want the ball to fly up, land softly on the putting surface, and let the loft do the stopping work. Do not try to help the ball up with your wrists.<br><br>
-            5. Hit 25 balls. After each shot, score it using this system:<br>
-            &nbsp;&nbsp;&nbsp;<strong>3 points</strong> — ball lands past the tee AND finishes within 3 feet of the hole<br>
-            &nbsp;&nbsp;&nbsp;<strong>2 points</strong> — ball lands past the tee AND finishes within 6 feet of the hole<br>
-            &nbsp;&nbsp;&nbsp;<strong>1 point</strong> — ball lands past the tee AND finishes outside 6 feet<br>
-            &nbsp;&nbsp;&nbsp;<strong>0 points</strong> — ball does NOT land past the tee, regardless of where it finishes<br><br>
-            6. Keep a running total as you go.
-          </div>
-        </div>
-
-        <div class="why-block">
-          <div class="why-lbl">Why this matters for you</div>
-          <div class="why-text">The reason 10-yard chips won't stop is almost always the same: the ball is landing short of the green and rolling across the fringe rather than landing on the putting surface and checking with loft. At a 22 handicap, this is not a swing problem — it's a landing zone problem. The points system makes that distinction visible on every single shot: a chip that misses the landing zone scores zero no matter how close it finishes, because that's exactly what it'll do on the course — run past.</div>
-        </div><!-- END why-block -->
-
-        <div class="score-box">
-          <div class="score-box-lbl">Score to record</div>
-          <div class="score-single">
-            <input id="score1" type="number" min="0" max="75" placeholder="—" oninput="checkReady()">
-            <span class="den">/ 75 total points</span>
-          </div>
-        </div><!-- END score-box -->
-
-      </div><!-- END drill-body -->
-    </div><!-- END DRILL 1 -->
-
-    <!-- DRILL 2 -->
-    <div class="drill-card">
-      <div class="drill-header">
-        <div class="drill-num">2</div>
-        <div class="drill-name">Zone Ladder — Sand Wedge, Gap Wedge, Pitching Wedge</div>
+        <div class="drill-name">Step and Strike + Towel — 7-iron</div>
         <div class="drill-time">25 min</div>
       </div><!-- END drill-header -->
       <div class="drill-body">
@@ -188,64 +147,64 @@
         <div>
           <div class="micro">What to do</div>
           <div class="drill-text">
-            1. From the same 10-yard position outside the green, lay 3 clubs or alignment sticks flat on the putting surface, parallel to each other, creating 3 zones. Space them 3–6 feet apart, starting just past the fringe and working toward the hole.<br><br>
-            2. Hit 5 balls aiming at Zone 1 (closest to you). Count how many balls actually land inside Zone 1. Then move to Zone 2 and repeat, then Zone 3. You are not trying to string consecutive shots — just hit 5 at each zone and record your accuracy.<br><br>
-            3. As you move through the zones, change your approach to control distance:<br>
-            &nbsp;&nbsp;&nbsp;<strong>Zone 1</strong> — sand wedge, ball in centre of stance<br>
-            &nbsp;&nbsp;&nbsp;<strong>Zone 2</strong> — gap wedge, ball slightly further back in stance<br>
-            &nbsp;&nbsp;&nbsp;<strong>Zone 3</strong> — pitching wedge, ball further back still — lower, more running flight<br><br>
-            4. The point of changing clubs is to feel how loft and ball position work together to control landing distance. Don't try to manufacture distance by swinging harder — let the club do the work.
+            1. On the grass range, place a small towel flat on the ground a few inches behind the ball — not right against it, but with a clear gap between the towel's edge and the ball. The ball sits on the turf just ahead of the towel.<br><br>
+            2. Set up to the ball with your 7-iron, but bring your trail foot in so that both feet start together — side by side, directly beneath you. This is your starting position for every swing.<br><br>
+            3. Take your backswing from this narrow stance.<br><br>
+            4. As you begin the downswing, step your lead foot out to your normal stance width — planting it firmly in its usual address position as the club comes down. The step is the trigger for the downswing: your lead side lands and stabilises before the club reaches the ball.<br><br>
+            5. Complete the swing normally. When the step works, your weight commits forward before impact, the club bottoms out in front of the ball, and the towel stays untouched.<br><br>
+            6. Hit 20 balls. After each shot, check one thing: did the towel move? If the club catches it, weight stayed back — slow the swing down, exaggerate the step, and focus on landing the lead foot firmly before the club arrives.
           </div>
-        </div>
+        </div><!-- END what to do -->
 
         <div class="why-block">
           <div class="why-lbl">Why this matters for you</div>
-          <div class="why-text">Once the landing zone clicks, the next piece is being able to choose where on the green the ball lands — not just "on the green" but the right part of the green. This drill builds that skill zone by zone and teaches you something you'll use for the rest of your game: a pitching wedge from 10 yards runs, a sand wedge from 10 yards stops. Knowing which club to reach for depending on how much green you have is what separates a 22 handicap from a 15.</div>
+          <div class="why-text">The low ball flight, the blocks, and the hooks all share the same origin: weight staying on the trail side through impact, causing the club to bottom out too early and the face to arrive offline. The step drill removes the option to stay back — physically committing your weight forward before the club arrives at the ball. The towel gives you honest, instant feedback on every rep: untouched means the sequence was right. Your 8-iron already carries 140 yards, which means the distance is there. This drill is about making sure the club is delivering at the right moment, which is what turns mid-iron misses into greens.</div>
         </div><!-- END why-block -->
 
         <div class="score-box">
           <div class="score-box-lbl">Score to record</div>
           <div class="score-single">
-            <input id="score2" type="number" min="0" max="15" placeholder="—" oninput="checkReady()">
-            <span class="den">/ 15 balls in aimed zone</span>
+            <input id="score1" type="number" min="0" max="20" placeholder="—" oninput="checkReady()">
+            <span class="den">/ 20 shots without touching the towel</span>
           </div>
         </div><!-- END score-box -->
 
       </div><!-- END drill-body -->
-    </div><!-- END DRILL 2 -->
+    </div><!-- END DRILL 1 -->
 
     <!-- CLOSING + FEEDBACK (merged dark glass card) -->
     <div class="section-label">Closing</div>
     <div class="feedback-section">
       <div class="feedback-card">
 
-        <p class="feedback-intro">
-          Lester, these two drills work in sequence: Drill 1 trains your eye and your landing instinct, Drill 2 gives you a system for controlling distance once the landing zone is dialled in. Your 10-yard chip is a very fixable shot — once the ball starts landing on the green with loft, you'll see it checking in a way that felt impossible before. Bring both scores back and we'll know exactly where to take it next.
-          <span class="feedback-hint">Fill in your scores above, answer the four questions below, then tap Send.</span>
-        </p>
+        <!-- Closing text only -->
+        <p class="feedback-intro">Dan, one drill is intentional — 30 minutes is enough to build one correct habit, not enough to spread across three. Breaking 90 this season proves the game is already there in pieces; the GIR numbers show exactly where the next improvement lives. Bring the score back and we'll know whether to stay here another week or start layering in the next piece.</p>
+        <!-- END closing text -->
+
+        <p class="feedback-hint">Fill in your score above, answer the four questions below, then tap Send.</p>
 
         <div class="feedback-question">
           <div class="feedback-q-label"><span class="q-num">1</span>What felt different, hard, or clicked?</div>
           <textarea class="feedback-textarea" id="q1" rows="3" placeholder="Even one or two sentences is perfect..." oninput="checkReady()"></textarea>
-        </div>
+        </div><!-- END feedback-question -->
 
         <div class="feedback-question">
           <div class="feedback-q-label"><span class="q-num">2</span>Anything that didn't make sense or felt wrong?</div>
           <textarea class="feedback-textarea" id="q2" rows="3" placeholder="Drills, instructions, timing — anything off..." oninput="checkReady()"></textarea>
-        </div>
+        </div><!-- END feedback-question -->
 
         <div class="feedback-question">
           <div class="feedback-q-label"><span class="q-num">3</span>One thing you want to focus on more next week?</div>
           <textarea class="feedback-textarea" id="q3" rows="2" placeholder="Any specific shot, situation, or area of your game..." oninput="checkReady()"></textarea>
-        </div>
+        </div><!-- END feedback-question -->
 
         <div class="feedback-question">
           <div class="feedback-q-label"><span class="q-num">4</span>Ready for next week's plan?</div>
           <div class="yn-row">
             <button type="button" class="yn-btn yn-yes" id="yn-yes" onclick="selectYN('yes')">Yes — send it</button>
-            <button class="yn-btn yn-no"  id="yn-no"  onclick="selectYN('no')">Not yet — need more time</button>
+            <button type="button" class="yn-btn yn-no"  id="yn-no"  onclick="selectYN('no')">Not yet — need more time</button>
           </div>
-        </div>
+        </div><!-- END feedback-question -->
 
       </div><!-- END feedback-card -->
     </div><!-- END feedback-section -->
@@ -256,7 +215,7 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         Send my scores &amp; feedback
       </button>
-      <p class="send-hint" id="send-hint">Fill in all drill scores and answer question 4 to unlock</p>
+      <p class="send-hint" id="send-hint">Fill in your drill score and answer question 4 to unlock</p>
     </div>
 
   <!-- SEND OPTIONS (shown if no email client handles the mailto) -->
@@ -278,7 +237,7 @@
     <!-- FOOTER -->
     <div class="plan-footer">
       <span>Alfie Golf Trainings</span>
-      <span>Week 1 · Lester</span>
+      <span>Week 1 · Daniel Lewis</span>
     </div><!-- END plan-footer -->
 
   </div><!-- END plan -->
@@ -296,8 +255,7 @@ var lastSubject = ''; var lastBody = '';
 
     function checkReady() {
       var s1 = document.getElementById('score1').value;
-      var s2 = document.getElementById('score2').value;
-      var scoresOk = s1 !== '' && s2 !== '';
+      var scoresOk = s1 !== '';
       var ready = scoresOk && ynAnswer !== '';
 
       document.getElementById('send-btn').disabled = !ready;
@@ -307,7 +265,7 @@ var lastSubject = ''; var lastBody = '';
         hint.style.color = 'rgba(255,255,255,0.32)';
       } else {
         var missing = [];
-        if (!scoresOk) missing.push('all drill scores');
+        if (!scoresOk) missing.push('your drill score');
         if (!ynAnswer) missing.push('question 4');
         hint.textContent = 'Fill in ' + missing.join(' and ') + ' to unlock';
         hint.style.color = 'rgba(255,200,100,0.6)';
@@ -321,20 +279,18 @@ var lastSubject = ''; var lastBody = '';
       var q4 = ynAnswer === 'yes' ? 'Yes — send it' : 'Not yet — need more time';
 
       var s1 = document.getElementById('score1').value || '—';
-      var s2 = document.getElementById('score2').value || '—';
 
-      var subject = encodeURIComponent('Week 1 results — Lester');
+      var subject = encodeURIComponent('Week 1 results — Daniel Lewis');
       var body = encodeURIComponent(
-        'Week 1 — Lester\n\n' +
+        'Week 1 — Daniel Lewis\n\n' +
         '-- SCORES --\n' +
-        'Drill 1 — Landing Zone Chip: ' + s1 + ' / 75 points\n' +
-        'Drill 2 — Zone Ladder: ' + s2 + ' / 15 balls in aimed zone\n\n' +
+        'Drill 1 — Step and Strike + Towel: ' + s1 + ' / 20 shots without touching the towel\n\n' +
         '-- FEEDBACK --\n' +
         '1. What felt different, hard, or clicked:\n' + q1 + '\n\n' +
         '2. Anything that did not make sense or felt wrong:\n' + q2 + '\n\n' +
         '3. One thing to focus on more next week:\n' + q3 + '\n\n' +
         '4. Ready for next week\'s plan: ' + q4 + '\n\n' +
-        '-- Lester'
+        '-- Dan'
       );
 
       lastSubject = decodeURIComponent(subject); lastBody = decodeURIComponent(body);

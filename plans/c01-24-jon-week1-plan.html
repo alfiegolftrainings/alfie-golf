@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Daniel Lewis — Week 1 Practice Plan</title>
+  <title>Jon — Week 1 Practice Plan</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -57,6 +57,18 @@
     .score-single input { width: 64px; padding: 6px 9px; border-radius: 6px; border: 1px solid #9FE1CB; background: #fff; font-size: 16px; font-weight: 500; color: #085041; text-align: center; outline: none; }
     .score-single input:focus { border-color: #1D9E75; }
     .score-single .den { font-size: 13px; color: #0F6E56; font-weight: 500; }
+    .score-double { display: flex; gap: 8px; flex-wrap: wrap; }
+    .score-double-item { flex: 1; min-width: 120px; }
+    .score-double-item-lbl { font-size: 10px; color: #0F6E56; font-weight: 500; margin-bottom: 5px; }
+    .score-chip-row { display: flex; align-items: center; gap: 5px; }
+    .score-chip-row input { width: 52px; padding: 5px 7px; border-radius: 6px; border: 1px solid #9FE1CB; background: #fff; font-size: 15px; font-weight: 500; color: #085041; text-align: center; outline: none; }
+    .score-chip-row input:focus { border-color: #1D9E75; }
+    .score-chip-row .den { font-size: 11px; color: #0F6E56; font-weight: 500; }
+    .score-sep { height: 0.5px; background: rgba(15,110,86,0.2); margin: 8px 0; }
+    .score-total-row { display: flex; align-items: center; gap: 8px; }
+    .score-total-lbl { font-size: 10px; font-weight: 600; color: #085041; text-transform: uppercase; letter-spacing: 0.08em; }
+    .score-total-val { font-size: 16px; font-weight: 500; color: #085041; }
+    .score-total-den { font-size: 13px; color: #0F6E56; font-weight: 500; }
 
     /* Feedback / Closing — dark glass card */
     .feedback-section { position: relative; z-index: 1; }
@@ -111,24 +123,24 @@
     <!-- HEADER -->
     <div class="plan-header">
       <div class="week-label">Week 1 · Practice Plan</div>
-      <div class="golfer-name">Daniel Lewis</div>
+      <div class="golfer-name">Jon</div>
       <div class="golfer-sub">Personalised by Alfie Golf Trainings</div>
       <div class="overview-chips">
         <div class="chip">
           <div class="chip-lbl">Duration</div>
-          <div class="chip-val">30 min</div>
+          <div class="chip-val">60 min</div>
         </div><!-- END chip -->
         <div class="chip">
           <div class="chip-lbl">Location</div>
-          <div class="chip-val">Grass driving range</div>
+          <div class="chip-val">Range → Putting green</div>
         </div><!-- END chip -->
         <div class="chip">
           <div class="chip-lbl">Focus</div>
-          <div class="chip-val">Weight transfer &amp; low point</div>
+          <div class="chip-val">Wedge control &amp; short putts</div>
         </div><!-- END chip -->
       </div><!-- END overview-chips -->
       <div class="opening-card">
-        <p>"Approach shots (5–7 iron)" — that's the frustration in a nutshell, and the numbers confirm it precisely. GIR between 0% and 28% over 8 rounds tells us those mid-irons are the biggest single stroke-loser in your bag right now. You broke 90 this season for the first time, which means the rest of your game is solid enough to do it — but until those 5–7 irons start finding greens more consistently, the ceiling stays where it is. Because your sessions are only 30 minutes and this is our first structured training together, I'm giving you a single drill this week — one focused rep is worth more than three scattered ones. If we move forward and you can extend your sessions a little, we'll start layering in more. For now, this is the right place to start.</p>
+        <p>"Anything within 100 yards takes too many shots to get on the green — then a 3-putt to destroy my score" — you've already named the problem precisely, and the round data backs it up completely. Shooting 57 and 54 with 3-putts on 5 of 9 holes tells us exactly where the strokes are leaking. This week we're going after both ends of that pattern: the wedge distances that leave you in difficult positions, and the short putts that are bleeding strokes even when you do get close.</p>
       </div><!-- END opening-card -->
     </div><!-- END plan-header -->
 
@@ -139,38 +151,95 @@
     <div class="drill-card">
       <div class="drill-header">
         <div class="drill-num">1</div>
-        <div class="drill-name">Step and Strike + Towel — 7-iron</div>
-        <div class="drill-time">25 min</div>
+        <div class="drill-name">Distance Ladder — Two Clubs, Two Distances</div>
+        <div class="drill-time">40 min</div>
       </div><!-- END drill-header -->
       <div class="drill-body">
 
         <div>
           <div class="micro">What to do</div>
           <div class="drill-text">
-            1. On the grass range, place a small towel flat on the ground a few inches behind the ball — not right against it, but with a clear gap between the towel's edge and the ball. The ball sits on the turf just ahead of the towel.<br><br>
-            2. Set up to the ball with your 7-iron, but bring your trail foot in so that both feet start together — side by side, directly beneath you. This is your starting position for every swing.<br><br>
-            3. Take your backswing from this narrow stance.<br><br>
-            4. As you begin the downswing, step your lead foot out to your normal stance width — planting it firmly in its usual address position as the club comes down. The step is the trigger for the downswing: your lead side lands and stabilises before the club reaches the ball.<br><br>
-            5. Complete the swing normally. When the step works, your weight commits forward before impact, the club bottoms out in front of the ball, and the towel stays untouched.<br><br>
-            6. Hit 20 balls. After each shot, check one thing: did the towel move? If the club catches it, weight stayed back — slow the swing down, exaggerate the step, and focus on landing the lead foot firmly before the club arrives.
+            1. On the driving range, identify two targets: one at 75 yards and one at 100 yards. Use the range distance markers or a measured reference point.<br><br>
+            2. Choose the club you would normally use for each distance — typically your sand wedge at 75 yards and your pitching wedge at 100 yards. Stick with those two clubs throughout the drill.<br><br>
+            3. Start at 75 yards. Hit 15 balls at your 75-yard target. After each shot, score it:<br>
+            &nbsp;&nbsp;&nbsp;<strong>2 points</strong> — ball lands within 5 yards of the target<br>
+            &nbsp;&nbsp;&nbsp;<strong>1 point</strong> — ball lands within 10 yards of the target<br>
+            &nbsp;&nbsp;&nbsp;<strong>0 points</strong> — ball lands outside 10 yards<br><br>
+            4. Keep a running total as you go, then record your 75-yard score.<br><br>
+            5. Move to 100 yards and repeat: 15 balls, same scoring system.<br><br>
+            6. Maximum possible score across both distances is 60 points (30 balls × 2 points).
           </div>
         </div><!-- END what to do -->
 
         <div class="why-block">
           <div class="why-lbl">Why this matters for you</div>
-          <div class="why-text">The low ball flight, the blocks, and the hooks all share the same origin: weight staying on the trail side through impact, causing the club to bottom out too early and the face to arrive offline. The step drill removes the option to stay back — physically committing your weight forward before the club arrives at the ball. The towel gives you honest, instant feedback on every rep: untouched means the sequence was right. Your 8-iron already carries 140 yards, which means the distance is there. This drill is about making sure the club is delivering at the right moment, which is what turns mid-iron misses into greens.</div>
+          <div class="why-text">You described "anything within 100 yards takes too many shots to get on the green" — which means the approach shot, not just the chip, is setting up the damage. When a 75 or 100-yard wedge lands outside 10 yards, it creates exactly the recovery situation you described: greenside rough, bunker, then 3 shots to finish the hole. A 25-handicapper who can reliably land within 10 yards of their target at these distances turns double-bogeys into bogeys almost immediately — and that is where the biggest scoring gains are for you right now.</div>
+        </div><!-- END why-block -->
+
+        <div class="score-box">
+          <div class="score-box-lbl">Score to record</div>
+          <div class="score-double">
+            <div class="score-double-item">
+              <div class="score-double-item-lbl">75 yards</div>
+              <div class="score-chip-row">
+                <input id="s1a" type="number" min="0" max="30" placeholder="—" oninput="checkReady()">
+                <span class="den">/ 30 pts</span>
+              </div>
+            </div><!-- END score-double-item -->
+            <div class="score-double-item">
+              <div class="score-double-item-lbl">100 yards</div>
+              <div class="score-chip-row">
+                <input id="s1b" type="number" min="0" max="30" placeholder="—" oninput="checkReady()">
+                <span class="den">/ 30 pts</span>
+              </div>
+            </div><!-- END score-double-item -->
+          </div><!-- END score-double -->
+          <div class="score-sep"></div>
+          <div class="score-total-row">
+            <span class="score-total-lbl">Total</span>
+            <span class="score-total-val" id="s1total">—</span>
+            <span class="score-total-den">/ 60 pts</span>
+          </div><!-- END score-total-row -->
+        </div><!-- END score-box -->
+
+      </div><!-- END drill-body -->
+    </div><!-- END DRILL 1 -->
+
+    <!-- DRILL 2 -->
+    <div class="drill-card">
+      <div class="drill-header">
+        <div class="drill-num">2</div>
+        <div class="drill-name">Clock Putting — Putter</div>
+        <div class="drill-time">15 min</div>
+      </div><!-- END drill-header -->
+      <div class="drill-body">
+
+        <div>
+          <div class="micro">What to do</div>
+          <div class="drill-text">
+            1. Before starting the drill, take a couple of minutes to putt freely around the green — no target, no score, just getting a feel for the pace and the surface.<br><br>
+            2. Find a hole on the putting green. Place 4 tees around it at exactly 3 feet — one directly in front, one behind, one to the left, one to the right (north, south, east, west).<br><br>
+            3. Warm-up round: hit one putt from each of the four tees — 4 balls total — to get a feel for how the putts break from different angles. These do not count toward your score.<br><br>
+            4. Now begin your scored rounds. Start at one tee and putt clockwise, going around all four positions. That is one circuit of 4 putts. Complete 5 full circuits = 20 scored putts. Count every ball that drops.<br><br>
+            5. Keep the stroke smooth and unhurried. At 3 feet the swing is tiny — let the putter swing through the ball, not at it.
+          </div>
+        </div><!-- END what to do -->
+
+        <div class="why-block">
+          <div class="why-lbl">Why this matters for you</div>
+          <div class="why-text">You 3-putted on 5 of 9 holes. Most of those third putts come from inside 6 feet — the first putt runs past, and the short comeback is the one that gets missed. A 25-handicapper who converts 3-foot putts consistently eliminates those third putts almost completely. This drill builds the repeatable stroke that makes short putts feel automatic rather than stressful, which is exactly what you need when you're already managing recovery shots around the green.</div>
         </div><!-- END why-block -->
 
         <div class="score-box">
           <div class="score-box-lbl">Score to record</div>
           <div class="score-single">
-            <input id="score1" type="number" min="0" max="20" placeholder="—" oninput="checkReady()">
-            <span class="den">/ 20 shots without touching the towel</span>
+            <input id="score2" type="number" min="0" max="20" placeholder="—" oninput="checkReady()">
+            <span class="den">/ 20 putts holed</span>
           </div>
         </div><!-- END score-box -->
 
       </div><!-- END drill-body -->
-    </div><!-- END DRILL 1 -->
+    </div><!-- END DRILL 2 -->
 
     <!-- CLOSING + FEEDBACK (merged dark glass card) -->
     <div class="section-label">Closing</div>
@@ -178,10 +247,10 @@
       <div class="feedback-card">
 
         <!-- Closing text only -->
-        <p class="feedback-intro">Dan, one drill is intentional — 30 minutes is enough to build one correct habit, not enough to spread across three. Breaking 90 this season proves the game is already there in pieces; the GIR numbers show exactly where the next improvement lives. Bring the score back and we'll know whether to stay here another week or start layering in the next piece.</p>
+        <p class="feedback-intro">Jon, you play 4 or more rounds a month, which means you will see the results of this week's work faster than most — both scores will start to tell a story after just a few sessions. The points system on the ladder gives you a precise number to improve week over week; the clock drill gives you a putting baseline to measure against. Bring both scores back and we'll know exactly which one to double down on next.</p>
         <!-- END closing text -->
 
-        <p class="feedback-hint">Fill in your score above, answer the four questions below, then tap Send.</p>
+        <p class="feedback-hint">Fill in your scores above, answer the four questions below, then tap Send.</p>
 
         <div class="feedback-question">
           <div class="feedback-q-label"><span class="q-num">1</span>What felt different, hard, or clicked?</div>
@@ -202,7 +271,7 @@
           <div class="feedback-q-label"><span class="q-num">4</span>Ready for next week's plan?</div>
           <div class="yn-row">
             <button type="button" class="yn-btn yn-yes" id="yn-yes" onclick="selectYN('yes')">Yes — send it</button>
-            <button class="yn-btn yn-no"  id="yn-no"  onclick="selectYN('no')">Not yet — need more time</button>
+            <button type="button" class="yn-btn yn-no"  id="yn-no"  onclick="selectYN('no')">Not yet — need more time</button>
           </div>
         </div><!-- END feedback-question -->
 
@@ -215,7 +284,7 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         Send my scores &amp; feedback
       </button>
-      <p class="send-hint" id="send-hint">Fill in your drill score and answer question 4 to unlock</p>
+      <p class="send-hint" id="send-hint">Fill in all drill scores and answer question 4 to unlock</p>
     </div>
 
   <!-- SEND OPTIONS (shown if no email client handles the mailto) -->
@@ -237,7 +306,7 @@
     <!-- FOOTER -->
     <div class="plan-footer">
       <span>Alfie Golf Trainings</span>
-      <span>Week 1 · Daniel Lewis</span>
+      <span>Week 1 · Jon</span>
     </div><!-- END plan-footer -->
 
   </div><!-- END plan -->
@@ -254,8 +323,21 @@ var lastSubject = ''; var lastBody = '';
     }
 
     function checkReady() {
-      var s1 = document.getElementById('score1').value;
-      var scoresOk = s1 !== '';
+      var s1a = document.getElementById('s1a').value;
+      var s1b = document.getElementById('s1b').value;
+      var s2  = document.getElementById('score2').value;
+
+      // Auto-compute and display the total for Drill 1
+      var totalEl = document.getElementById('s1total');
+      if (s1a !== '' || s1b !== '') {
+        var a = parseInt(s1a) || 0;
+        var b = parseInt(s1b) || 0;
+        totalEl.textContent = (a + b);
+      } else {
+        totalEl.textContent = '—';
+      }
+
+      var scoresOk = s1a !== '' && s1b !== '' && s2 !== '';
       var ready = scoresOk && ynAnswer !== '';
 
       document.getElementById('send-btn').disabled = !ready;
@@ -265,7 +347,7 @@ var lastSubject = ''; var lastBody = '';
         hint.style.color = 'rgba(255,255,255,0.32)';
       } else {
         var missing = [];
-        if (!scoresOk) missing.push('your drill score');
+        if (!scoresOk) missing.push('all drill scores');
         if (!ynAnswer) missing.push('question 4');
         hint.textContent = 'Fill in ' + missing.join(' and ') + ' to unlock';
         hint.style.color = 'rgba(255,200,100,0.6)';
@@ -278,19 +360,26 @@ var lastSubject = ''; var lastBody = '';
       var q3 = document.getElementById('q3').value.trim() || '(no response)';
       var q4 = ynAnswer === 'yes' ? 'Yes — send it' : 'Not yet — need more time';
 
-      var s1 = document.getElementById('score1').value || '—';
+      var s1a = document.getElementById('s1a').value || '—';
+      var s1b = document.getElementById('s1b').value || '—';
+      var s1total = (parseInt(s1a) || 0) + (parseInt(s1b) || 0);
+      var s2  = document.getElementById('score2').value || '—';
 
-      var subject = encodeURIComponent('Week 1 results — Daniel Lewis');
+      var subject = encodeURIComponent('Week 1 results — Jon');
       var body = encodeURIComponent(
-        'Week 1 — Daniel Lewis\n\n' +
+        'Week 1 — Jon\n\n' +
         '-- SCORES --\n' +
-        'Drill 1 — Step and Strike + Towel: ' + s1 + ' / 20 shots without touching the towel\n\n' +
+        'Drill 1 — Distance Ladder:\n' +
+        '  75 yards: ' + s1a + ' / 30 pts\n' +
+        '  100 yards: ' + s1b + ' / 30 pts\n' +
+        '  Total: ' + s1total + ' / 60 pts\n\n' +
+        'Drill 2 — Clock Putting: ' + s2 + ' / 20 putts holed\n\n' +
         '-- FEEDBACK --\n' +
         '1. What felt different, hard, or clicked:\n' + q1 + '\n\n' +
         '2. Anything that did not make sense or felt wrong:\n' + q2 + '\n\n' +
         '3. One thing to focus on more next week:\n' + q3 + '\n\n' +
         '4. Ready for next week\'s plan: ' + q4 + '\n\n' +
-        '-- Dan'
+        '-- Jon'
       );
 
       lastSubject = decodeURIComponent(subject); lastBody = decodeURIComponent(body);

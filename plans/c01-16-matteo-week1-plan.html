@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kris — Week 1 Practice Plan · Alfie Golf Trainings</title>
+  <title>Matteo — Week 1 Practice Plan</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -12,9 +12,11 @@
     }
     .plan { max-width: 560px; margin: 0 auto; position: relative; }
 
+    /* Decor */
     .decor-circles { position: fixed; top: 0; right: 0; width: 340px; height: 320px; opacity: 0.06; pointer-events: none; z-index: -1; }
     .decor-dots { position: fixed; top: 0; left: 0; width: 60px; height: 100vh; opacity: 0.07; pointer-events: none; z-index: -1; overflow: hidden; }
 
+    /* Header */
     .plan-header { position: relative; z-index: 1; padding-bottom: 1.5rem; }
     .week-label { font-size: 10px; color: #9FE1CB; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; }
     .golfer-name { font-size: 32px; font-weight: 500; color: #fff; line-height: 1.15; margin-bottom: 2px; }
@@ -26,6 +28,7 @@
     .opening-card { background: rgba(255,255,255,0.08); border-left: 3px solid #5DCAA5; border-radius: 0 8px 8px 0; padding: 11px 14px; }
     .opening-card p { font-size: 12.5px; color: rgba(255,255,255,0.88); line-height: 1.7; font-style: italic; }
 
+    /* Section label */
     .section-label {
       font-size: 9px; font-weight: 600; color: #9FE1CB;
       text-transform: uppercase; letter-spacing: 0.1em;
@@ -34,6 +37,7 @@
     }
     .section-label::after { content: ''; flex: 1; height: 0.5px; background: rgba(255,255,255,0.15); }
 
+    /* Drill cards */
     .drill-card { background: #fff; border-radius: 10px; overflow: hidden; margin-bottom: 9px; position: relative; z-index: 1; }
     .drill-header { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-bottom: 0.5px solid #ece9e3; }
     .drill-num { width: 26px; height: 26px; border-radius: 50%; background: #E1F5EE; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #085041; flex-shrink: 0; }
@@ -46,21 +50,23 @@
     .why-lbl { font-size: 9px; font-weight: 600; color: #0F6E56; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 3px; }
     .why-text { font-size: 12px; color: #555; line-height: 1.62; font-style: italic; }
 
+    /* Score boxes */
     .score-box { background: #E1F5EE; border: 0.5px solid #9FE1CB; border-radius: 8px; padding: 9px 12px; }
     .score-box-lbl { font-size: 9px; font-weight: 600; color: #085041; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
-    .score-group-lbl { font-size: 10px; font-weight: 600; color: #0F6E56; margin-bottom: 6px; }
-    .score-triple { display: flex; gap: 6px; flex-wrap: wrap; }
-    .score-chip-wrap { flex: 1; min-width: 72px; }
-    .score-chip-name { font-size: 9px; color: #0F6E56; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 4px; }
-    .score-chip-row { display: flex; align-items: center; gap: 5px; }
-    .score-chip-row input { width: 56px; padding: 5px 7px; border-radius: 6px; border: 1px solid #9FE1CB; background: #fff; font-size: 15px; font-weight: 500; color: #085041; text-align: center; outline: none; }
-    .score-chip-row input:focus { border-color: #1D9E75; }
-    .score-sep { height: 0.5px; background: rgba(15,110,86,0.2); margin: 10px 0; }
     .score-single { display: flex; align-items: center; gap: 8px; }
     .score-single input { width: 64px; padding: 6px 9px; border-radius: 6px; border: 1px solid #9FE1CB; background: #fff; font-size: 16px; font-weight: 500; color: #085041; text-align: center; outline: none; }
     .score-single input:focus { border-color: #1D9E75; }
     .score-single .den { font-size: 13px; color: #0F6E56; font-weight: 500; }
+    .score-double { display: flex; gap: 8px; flex-wrap: wrap; }
+    .score-double-item { flex: 1; min-width: 120px; }
+    .score-double-item-lbl { font-size: 10px; color: #0F6E56; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 5px; }
+    .score-chip-row { display: flex; align-items: center; gap: 5px; }
+    .score-chip-row input { width: 48px; padding: 5px 7px; border-radius: 6px; border: 1px solid #9FE1CB; background: #fff; font-size: 15px; font-weight: 500; color: #085041; text-align: center; outline: none; }
+    .score-chip-row input:focus { border-color: #1D9E75; }
+    .score-chip-row .den { font-size: 11px; color: #0F6E56; font-weight: 500; }
+    .score-sep { height: 0.5px; background: rgba(15,110,86,0.2); margin: 10px 0; }
 
+    /* Feedback / Closing */
     .feedback-section { position: relative; z-index: 1; }
     .feedback-card { background: rgba(255,255,255,0.08); border: 0.5px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 1.25rem 1.5rem; }
     .feedback-intro { font-size: 13px; color: rgba(255,255,255,0.88); line-height: 1.7; margin-bottom: 1.25rem; }
@@ -77,6 +83,7 @@
     .yn-yes.active { background: #E1F5EE; border-color: #5DCAA5; color: #085041; }
     .yn-no.active  { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.45); color: #fff; }
 
+    /* Send button */
     .send-wrap { position: relative; z-index: 1; margin-top: 1.25rem; padding-bottom: 0.5rem; }
     .send-btn { width: 100%; padding: 14px; background: #1D9E75; color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 500; cursor: pointer; font-family: inherit; transition: background 0.15s; display: flex; align-items: center; justify-content: center; gap: 9px; }
     .send-btn:hover { background: #0F6E56; }
@@ -85,12 +92,14 @@
     .send-btn:disabled:hover { background: rgba(255,255,255,0.12); }
     .send-hint { text-align: center; font-size: 12px; color: rgba(255,200,100,0.6); margin-top: 9px; line-height: 1.4; }
 
+    /* Footer */
     .plan-footer { display: flex; justify-content: space-between; padding-top: 1rem; margin-top: 1.5rem; border-top: 0.5px solid rgba(255,255,255,0.1); position: relative; z-index: 1; }
     .plan-footer span { font-size: 10px; color: rgba(255,255,255,0.25); }
   </style>
 </head>
 <body>
 
+<!-- Decorative elements -->
 <svg class="decor-circles" viewBox="0 0 340 320" aria-hidden="true">
   <circle cx="320" cy="20" r="70"  fill="none" stroke="#fff" stroke-width="1.5"/>
   <circle cx="320" cy="20" r="115" fill="none" stroke="#fff" stroke-width="1.5"/>
@@ -107,92 +116,116 @@
 
 <div class="plan">
 
+  <!-- Header -->
   <div class="plan-header">
-    <div class="week-label">Alfie Golf Trainings · Week 1</div>
-    <div class="golfer-name">Kris</div>
-    <div class="golfer-sub">Personalised practice plan · Driving range</div>
+    <div class="week-label">Week 1</div>
+    <div class="golfer-name">Matteo</div>
+    <div class="golfer-sub">Personalised practice plan · Alfie Golf Trainings</div>
     <div class="overview-chips">
-      <div class="chip"><div class="chip-lbl">Session</div><div class="chip-val">30 min</div></div>
-      <div class="chip"><div class="chip-lbl">Handicap</div><div class="chip-val">40</div></div>
-      <div class="chip"><div class="chip-lbl">Focus</div><div class="chip-val">Start line &amp; alignment</div></div>
-      <div class="chip"><div class="chip-lbl">Frequency</div><div class="chip-val">3× per week</div></div>
+      <div class="chip">
+        <div class="chip-lbl">Duration</div>
+        <div class="chip-val">60 min</div>
+      </div>
+      <div class="chip">
+        <div class="chip-lbl">Location</div>
+        <div class="chip-val">Driving range</div>
+      </div>
+      <div class="chip">
+        <div class="chip-lbl">Focus</div>
+        <div class="chip-val">Breaking the shank pattern</div>
+      </div>
     </div>
     <div class="opening-card">
-      <p>"Keeping things straight off the tee" is one of the most common frustrations at every level — and at a 40 handicap with no prior structured practice, the great news is there's usually one root cause making it worse than it needs to be: aim. Most high-handicap golfers are unknowingly aimed well away from their target before they even swing, then make a compensating move through the ball that sends it further offline. This week we're going to fix your starting foundation — because if you're aimed right, straight becomes a lot more achievable.</p>
+      <p>Matteo, "shanks" — you've named it, and that's the first step. The shank feels like the most random shot in golf, but it isn't: it happens when the hosel (the socket connecting the clubface to the shaft) reaches the ball before the face does, usually because the swing path is pulling the club too far away from the body on the way down. At a 20 handicap, this is a fixable pattern — not a permanent flaw. This week we're going to rebuild clean contact from short swings first, then take what you've found into a full-swing drill with a clear indicator of what the correct path feels like.</p>
     </div>
   </div>
 
+  <!-- Drills -->
   <div class="section-label">Drills</div>
 
+  <!-- Drill 1 -->
   <div class="drill-card">
     <div class="drill-header">
       <div class="drill-num">1</div>
-      <div class="drill-name">Alignment Check + Start Line Gate — Driver</div>
-      <div class="drill-time">25 min</div>
+      <div class="drill-name">Short Swing Gate Rebuild — 9 Iron</div>
+      <div class="drill-time">20 min</div>
     </div>
     <div class="drill-body">
-
       <div>
         <div class="micro">What to do</div>
         <div class="drill-text">
-          <strong>Step 1 — Set the gate (done once at the start):</strong><br>
-          Push two alignment sticks into the ground 3 inches in front of the ball, about 12 inches apart, centred on your target line. Leave them in place for the entire session. After each shot, note where the ball started relative to the gate:<br>
-          &nbsp;&nbsp;· <strong>Through the gate</strong> = ball started on line.<br>
-          &nbsp;&nbsp;· <strong>Right of the gate</strong> = ball started right at impact (open face or push).<br>
-          &nbsp;&nbsp;· <strong>Left of the gate</strong> = ball started left at impact (closed face or pull).<br><br>
-          <strong>Step 2 — Alignment check (before every shot):</strong><br>
-          1. Set up to the ball as you normally would, with a distant target in mind.<br>
-          2. Without moving your feet, lay a club flat on the ground connecting both big toes.<br>
-          3. Step back behind the ball and look at where that club is actually pointing — on target, right, or left?<br>
-          4. Walk back in and adjust your feet if needed, then hit the shot.<br><br>
-          Repeat the alignment check before every single ball — it is part of the drill, not optional. Hit 15–20 drivers.
+          1. Using your 9 iron, forget about full swings for this drill entirely.<br><br>
+          2. Make a half swing only — hands travel from hip height on the backswing to hip height on the follow-through (9 o'clock to 3 o'clock). Nothing longer.<br><br>
+          3. <strong>Phase 1 — Wide Gate (10 shots):</strong> Place one ball on each side of your target ball at a relaxed width — roughly one club-head length of space either side. Hit 10 half-swing shots through this wide gate. The goal is simply to feel the clubhead passing through the centre of the lane and making face contact. The gate should feel very passable.<br><br>
+          4. <strong>Phase 2 — Narrow Gate (10 shots):</strong> Move the two outer balls inward so the gap is just slightly wider than your clubface. Hit 10 more half-swing shots through this tighter lane. Now every pass that clips a gate ball is honest feedback — heel contact will catch the outer ball on the far side.<br><br>
+          5. After each shot in both phases, call it: gate cleared (face contact) or gate clipped (hosel/heel contact).
         </div>
       </div>
-
       <div class="why-block">
         <div class="why-lbl">Why this matters for you</div>
-        <div class="why-text">Where the ball starts tells you almost exactly what the clubface was doing at impact — it's the most honest feedback a driving range can give you. At a 40 handicap with no prior structured practice, seeing that data clearly (through, right, or left) for 15–20 shots in a row will immediately show you whether your misses have a pattern. Pair that with the alignment check, and you'll know for the first time whether your body was even aimed at the target before you swung.</div>
+        <div class="why-text">Shanks carry a psychological weight that makes the full swing feel unpredictable. The short swing removes that pressure and gives you a controlled environment to locate the centre of the face again — something every 20 handicap player knows the feeling of, because you've hit plenty of good iron shots to get there. The two-phase gate progression earns confidence on the wide setting first, then immediately tests whether that feeling holds up under more precision. Two sessions a week with this drill will rebuild the pattern faster than trying to fix it in a full swing where everything happens too quickly to feel.</div>
       </div>
-
       <div class="score-box">
         <div class="score-box-lbl">Score to record</div>
-        <div class="score-group-lbl">Gate — ball start direction</div>
-        <div class="score-triple">
-          <div class="score-chip-wrap">
-            <div class="score-chip-name">Through</div>
+        <div class="score-double">
+          <div class="score-double-item">
+            <div class="score-double-item-lbl">Wide gate cleared</div>
             <div class="score-chip-row">
-              <input id="scoreThrough" type="number" min="0" max="20" placeholder="—" oninput="checkReady()">
+              <input id="s1wide" type="number" min="0" max="10" placeholder="—" oninput="checkReady()">
+              <span class="den">/ 10</span>
             </div>
           </div>
-          <div class="score-chip-wrap">
-            <div class="score-chip-name">Right of gate</div>
+          <div class="score-double-item">
+            <div class="score-double-item-lbl">Narrow gate cleared</div>
             <div class="score-chip-row">
-              <input id="scoreRight" type="number" min="0" max="20" placeholder="—" oninput="checkReady()">
+              <input id="s1narrow" type="number" min="0" max="10" placeholder="—" oninput="checkReady()">
+              <span class="den">/ 10</span>
             </div>
           </div>
-          <div class="score-chip-wrap">
-            <div class="score-chip-name">Left of gate</div>
-            <div class="score-chip-row">
-              <input id="scoreLeft" type="number" min="0" max="20" placeholder="—" oninput="checkReady()">
-            </div>
-          </div>
-        </div>
-        <div class="score-sep"></div>
-        <div class="score-group-lbl">Alignment correct on first attempt</div>
-        <div class="score-single">
-          <input id="scoreAlign" type="number" min="0" max="20" placeholder="—" oninput="checkReady()">
-          <span class="den">/ 20</span>
         </div>
       </div>
-
     </div>
   </div>
 
+  <!-- Drill 2 -->
+  <div class="drill-card">
+    <div class="drill-header">
+      <div class="drill-num">2</div>
+      <div class="drill-name">Outer Tee Anti-Shank — 9 Iron</div>
+      <div class="drill-time">30 min</div>
+    </div>
+    <div class="drill-body">
+      <div>
+        <div class="micro">What to do</div>
+        <div class="drill-text">
+          1. Take your 9 iron and address a ball as normal.<br><br>
+          2. Place a second tee in the ground approximately 1 inch outside the target ball — on the far side, away from your body. This creates a narrow lane: the clubhead must pass through without touching the outer tee.<br><br>
+          3. If your swing is pulling the club too far outward (the most common cause of hosel contact), the club will clip the outer tee. If you swing through correctly, you'll miss it clean and strike the ball with the face.<br><br>
+          4. Start at 60% swing speed for the first 10 balls — the goal is to carry the feeling from Drill 1 into a fuller swing, not to hit it hard. Build to 80% for the remaining 20 if the contact feels solid.<br><br>
+          5. Hit 30 balls in total. After each shot, record: was the outer tee untouched?<br><br>
+          6. If you shank one, stop. Take two slow-motion practice swings feeling the club pass inside the outer tee, then continue.
+        </div>
+      </div>
+      <div class="why-block">
+        <div class="why-lbl">Why this matters for you</div>
+        <div class="why-text">The outer tee makes the shank's cause visible in real time — no tracking system needed. For a 20 handicap, the pattern causing your shanks is almost certainly repeatable, which means the fix is also repeatable. The outer tee gives you an honest, immediate read on every single swing. The 60% speed start matters: shanks often get worse under effort because tension amplifies the faulty path. After the short swing work in Drill 1, you're carrying a feel for where the face should be — Drill 2 tests whether you can hold it in a full swing.</div>
+      </div>
+      <div class="score-box">
+        <div class="score-box-lbl">Score to record</div>
+        <div class="score-single">
+          <input id="s2" type="number" min="0" max="30" placeholder="—" oninput="checkReady()">
+          <span class="den">/ 30 outer tee untouched</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Closing + Feedback -->
   <div class="section-label">Closing</div>
   <div class="feedback-section">
     <div class="feedback-card">
       <p class="feedback-intro">
-        Three sessions a week with 30 minutes each is genuinely excellent commitment for where you are right now, Kris — you've got the time to build a real habit. Getting your alignment and start line dialled in first means that when we layer in swing changes down the road, they'll actually show up in your shots rather than getting lost in compensations. Hit your balls, track both scores, and next week we'll see what your numbers are telling us.
+        Matteo, these two drills work as a pair: the short swing gate rebuilds your sense of where the face is, and the outer tee confirms whether that feeling holds up when you swing with more speed. The shank is one of those problems that responds quickly to the right drill because it has a single, fixable cause. Bring back both numbers and we'll know whether it's the path, the speed, or the transition that needs the most attention next week.
         <span class="feedback-hint">Fill in your scores above, answer the four questions below, then tap Send.</span>
       </p>
       <div class="feedback-question">
@@ -211,12 +244,13 @@
         <div class="feedback-q-label"><span class="q-num">4</span>Ready for next week's plan?</div>
         <div class="yn-row">
           <button type="button" class="yn-btn yn-yes" id="yn-yes" onclick="selectYN('yes')">Yes — send it</button>
-          <button class="yn-btn yn-no"  id="yn-no"  onclick="selectYN('no')">Not yet — need more time</button>
+          <button type="button" class="yn-btn yn-no"  id="yn-no"  onclick="selectYN('no')">Not yet — need more time</button>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Send button -->
   <div class="send-wrap">
     <button class="send-btn" id="send-btn" onclick="sendPlan()" disabled>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
@@ -224,6 +258,7 @@
     </button>
     <p class="send-hint" id="send-hint">Fill in all drill scores and answer question 4 to unlock</p>
   </div>
+
   <!-- SEND OPTIONS (shown if no email client handles the mailto) -->
   <div id="send-options" style="display:none;margin-top:12px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.14);border-radius:14px;padding:18px 16px">
     <p style="color:#9FE1CB;font-size:13px;font-weight:500;margin-bottom:4px">How would you like to send?</p>
@@ -240,87 +275,86 @@
     </button>
   </div>
 
+  <!-- Footer -->
   <div class="plan-footer">
     <span>Alfie Golf Trainings</span>
-    <span>Week 1 · Kris</span>
+    <span>Week 1 · Matteo</span>
   </div>
 
 </div>
 
 <script>
-var ynAnswer = '';
+  var ynAnswer = '';
 var lastSubject = ''; var lastBody = '';
 
-function selectYN(v) {
-  ynAnswer = v;
-  document.getElementById('yn-yes').classList.toggle('active', v === 'yes');
-  document.getElementById('yn-no').classList.toggle('active',  v === 'no');
-  checkReady();
-}
-
-function checkReady() {
-  var sThrough = document.getElementById('scoreThrough').value;
-  var sRight   = document.getElementById('scoreRight').value;
-  var sLeft    = document.getElementById('scoreLeft').value;
-  var sAlign   = document.getElementById('scoreAlign').value;
-  var scoresOk = sThrough !== '' && sRight !== '' && sLeft !== '' && sAlign !== '';
-  var ready = scoresOk && ynAnswer !== '';
-
-  document.getElementById('send-btn').disabled = !ready;
-  var hint = document.getElementById('send-hint');
-  if (ready) {
-    hint.textContent = 'Opens your email app with everything pre-filled — just hit send';
-    hint.style.color = 'rgba(255,255,255,0.32)';
-  } else {
-    var missing = [];
-    if (!scoresOk) missing.push('all drill scores');
-    if (!ynAnswer) missing.push('question 4');
-    hint.textContent = 'Fill in ' + missing.join(' and ') + ' to unlock';
-    hint.style.color = 'rgba(255,200,100,0.6)';
+  function selectYN(v) {
+    ynAnswer = v;
+    document.getElementById('yn-yes').classList.toggle('active', v === 'yes');
+    document.getElementById('yn-no').classList.toggle('active',  v === 'no');
+    checkReady();
   }
-}
 
-function sendPlan() {
-  var q1 = document.getElementById('q1').value.trim() || '(no response)';
-  var q2 = document.getElementById('q2').value.trim() || '(no response)';
-  var q3 = document.getElementById('q3').value.trim() || '(no response)';
-  var q4 = ynAnswer === 'yes' ? 'Yes — send it' : 'Not yet — need more time';
+  function checkReady() {
+    var s1wide   = document.getElementById('s1wide').value;
+    var s1narrow = document.getElementById('s1narrow').value;
+    var s2       = document.getElementById('s2').value;
 
-  var sThrough = document.getElementById('scoreThrough').value || '—';
-  var sRight   = document.getElementById('scoreRight').value   || '—';
-  var sLeft    = document.getElementById('scoreLeft').value    || '—';
-  var sAlign   = document.getElementById('scoreAlign').value   || '—';
+    var scoresOk = s1wide !== '' && s1narrow !== '' && s2 !== '';
+    var ready = scoresOk && ynAnswer !== '';
 
-  var subject = encodeURIComponent('Week 1 results — Kris');
-  var body = encodeURIComponent(
-    'Week 1 — Kris\n\n' +
-    '-- SCORES --\n' +
-    'Drill 1 — Alignment Check + Start Line Gate:\n' +
-    '  Through the gate: ' + sThrough + '\n' +
-    '  Right of gate:    ' + sRight   + '\n' +
-    '  Left of gate:     ' + sLeft    + '\n' +
-    '  Alignment correct on first attempt: ' + sAlign + ' / 20\n\n' +
-    '-- FEEDBACK --\n' +
-    '1. What felt different, hard, or clicked:\n' + q1 + '\n\n' +
-    '2. Anything that did not make sense or felt wrong:\n' + q2 + '\n\n' +
-    '3. One thing to focus on more next week:\n' + q3 + '\n\n' +
-    '4. Ready for next week\'s plan: ' + q4 + '\n\n' +
-    '— Kris'
-  );
-
-  lastSubject = subject; lastBody = body;
-  var mailtoWorked = false;
-  function onBlur() { mailtoWorked = true; window.removeEventListener('blur', onBlur); }
-  window.addEventListener('blur', onBlur);
-  window.location.href = 'mailto:trainings@alfie-golf.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-  setTimeout(function() {
-    window.removeEventListener('blur', onBlur);
-    if (!mailtoWorked) {
-      document.getElementById('send-options').style.display = 'block';
-      document.getElementById('send-btn').style.display = 'none';
-      document.getElementById('send-hint').style.display = 'none';
+    document.getElementById('send-btn').disabled = !ready;
+    var hint = document.getElementById('send-hint');
+    if (ready) {
+      hint.textContent = 'Opens your email app with everything pre-filled — just hit send';
+      hint.style.color = 'rgba(255,255,255,0.32)';
+    } else {
+      var missing = [];
+      if (!scoresOk) missing.push('all drill scores');
+      if (!ynAnswer) missing.push('question 4');
+      hint.textContent = 'Fill in ' + missing.join(' and ') + ' to unlock';
+      hint.style.color = 'rgba(255,200,100,0.6)';
     }
-  }, 800);
+  }
+
+  function sendPlan() {
+    var q1 = document.getElementById('q1').value.trim() || '(no response)';
+    var q2 = document.getElementById('q2').value.trim() || '(no response)';
+    var q3 = document.getElementById('q3').value.trim() || '(no response)';
+    var q4 = ynAnswer === 'yes' ? 'Yes — send it' : 'Not yet — need more time';
+
+    var s1wide   = document.getElementById('s1wide').value   || '—';
+    var s1narrow = document.getElementById('s1narrow').value || '—';
+    var s2       = document.getElementById('s2').value       || '—';
+
+    var subject = encodeURIComponent('Week 1 results — Matteo');
+    var body = encodeURIComponent(
+      'Week 1 — Matteo\n\n' +
+      '-- SCORES --\n' +
+      'Drill 1 — Short Swing Gate Rebuild (9 Iron):\n' +
+      '  Wide gate cleared: ' + s1wide + ' / 10\n' +
+      '  Narrow gate cleared: ' + s1narrow + ' / 10\n\n' +
+      'Drill 2 — Outer Tee Anti-Shank (9 Iron): ' + s2 + ' / 30 outer tee untouched\n\n' +
+      '-- FEEDBACK --\n' +
+      '1. What felt different, hard, or clicked:\n' + q1 + '\n\n' +
+      '2. Anything that did not make sense or felt wrong:\n' + q2 + '\n\n' +
+      '3. One thing to focus on more next week:\n' + q3 + '\n\n' +
+      '4. Ready for next week\'s plan: ' + q4 + '\n\n' +
+      '— Matteo'
+    );
+
+    lastSubject = decodeURIComponent(subject); lastBody = decodeURIComponent(body);
+    var mailtoWorked = false;
+    function onBlur() { mailtoWorked = true; window.removeEventListener('blur', onBlur); }
+    window.addEventListener('blur', onBlur);
+    window.location.href = 'mailto:trainings@alfie-golf.com?subject=' + subject + '&body=' + body;
+    setTimeout(function() {
+      window.removeEventListener('blur', onBlur);
+      if (!mailtoWorked) {
+        document.getElementById('send-options').style.display = 'block';
+        document.getElementById('send-btn').style.display = 'none';
+        document.getElementById('send-hint').style.display = 'none';
+      }
+    }, 800);
 }
 function openGmail() {
   var url = 'https://mail.google.com/mail/?view=cm&fs=1&to=trainings@alfie-golf.com&su=' +
@@ -336,20 +370,17 @@ function copyResults() {
   var btn = document.getElementById('copy-btn');
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(function() {
-      btn.textContent = '\u2713 Copied! Paste it into an email to trainings@alfie-golf.com';
+      btn.textContent = '✓ Copied! Paste it into an email to trainings@alfie-golf.com';
       btn.style.color = '#9FE1CB';
       btn.style.borderColor = 'rgba(29,158,117,0.5)';
     });
   } else {
     var ta = document.createElement('textarea');
     ta.value = text;
-    ta.style.position = 'fixed';
-    ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-    btn.textContent = '\u2713 Copied! Paste it into an email to trainings@alfie-golf.com';
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    btn.textContent = '✓ Copied! Paste it into an email to trainings@alfie-golf.com';
     btn.style.color = '#9FE1CB';
   }
 }
