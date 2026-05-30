@@ -1,5 +1,5 @@
 {
   "rewrites": [
-    { "source": "/((?!plans/).*)", "destination": "/index.html" }
+    { "source": "/((?!plans\/|cohort-dashboard\.html|golfer-profile\.html).*)", "destination": "/index.html" }
   ]
 }
