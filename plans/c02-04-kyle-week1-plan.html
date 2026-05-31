@@ -68,6 +68,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
 .send-hint { text-align: center; font-size: 12px; color: rgba(255,255,255,0.32); margin-top: 9px; line-height: 1.4; }
 .plan-footer { display: flex; justify-content: space-between; padding-top: 1rem; margin-top: 1.5rem; border-top: 0.5px solid rgba(255,255,255,0.1); position: relative; z-index: 1; }
 .plan-footer span { font-size: 10px; color: rgba(255,255,255,0.25); }
+.back-link { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: rgba(255,255,255,0.45); text-decoration: none; margin-bottom: 1.25rem; transition: color 0.15s; position: relative; z-index: 1; }
+.back-link:hover { color: #9FE1CB; }
 </style>
 </head>
 <body>
@@ -75,6 +77,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
 <canvas id="topo-bg" aria-hidden="true"></canvas>
 
 <div class="plan">
+
+  <a href="#" class="back-link" id="back-link">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+    Dashboard
+  </a>
 
   <!-- HEADER -->
   <div class="plan-header">
@@ -215,6 +222,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
 </div>
 
 <script>
+var fn = window.location.pathname.split('/').pop();
+var slug = fn.replace(/-week\d+-plan\.html$/, '');
+document.getElementById('back-link').href = 'https://alfie-golf.com/' + slug;
+
 var lastSubject = ''; var lastBody = '';
 function selectTile(btn) {
   var group = btn.dataset.group;
@@ -352,7 +363,7 @@ function copyResults() {
     if(v<lo)lo=v; if(v>hi)hi=v;
   }
 
-  ctx.strokeStyle='rgba(255,255,255,0.12)';
+  ctx.strokeStyle='rgba(255,255,255,0.09)';
   ctx.lineWidth=0.85;
   ctx.lineCap='round';
 
