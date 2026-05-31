@@ -57,7 +57,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
 .q-num { width: 19px; height: 19px; border-radius: 50%; background: rgba(255,255,255,0.1); display: inline-flex; align-items: center; justify-content: center; font-size: 10px; color: #9FE1CB; flex-shrink: 0; }
 .tile-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
 .q-tile { padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 12px; font-family: inherit; line-height: 1.3; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.65); transition: background 0.12s, border-color 0.12s, color 0.12s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
-.q-tile.selected { background: rgba(29,158,117,0.20); border: 1px solid #1D9E75; color: #9FE1CB; }
+.q-tile.selected { background: rgba(212,155,30,0.28); border: 1px solid #C8900A; color: #F0C040; }
 .req-star { color: #ff6b6b; margin-left: 3px; }
 .send-wrap { position: relative; z-index: 1; margin-top: 1.25rem; padding-bottom: 0.5rem; }
 .send-btn { width: 100%; padding: 14px; background: #1D9E75; color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 500; cursor: pointer; font-family: inherit; transition: background 0.15s; display: flex; align-items: center; justify-content: center; gap: 9px; }
@@ -70,17 +70,19 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
 </head>
 <body>
 
-<svg class="topo-bg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-  <path d="M-50,300 C50,220 150,380 250,300 C350,220 450,380 550,300 C650,220 750,380 850,300" fill="none" stroke="#fff" stroke-width="1.2"/>
-  <path d="M-50,340 C50,260 150,420 250,340 C350,260 450,420 550,340 C650,260 750,420 850,340" fill="none" stroke="#fff" stroke-width="1"/>
-  <path d="M-50,280 C80,200 180,360 280,270 C380,185 480,360 580,275 C680,190 770,350 850,280" fill="none" stroke="#fff" stroke-width="1.2"/>
-  <path d="M-50,360 C70,290 180,440 290,360 C400,280 490,440 590,355 C690,270 780,420 850,360" fill="none" stroke="#fff" stroke-width="0.9"/>
-  <path d="M-50,250 C60,170 170,330 270,245 C370,160 470,330 580,248 C680,165 770,310 850,250" fill="none" stroke="#fff" stroke-width="1"/>
-  <path d="M-50,400 C80,330 180,480 300,395 C410,315 510,470 610,390 C710,310 790,450 850,400" fill="none" stroke="#fff" stroke-width="0.8"/>
-  <path d="M-50,200 C90,130 190,280 300,200 C410,120 510,280 610,195 C710,115 790,260 850,200" fill="none" stroke="#fff" stroke-width="1"/>
-  <path d="M-50,440 C70,375 180,510 300,435 C415,360 510,505 625,430 C720,360 800,490 850,440" fill="none" stroke="#fff" stroke-width="0.8"/>
-  <path d="M-50,160 C100,90 200,240 310,160 C420,80 520,245 620,158 C720,75 800,215 850,160" fill="none" stroke="#fff" stroke-width="0.9"/>
-  <path d="M-50,480 C90,415 190,545 310,470 C425,395 525,540 635,460 C730,385 810,520 850,475" fill="none" stroke="#fff" stroke-width="0.7"/>
+<svg class="topo-bg" viewBox="0 0 560 900" preserveAspectRatio="xMidYMin slice" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <ellipse cx="280" cy="420" rx="28" ry="18" fill="none" stroke="#fff" stroke-width="1"/>
+  <ellipse cx="280" cy="420" rx="62" ry="42" fill="none" stroke="#fff" stroke-width="1"/>
+  <ellipse cx="280" cy="420" rx="105" ry="70" fill="none" stroke="#fff" stroke-width="1"/>
+  <ellipse cx="280" cy="420" rx="155" ry="103" fill="none" stroke="#fff" stroke-width="1"/>
+  <ellipse cx="280" cy="420" rx="212" ry="141" fill="none" stroke="#fff" stroke-width="1"/>
+  <ellipse cx="280" cy="420" rx="275" ry="183" fill="none" stroke="#fff" stroke-width="0.9"/>
+  <ellipse cx="280" cy="420" rx="344" ry="229" fill="none" stroke="#fff" stroke-width="0.9"/>
+  <ellipse cx="280" cy="420" rx="420" ry="280" fill="none" stroke="#fff" stroke-width="0.8"/>
+  <ellipse cx="280" cy="420" rx="502" ry="334" fill="none" stroke="#fff" stroke-width="0.8"/>
+  <ellipse cx="280" cy="420" rx="590" ry="393" fill="none" stroke="#fff" stroke-width="0.7"/>
+  <ellipse cx="280" cy="420" rx="685" ry="456" fill="none" stroke="#fff" stroke-width="0.7"/>
+  <ellipse cx="280" cy="420" rx="786" ry="524" fill="none" stroke="#fff" stroke-width="0.6"/>
 </svg>
 
 <div class="plan">
@@ -90,10 +92,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
   <div class="plan-header">
     <div class="week-label">Week 1</div>
     <h1 class="golfer-name">Fabio</h1>
-    <p class="golfer-sub">Your practice plan for this week</p>
+    <p class="golfer-sub">Practice plan · Week 1</p>
+
     <div class="overview-chips">
       <div class="chip">
-        <div class="chip-lbl">Total time</div>
+        <div class="chip-lbl">Total Time</div>
         <div class="chip-val">60 min</div>
       </div>
       <div class="chip">
@@ -101,42 +104,43 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
         <div class="chip-val">Driving range</div>
       </div>
       <div class="chip">
-        <div class="chip-lbl">Focus</div>
-        <div class="chip-val">Eliminating the driver hook by controlling face and release</div>
+        <div class="chip-lbl">This Week's Focus</div>
+        <div class="chip-val">Eliminating the hook off the tee</div>
       </div>
     </div>
+
     <div class="opening-card">
-      <p>That hook off the tee is costing you more than just distance — it's taking fairways out of play and putting pressure on the rest of your hole before you've even hit your second shot. This week we're going straight at the root cause: clubface closing too much relative to your path. Two focused drills, one on the range and one you can take to the course.</p>
+      <p>A hook off the tee is one of the most frustrating misses — you feel like you're making a decent swing, then the ball dives left and you're in trouble before the hole even starts. This week we're going to work on the two biggest causes of that hook: a clubface that closes too early and a path that's swinging too far from the inside. Two focused drills, nothing more.</p>
     </div>
   </div>
 
+  <!-- DRILLS -->
   <div class="section-label">Drills</div>
 
   <!-- Drill 1 -->
   <div class="drill-card">
     <div class="drill-header">
       <div class="drill-num">1</div>
-      <div class="drill-name">Split Grip Release Control</div>
-      <div class="drill-time">25 min</div>
+      <div class="drill-name">Corridor Drill — Driver</div>
+      <div class="drill-time">30 min</div>
     </div>
     <div class="drill-body">
       <div>
         <div class="micro">What to do</div>
-        <p class="drill-text">Take your driver and split your hands apart on the grip — leave about a 2-inch gap between your trail hand and lead hand. Make 5 slow-motion practice swings feeling how your hands and forearms rotate through impact. With the split grip, you'll immediately feel if your trail hand is rolling over your lead hand too aggressively — that's what's slamming the face shut and producing the hook.</p>
-        <p class="drill-text" style="margin-top:8px;">Now hit 20 balls with the split grip at about 60% effort. Focus on keeping the clubface pointing at or just right of target through the hitting zone. Your trail palm should feel like it faces the sky a beat longer than usual through impact. After those 20, re-grip normally and hit 10 balls at 75% effort, carrying the same feeling of a quieter release. Pick a specific target on the range and note how many of the final 10 normal-grip shots start on line or fade — versus hooking left.</p>
+        <p class="drill-text">Pick a target in the middle of the range, roughly 200 yards out. Place two alignment rods (or two objects like headcovers) on the ground about 6 feet apart, pointing at that target — this is your visual corridor. Hit 25 drivers with one single goal: the ball must start inside or right of that corridor. Don't worry about where it finishes for now. Between every shot, step behind the ball and re-confirm your corridor. After 25 balls, count how many started on line or right of your corridor. If you're hooking, most of your shots will be starting left — this drill retrains your awareness of where the ball is actually launching versus where you think it's going. Take your time. One ball every 60–70 seconds is plenty.</p>
       </div>
       <div class="why-block">
         <div class="why-lbl">Why this matters for you</div>
-        <p class="why-text">At a 24 handicap, the hook usually isn't coming from an advanced in-to-out path — it's almost always the hands flipping the face closed through impact. The split grip isolates exactly that feeling and gives you immediate feedback. You don't need to rebuild your swing; you need to calm down the release so the face stays square a fraction longer.</p>
+        <p class="why-text">At a 24 handicap, the hook with the driver is almost certainly costing you multiple shots per round before you even reach your second shot. Most hooks start left AND curve left, meaning both the face and the path are closed. By focusing purely on start direction, you're learning to open the face just enough at impact — which is the fastest fix for a hook. This single awareness shift can turn a snap-hook into a playable draw.</p>
       </div>
       <div class="score-box">
         <div class="score-box-lbl">Score to record</div>
         <div class="score-row">
           <div>
-            <div class="score-item-lbl">Straight or fade (normal grip)</div>
+            <div class="score-item-lbl">Started on-line or right</div>
             <div class="score-single">
-              <input id="s1" type="number" min="0" max="10" placeholder="—" oninput="checkReady()">
-              <span class="den">/ 10</span>
+              <input id="s1" type="number" min="0" max="25" placeholder="—" oninput="checkReady()">
+              <span class="den">/ 25</span>
             </div>
           </div>
         </div>
@@ -148,57 +152,41 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
   <div class="drill-card">
     <div class="drill-header">
       <div class="drill-num">2</div>
-      <div class="drill-name">Corridor Drill — Driver</div>
-      <div class="drill-time">30 min</div>
+      <div class="drill-name">Gate Drill — 7 Iron</div>
+      <div class="drill-time">25 min</div>
     </div>
     <div class="drill-body">
       <div>
         <div class="micro">What to do</div>
-        <p class="drill-text">Place two alignment aids (tees, headcovers, or range markers) on the range to define a corridor roughly 30 yards wide, centred on your target. If your range doesn't have markers, pick two existing targets that are about 30 yards apart and use them as your left and right boundaries.</p>
-        <p class="drill-text" style="margin-top:8px;">Hit 20 driver shots at 80% effort — not full send. Before each shot, make one split-grip rehearsal swing from the previous drill to reset the feel. Your only job is to land the ball inside the corridor. After every 5 balls, step behind your station and assess the pattern: are misses still left, or are they starting to spread right?</p>
-        <p class="drill-text" style="margin-top:8px;">Finish with 5 "pressure" drives: tell yourself each one is the first tee shot of a round. Full commitment, same corridor target.</p>
+        <p class="drill-text">Tee up a ball slightly. Place two tees in the ground about 4 inches apart, just in front of the ball — this is your gate. The clubhead must pass through the gate without knocking either tee over. Hit 20 balls through the gate with your 7-iron. Focus on swinging smoothly straight through the gate rather than whipping the club hard to the left through impact. If you're catching the outside tee, your path is too far inside-to-out. If you're catching the inside tee, you're coming over the top. Both tell you something useful. After 20 balls, note how many clean passes you made.</p>
       </div>
       <div class="why-block">
         <div class="why-lbl">Why this matters for you</div>
-        <p class="why-text">You said your frustration is the hook with driver from the tee — this drill puts you in a realistic scenario where you're aiming at a fairway-width target and building trust that the ball won't snap left. At 24 handicap, the biggest scoring gains come from keeping the ball in play off the tee, and this trains exactly that. Tracking the corridor hits gives you a concrete number to beat next week.</p>
+        <p class="why-text">We're using the 7-iron here because the hook pattern you have with the driver almost always exists in your irons too — it's just less dramatic because the loft on a 7-iron fights the curve. By training a neutral path with a shorter, easier club, you're building a movement pattern that transfers directly to the driver. At 24 handicap, keeping this drill simple and repeatable is more valuable than trying to fix everything with the big stick.</p>
       </div>
       <div class="score-box">
         <div class="score-box-lbl">Score to record</div>
         <div class="score-row">
           <div>
-            <div class="score-item-lbl">In corridor (20 shots)</div>
+            <div class="score-item-lbl">Gate passes</div>
             <div class="score-single">
-              <input id="s2a" type="number" min="0" max="20" placeholder="—" oninput="checkReady()">
+              <input id="s2" type="number" min="0" max="20" placeholder="—" oninput="checkReady()">
               <span class="den">/ 20</span>
             </div>
-          </div>
-          <div class="score-sep"></div>
-          <div>
-            <div class="score-item-lbl">Pressure drives in corridor</div>
-            <div class="score-single">
-              <input id="s2b" type="number" min="0" max="5" placeholder="—" oninput="checkReady()">
-              <span class="den">/ 5</span>
-            </div>
-          </div>
-          <div class="score-sep"></div>
-          <div class="score-total-row">
-            <span class="score-total-lbl">Total</span>
-            <span class="score-total-val" id="s2total">—</span>
-            <span class="score-total-den">/ 25</span>
           </div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- CLOSING + FEEDBACK -->
   <div class="section-label">Closing</div>
-
   <div class="feedback-section">
     <div class="feedback-card">
-      <p class="feedback-intro">Taming that hook is one of the fastest ways to start dropping scores from 24 — keeping the ball in play off the tee takes all the stress off your approach shots. Stick with the split grip warm-up before every range session this week, even if it's just 5 swings. The quieter release will start to feel normal faster than you think.</p>
+      <p class="feedback-intro">Allow 5 minutes at the end to hit a few easy drivers and see if the corridor awareness carries over. You don't need to rebuild your swing to fix this hook — you need to get the face a fraction more open at impact and stop the club rolling over. Track your two scores this week and send them back. We'll build from there.</p>
       <span class="feedback-hint">Fill in your scores above, then answer all four questions to unlock Send.</span>
 
-      <div class="feedback-question" style="margin-top:1.25rem;">
+      <div class="feedback-question">
         <div class="feedback-q-label"><span class="q-num">1</span>How did this session go? <span class="req-star">*</span></div>
         <div class="tile-row">
           <button type="button" class="q-tile" data-group="q1" data-value="Nailed it 💪" onclick="selectTile(this)">Nailed it 💪</button>
@@ -207,7 +195,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
           <button type="button" class="q-tile" data-group="q1" data-value="Really tough 🤯" onclick="selectTile(this)">Really tough 🤯</button>
         </div>
       </div>
-
       <div class="feedback-question">
         <div class="feedback-q-label"><span class="q-num">2</span>The instructions were… <span class="req-star">*</span></div>
         <div class="tile-row">
@@ -216,7 +203,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
           <button type="button" class="q-tile" data-group="q2" data-value="Hard to follow" onclick="selectTile(this)">Hard to follow</button>
         </div>
       </div>
-
       <div class="feedback-question">
         <div class="feedback-q-label"><span class="q-num">3</span>Next week I want… <span class="req-star">*</span></div>
         <div class="tile-row">
@@ -225,7 +211,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
           <button type="button" class="q-tile" data-group="q3" data-value="Something different" onclick="selectTile(this)">Something different</button>
         </div>
       </div>
-
       <div class="feedback-question">
         <div class="feedback-q-label"><span class="q-num">4</span>Ready for next week's plan? <span class="req-star">*</span></div>
         <div class="tile-row">
@@ -254,11 +239,12 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
 
   <div class="plan-footer">
     <span>Alfie Golf</span>
-    <span>Week 1 — Fabio</span>
+    <span>Week 1 · Fabio</span>
   </div>
 
 </div>
 
+<!-- Success Modal -->
 <div id="success-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:100;align-items:center;justify-content:center;padding:1.5rem;">
   <div style="background:#0d6b52;border:0.5px solid rgba(255,255,255,0.2);border-radius:16px;padding:2rem 1.5rem;max-width:340px;width:100%;text-align:center;">
     <div style="font-size:36px;margin-bottom:0.75rem;">&#127919;</div>
@@ -281,18 +267,10 @@ function selectTile(btn) {
 
 function checkReady() {
   var s1 = document.getElementById('s1').value;
-  var s2a = document.getElementById('s2a').value;
-  var s2b = document.getElementById('s2b').value;
-
-  // Update drill 2 total
-  var a = parseInt(s2a) || 0;
-  var b = parseInt(s2b) || 0;
-  document.getElementById('s2total').textContent = (s2a !== '' || s2b !== '') ? (a + b) : '—';
-
-  var scoresOk = s1 !== '' && s2a !== '' && s2b !== '';
+  var s2 = document.getElementById('s2').value;
+  var scoresOk = s1 !== '' && s2 !== '';
   var tilesOk = ['q1','q2','q3','q4'].every(function(g){return document.querySelector('.q-tile[data-group="'+g+'"].selected');});
   var ready = scoresOk && tilesOk;
-
   document.getElementById('send-btn').disabled = !ready;
   var hint = document.getElementById('send-hint');
   if (ready) {
@@ -312,21 +290,16 @@ function buildPayload() {
   var q2 = document.querySelector('.q-tile[data-group="q2"].selected')?.dataset.value || '';
   var q3 = document.querySelector('.q-tile[data-group="q3"].selected')?.dataset.value || '';
   var q4 = document.querySelector('.q-tile[data-group="q4"].selected')?.dataset.value || '';
-
   var scores = {
-    drill1_straight_or_fade: document.getElementById('s1').value,
-    drill2_in_corridor_20: document.getElementById('s2a').value,
-    drill2_pressure_in_corridor: document.getElementById('s2b').value
+    drill1_corridor_on_line_or_right: document.getElementById('s1').value,
+    drill2_gate_passes: document.getElementById('s2').value
   };
-
   return {
-    slug: GOLFER_SLUG,
-    week: PLAN_WEEK,
-    session: 1,
+    slug: GOLFER_SLUG, week: PLAN_WEEK, session: 1,
     date: new Date().toISOString().split('T')[0],
     drills: JSON.stringify([
-      'Split Grip Release Control',
-      'Corridor Drill — Driver'
+      {name: 'Corridor Drill — Driver', duration: '30 min'},
+      {name: 'Gate Drill — 7 Iron', duration: '25 min'}
     ]),
     scores: JSON.stringify(scores),
     q1: q1, q2: q2, q3: q3, q4: q4
@@ -360,6 +333,39 @@ function sendPlan() {
   })
   .catch(function(err) {
     btn.disabled = false;
-    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send my scores &amp; feedback';
+    document.getElementById('send-hint').textContent = 'Something went wrong — tap to try again';
+    document.getElementById('send-hint').style.color = 'rgba(255,100,100,0.8)';
+    console.error(err);
+  });
+}
+function openGmail() {
+  var url = 'https://mail.google.com/mail/?view=cm&fs=1&to=trainings@alfie-golf.com&su=' +
+    encodeURIComponent(lastSubject) + '&body=' + encodeURIComponent(lastBody);
+  window.open(url, '_blank');
+}
+function openMailApp() {
+  window.location.href = 'mailto:trainings@alfie-golf.com?subject=' +
+    encodeURIComponent(lastSubject) + '&body=' + encodeURIComponent(lastBody);
+}
+function copyResults() {
+  var text = 'To: trainings@alfie-golf.com\nSubject: ' + lastSubject + '\n\n' + lastBody;
+  var btn = document.getElementById('copy-btn');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied! Paste into an email to trainings@alfie-golf.com';
+      btn.style.color = '#9FE1CB';
+    });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    btn.textContent = 'Copied!'; btn.style.color = '#9FE1CB';
+  }
+}
+
+</script>
+
 </body>
 </html>
