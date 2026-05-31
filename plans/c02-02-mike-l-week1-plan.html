@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Week 1 — Ryan</title>
+<title>Week 1 — Mike</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; background: #085041; min-height: 100vh; padding: 2rem 1rem 4rem; }
@@ -54,13 +54,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
 .feedback-question:last-child { margin-bottom: 0; }
 .feedback-q-label { font-size: 11px; font-weight: 500; color: #9FE1CB; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 7px; display: flex; align-items: center; gap: 8px; }
 .q-num { width: 19px; height: 19px; border-radius: 50%; background: rgba(255,255,255,0.1); display: inline-flex; align-items: center; justify-content: center; font-size: 10px; color: #9FE1CB; flex-shrink: 0; }
-.feedback-textarea { width: 100%; background: #fff; border: 0.5px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 10px 12px; font-size: 13px; color: #085041; font-family: inherit; line-height: 1.6; resize: vertical; min-height: 72px; outline: none; }
-.feedback-textarea::placeholder { color: rgba(8,80,65,0.35); }
-.feedback-textarea:focus { border-color: #5DCAA5; }
-.yn-row { display: flex; gap: 8px; }
-.yn-btn { flex: 1; padding: 10px 12px; border: 0.5px solid rgba(255,255,255,0.2); border-radius: 8px; background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.65); font-size: 14px; font-weight: 500; cursor: pointer; text-align: center; font-family: inherit; transition: background 0.12s, border-color 0.12s, color 0.12s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
-.yn-yes.active { background: #E1F5EE; border-color: #5DCAA5; color: #085041; }
-.yn-no.active { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.45); color: #fff; }
+.tile-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.q-tile { padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 12px; font-family: inherit; line-height: 1.3; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.65); transition: background 0.12s, border-color 0.12s, color 0.12s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.q-tile.selected { background: rgba(29,158,117,0.20); border: 1px solid #1D9E75; color: #9FE1CB; }
+.req-star { color: #ff6b6b; margin-left: 3px; }
 .send-wrap { position: relative; z-index: 1; margin-top: 1.25rem; padding-bottom: 0.5rem; }
 .send-btn { width: 100%; padding: 14px; background: #1D9E75; color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 500; cursor: pointer; font-family: inherit; transition: background 0.15s; display: flex; align-items: center; justify-content: center; gap: 9px; }
 .send-btn:hover { background: #0F6E56; }
@@ -88,59 +85,71 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
 
 <div class="plan">
 
-  <!-- HEADER -->
   <div class="plan-header">
     <div class="week-label">Week 1</div>
-    <h1 class="golfer-name">Ryan</h1>
-    <p class="golfer-sub">Your practice plan from Alfie Golf Trainings</p>
+    <h1 class="golfer-name">Mike</h1>
+    <div class="golfer-sub">Alfie Golf Trainings — personal practice plan</div>
 
     <div class="overview-chips">
       <div class="chip">
         <div class="chip-lbl">Total time</div>
-        <div class="chip-val">30 min (one drill per session)</div>
+        <div class="chip-val">30 min</div>
       </div>
       <div class="chip">
         <div class="chip-lbl">Location</div>
-        <div class="chip-val">Grass range</div>
+        <div class="chip-val">Driving range</div>
       </div>
       <div class="chip">
         <div class="chip-lbl">This week's focus</div>
-        <div class="chip-val">Wedge distance control + finding more fairways off the tee</div>
+        <div class="chip-val">Hitting more fairways with your driver</div>
       </div>
     </div>
 
     <div class="opening-card">
-      <p>Ryan, you've flagged two areas that are eating your scores — wedges and the tee box. This week I'm giving you one drill for each, but here's the key: focus on only one drill per session. Don't try to cram both into 30 minutes. Session 1, pick one. Session 2, pick the other. That single-focus approach will get you further than splitting your attention ever will.</p>
+      <p>Mike, driving accuracy is your focus — so that's exactly where we're spending your 30 minutes this week. No splitting attention across five different things. One drill, one goal: more balls in the fairway. Let's build a practice habit that actually moves the needle.</p>
     </div>
   </div>
 
-  <!-- DRILLS -->
   <div class="section-label">Drills</div>
 
-  <!-- Drill 1 -->
   <div class="drill-card">
     <div class="drill-header">
       <div class="drill-num">1</div>
-      <div class="drill-name">Distance Ladder — Wedges</div>
-      <div class="drill-time">30 min</div>
+      <div class="drill-name">Fairway Gate Drill</div>
+      <div class="drill-time">25 min</div>
     </div>
     <div class="drill-body">
       <div>
         <div class="micro">What to do</div>
-        <p class="drill-text">Pick your most-used wedge (pitching wedge or sand wedge — whichever you grab most inside 100 yards). Set up at the range and choose four targets at roughly 30, 50, 70, and 90 yards. Hit 5 balls to the 30-yard target, then 5 to 50, then 5 to 70, then 5 to 90. That's 20 balls — one "ladder." Focus on making smooth, controlled swings rather than muscling the ball. After the ladder, repeat with your remaining time. You're learning what a half-swing, three-quarter swing, and full swing actually produce with one club. If you'd rather mix clubs to hit those distances — say, sand wedge for the shorter targets and pitching wedge for the longer ones — go for it. The goal is the same: build a feel for predictable distances with whatever club you choose.</p>
+        <div class="drill-text">
+          1. Tee up your driver as normal.<br><br>
+          2. Place two alignment sticks in the ground roughly 3 feet in front of your ball, spaced just wider than your clubhead — this is your gate. The ball must pass cleanly between the sticks on every swing.<br><br>
+          3. Now pick a target line downrange. Visualise a fairway 40 yards wide centred on that target — use any landmarks or range markers to define the left and right edges.<br><br>
+          4. Hit 20 drives. On each shot, note two things: (a) did the ball pass through the gate? (b) did it finish inside your 40-yard fairway?<br><br>
+          5. Between shots, step behind the ball and re-commit to your target line. No rapid-fire hitting — treat each drive like it's a tee shot on the course.<br><br>
+          6. Use the last 5 minutes to hit 5 more drives without the gate sticks in the ground, keeping the same feel and target. See if the accuracy holds.
+        </div>
       </div>
       <div class="why-block">
         <div class="why-lbl">Why this matters for you</div>
-        <p class="why-text">At 19.9, a huge chunk of your scoring happens inside 100 yards. Dialling in predictable wedge distances means you're giving yourself more realistic birdie and par looks instead of leaving chips and pitches in no-man's land. This is one of the fastest ways to chip strokes off your handicap.</p>
+        <div class="why-text">Shooting around 84 puts you in a solid place — roughly a 12–15 handicap — which means you already have real ability with your irons and short game. At this level, the quickest way to shave strokes is tightening up off the tee. Missed fairways force recovery shots and turn pars into bogeys, and that's often the difference between breaking 80 and staying in the mid-80s. The gate forces your clubface and path to cooperate through impact — the two things that control start line. The imaginary fairway gives you a realistic target to measure against, so you're not just "hitting it straighter" in theory — you're counting real results. With one session per week, this kind of focused, measurable work is exactly how you'll see progress round to round.</div>
       </div>
       <div class="score-box">
         <div class="score-box-lbl">Score to record</div>
         <div class="score-row">
           <div>
-            <div class="score-item-lbl">Within 10 yards of target</div>
+            <div class="score-item-lbl">Gate passes</div>
             <div class="score-single">
-              <input id="s1" type="number" min="0" max="20" placeholder="—" oninput="checkReady()">
-              <span class="den">/ 20</span>
+              <input id="s1a" type="number" min="0" max="25" placeholder="—" oninput="checkReady()">
+              <span class="den">/ 25</span>
+            </div>
+          </div>
+          <div class="score-sep"></div>
+          <div>
+            <div class="score-item-lbl">In fairway</div>
+            <div class="score-single">
+              <input id="s1b" type="number" min="0" max="25" placeholder="—" oninput="checkReady()">
+              <span class="den">/ 25</span>
             </div>
           </div>
         </div>
@@ -148,77 +157,44 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
     </div>
   </div>
 
-  <!-- Drill 2 -->
-  <div class="drill-card">
-    <div class="drill-header">
-      <div class="drill-num">2</div>
-      <div class="drill-name">Gate Drill — Driver</div>
-      <div class="drill-time">30 min</div>
-    </div>
-    <div class="drill-body">
-      <div>
-        <div class="micro">What to do</div>
-        <p class="drill-text">Place two alignment sticks in the ground about 3 feet in front of your ball, spaced roughly a clubhead-width apart to form a gate. Tee up and hit 20 drives with one goal: start the ball cleanly through the gate. Before every shot, stand behind the ball, pick your line, then step in and go. After each shot, note whether the ball went through the gate, missed left, or missed right. If you're consistently missing one side, don't try to fix your swing mid-drill — just note the pattern and keep committing to your line.</p>
-      </div>
-      <div class="why-block">
-        <div class="why-lbl">Why this matters for you</div>
-        <p class="why-text">You mentioned the tee box as a frustration, and at your handicap, the fastest win off the tee isn't more distance — it's keeping the ball in play. One fewer penalty or punch-out per round can save you 2–3 strokes immediately. The gate gives you instant feedback on your start line, which is the single biggest factor in finding fairways.</p>
-      </div>
-      <div class="score-box">
-        <div class="score-box-lbl">Score to record</div>
-        <div class="score-row">
-          <div>
-            <div class="score-item-lbl">Through the gate</div>
-            <div class="score-single">
-              <input id="s2a" type="number" min="0" max="20" placeholder="—" oninput="checkReady()">
-              <span class="den">/ 20</span>
-            </div>
-          </div>
-          <div class="score-sep"></div>
-          <div>
-            <div class="score-item-lbl">Missed left</div>
-            <div class="score-single">
-              <input id="s2b" type="number" min="0" max="20" placeholder="—" oninput="checkReady()">
-              <span class="den">/ 20</span>
-            </div>
-          </div>
-          <div class="score-sep"></div>
-          <div>
-            <div class="score-item-lbl">Missed right</div>
-            <div class="score-single">
-              <input id="s2c" type="number" min="0" max="20" placeholder="—" oninput="checkReady()">
-              <span class="den">/ 20</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- CLOSING + FEEDBACK -->
   <div class="section-label">Closing</div>
+
   <div class="feedback-section">
     <div class="feedback-card">
-      <p class="feedback-intro">Ryan, these two drills attack exactly where your scores are leaking — inside 100 yards and off the tee. Alternate between them across your two sessions this week and write down your scores each time. I want to see those numbers climb over the coming weeks. Keep it simple, stay focused, and you'll feel the difference next time you're on the course.</p>
-      <p class="feedback-hint">Fill in your scores above, answer the four questions below, then tap Send.</p>
+      <p class="feedback-intro">This is your baseline week, Mike. Whatever numbers you post, write them down — they're your starting point, not your verdict. Driving accuracy improves with consistent, focused reps like these, and now you've got a way to actually track it. Looking forward to seeing those scores.</p>
+      <span class="feedback-hint">Fill in your scores above, then answer all four questions to unlock Send.</span>
 
       <div class="feedback-question">
-        <div class="feedback-q-label"><span class="q-num">1</span>What felt different, hard, or clicked?</div>
-        <textarea class="feedback-textarea" id="q1" rows="3" placeholder="Even one or two sentences is perfect..." oninput="checkReady()"></textarea>
+        <div class="feedback-q-label"><span class="q-num">1</span>How did this session go? <span class="req-star">*</span></div>
+        <div class="tile-row">
+          <button type="button" class="q-tile" data-group="q1" data-value="Nailed it 💪" onclick="selectTile(this)">Nailed it 💪</button>
+          <button type="button" class="q-tile" data-group="q1" data-value="Good progress 👍" onclick="selectTile(this)">Good progress 👍</button>
+          <button type="button" class="q-tile" data-group="q1" data-value="Struggled a bit 😅" onclick="selectTile(this)">Struggled a bit 😅</button>
+          <button type="button" class="q-tile" data-group="q1" data-value="Really tough 🤯" onclick="selectTile(this)">Really tough 🤯</button>
+        </div>
       </div>
       <div class="feedback-question">
-        <div class="feedback-q-label"><span class="q-num">2</span>Anything that didn't make sense or felt wrong?</div>
-        <textarea class="feedback-textarea" id="q2" rows="3" placeholder="Drills, instructions, timing — anything off..." oninput="checkReady()"></textarea>
+        <div class="feedback-q-label"><span class="q-num">2</span>The instructions were… <span class="req-star">*</span></div>
+        <div class="tile-row">
+          <button type="button" class="q-tile" data-group="q2" data-value="Crystal clear ✓" onclick="selectTile(this)">Crystal clear ✓</button>
+          <button type="button" class="q-tile" data-group="q2" data-value="A bit confusing" onclick="selectTile(this)">A bit confusing</button>
+          <button type="button" class="q-tile" data-group="q2" data-value="Hard to follow" onclick="selectTile(this)">Hard to follow</button>
+        </div>
       </div>
       <div class="feedback-question">
-        <div class="feedback-q-label"><span class="q-num">3</span>One thing you want to focus on more next week?</div>
-        <textarea class="feedback-textarea" id="q3" rows="2" placeholder="Any specific shot, situation, or area of your game..." oninput="checkReady()"></textarea>
+        <div class="feedback-q-label"><span class="q-num">3</span>Next week I want… <span class="req-star">*</span></div>
+        <div class="tile-row">
+          <button type="button" class="q-tile" data-group="q3" data-value="More of the same" onclick="selectTile(this)">More of the same</button>
+          <button type="button" class="q-tile" data-group="q3" data-value="Push it harder" onclick="selectTile(this)">Push it harder</button>
+          <button type="button" class="q-tile" data-group="q3" data-value="Something different" onclick="selectTile(this)">Something different</button>
+        </div>
       </div>
       <div class="feedback-question">
-        <div class="feedback-q-label"><span class="q-num">4</span>Ready for next week's plan?</div>
-        <div class="yn-row">
-          <button type="button" class="yn-btn yn-yes" id="yn-yes" onclick="selectYN('yes')">Yes — send it</button>
-          <button type="button" class="yn-btn yn-no" id="yn-no" onclick="selectYN('no')">Not yet — need more time</button>
+        <div class="feedback-q-label"><span class="q-num">4</span>Ready for next week's plan? <span class="req-star">*</span></div>
+        <div class="tile-row">
+          <button type="button" class="q-tile" data-group="q4" data-value="Yes, send it 🙌" onclick="selectTile(this)">Yes, send it 🙌</button>
+          <button type="button" class="q-tile" data-group="q4" data-value="Not yet" onclick="selectTile(this)">Not yet</button>
+          <button type="button" class="q-tile" data-group="q4" data-value="Not interested" onclick="selectTile(this)">Not interested</button>
         </div>
       </div>
     </div>
@@ -229,7 +205,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       Send my scores &amp; feedback
     </button>
-    <p class="send-hint" id="send-hint">Fill in all drill scores and answer question 4 to unlock</p>
+    <p class="send-hint" id="send-hint">Fill in all drill scores and answer all questions to unlock</p>
   </div>
   <!-- SEND OPTIONS (shown if no email client handles the mailto) -->
   <div id="send-options" style="display:none;margin-top:12px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.14);border-radius:14px;padding:18px 16px">
@@ -249,33 +225,26 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
 
   <div class="plan-footer">
     <span>Alfie Golf Trainings</span>
-    <span>Week 1</span>
+    <span>Week 1 — Mike</span>
   </div>
 
 </div>
 
 <script>
-var ynAnswer = '';
 var lastSubject = ''; var lastBody = '';
-
-function selectYN(v) {
-  ynAnswer = v;
-  document.getElementById('yn-yes').classList.toggle('active', v === 'yes');
-  document.getElementById('yn-no').classList.toggle('active', v === 'no');
+function selectTile(btn) {
+  var group = btn.dataset.group;
+  document.querySelectorAll('.q-tile[data-group="'+group+'"]').forEach(function(b){b.classList.remove('selected');});
+  btn.classList.add('selected');
   checkReady();
 }
-
 function checkReady() {
-  var s1 = document.getElementById('s1').value;
-  var s2a = document.getElementById('s2a').value;
-  var s2b = document.getElementById('s2b').value;
-  var s2c = document.getElementById('s2c').value;
-
-  var scoresOk = s1 !== '' && s2a !== '' && s2b !== '' && s2c !== '';
-  var ready = scoresOk && ynAnswer !== '';
-
+  var s1a = document.getElementById('s1a').value;
+  var s1b = document.getElementById('s1b').value;
+  var scoresOk = s1a !== '' && s1b !== '';
+  var tilesOk = ['q1','q2','q3','q4'].every(function(g){return document.querySelector('.q-tile[data-group="'+g+'"].selected');});
+  var ready = scoresOk && tilesOk;
   document.getElementById('send-btn').disabled = !ready;
-
   var hint = document.getElementById('send-hint');
   if (ready) {
     hint.textContent = 'Opens your email app with everything pre-filled \u2014 just hit send';
@@ -283,40 +252,32 @@ function checkReady() {
   } else {
     var missing = [];
     if (!scoresOk) missing.push('all drill scores');
-    if (!ynAnswer) missing.push('question 4');
+    if (!tilesOk) missing.push('all questions');
     hint.textContent = 'Fill in ' + missing.join(' and ') + ' to unlock';
     hint.style.color = 'rgba(255,200,100,0.6)';
   }
 }
-
 function sendPlan() {
-  var q1 = document.getElementById('q1').value.trim() || '(no response)';
-  var q2 = document.getElementById('q2').value.trim() || '(no response)';
-  var q3 = document.getElementById('q3').value.trim() || '(no response)';
-  var q4 = ynAnswer === 'yes' ? 'Yes \u2014 send it' : 'Not yet \u2014 need more time';
-
-  var s1 = document.getElementById('s1').value || '\u2014';
-  var s2a = document.getElementById('s2a').value || '\u2014';
-  var s2b = document.getElementById('s2b').value || '\u2014';
-  var s2c = document.getElementById('s2c').value || '\u2014';
-
-  var subject = encodeURIComponent('Week 1 results \u2014 Ryan');
+  var q1 = document.querySelector('.q-tile[data-group="q1"].selected')?.dataset.value || '(no response)';
+  var q2 = document.querySelector('.q-tile[data-group="q2"].selected')?.dataset.value || '(no response)';
+  var q3 = document.querySelector('.q-tile[data-group="q3"].selected')?.dataset.value || '(no response)';
+  var q4 = document.querySelector('.q-tile[data-group="q4"].selected')?.dataset.value || '(no response)';
+  var s1a = document.getElementById('s1a').value || '\u2014';
+  var s1b = document.getElementById('s1b').value || '\u2014';
+  var subject = encodeURIComponent('Week 1 results \u2014 Mike');
   var body = encodeURIComponent(
-    'Week 1 \u2014 Ryan\n\n' +
+    'Week 1 \u2014 Mike\n\n' +
     '-- SCORES --\n' +
-    'Drill 1 \u2014 Distance Ladder \u2014 Wedges: Within 10 yards of target: ' + s1 + ' / 20\n\n' +
-    'Drill 2 \u2014 Gate Drill \u2014 Driver:\n' +
-    '  Through the gate: ' + s2a + ' / 20\n' +
-    '  Missed left: ' + s2b + ' / 20\n' +
-    '  Missed right: ' + s2c + ' / 20\n\n' +
+    'Drill 1 \u2014 Fairway Gate Drill:\n' +
+    '  Gate passes: ' + s1a + ' / 25\n' +
+    '  In fairway: ' + s1b + ' / 25\n\n' +
     '-- FEEDBACK --\n' +
     '1. What felt different, hard, or clicked:\n' + q1 + '\n\n' +
     '2. Anything that did not make sense or felt wrong:\n' + q2 + '\n\n' +
     '3. One thing to focus on more next week:\n' + q3 + '\n\n' +
-    '4. Ready for next week\u2019s plan: ' + q4 + '\n\n' +
-    '\u2014 Ryan'
+    '4. Ready for next week\'s plan: ' + q4 + '\n\n' +
+    '\u2014 Mike'
   );
-
   lastSubject = subject; lastBody = body;
   var mailtoWorked = false;
   function onBlur() { mailtoWorked = true; window.removeEventListener('blur', onBlur); }

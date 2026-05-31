@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tucker — Week 1</title>
+<title>Week 1 — Ryan</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; background: #085041; min-height: 100vh; padding: 2rem 1rem 4rem; }
@@ -54,13 +54,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
 .feedback-question:last-child { margin-bottom: 0; }
 .feedback-q-label { font-size: 11px; font-weight: 500; color: #9FE1CB; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 7px; display: flex; align-items: center; gap: 8px; }
 .q-num { width: 19px; height: 19px; border-radius: 50%; background: rgba(255,255,255,0.1); display: inline-flex; align-items: center; justify-content: center; font-size: 10px; color: #9FE1CB; flex-shrink: 0; }
-.feedback-textarea { width: 100%; background: #fff; border: 0.5px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 10px 12px; font-size: 13px; color: #085041; font-family: inherit; line-height: 1.6; resize: vertical; min-height: 72px; outline: none; }
-.feedback-textarea::placeholder { color: rgba(8,80,65,0.35); }
-.feedback-textarea:focus { border-color: #5DCAA5; }
-.yn-row { display: flex; gap: 8px; }
-.yn-btn { flex: 1; padding: 10px 12px; border: 0.5px solid rgba(255,255,255,0.2); border-radius: 8px; background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.65); font-size: 14px; font-weight: 500; cursor: pointer; text-align: center; font-family: inherit; transition: background 0.12s, border-color 0.12s, color 0.12s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
-.yn-yes.active { background: #E1F5EE; border-color: #5DCAA5; color: #085041; }
-.yn-no.active { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.45); color: #fff; }
+.tile-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.q-tile { padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 12px; font-family: inherit; line-height: 1.3; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.65); transition: background 0.12s, border-color 0.12s, color 0.12s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.q-tile.selected { background: rgba(29,158,117,0.20); border: 1px solid #1D9E75; color: #9FE1CB; }
+.req-star { color: #ff6b6b; margin-left: 3px; }
 .send-wrap { position: relative; z-index: 1; margin-top: 1.25rem; padding-bottom: 0.5rem; }
 .send-btn { width: 100%; padding: 14px; background: #1D9E75; color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 500; cursor: pointer; font-family: inherit; transition: background 0.15s; display: flex; align-items: center; justify-content: center; gap: 9px; }
 .send-btn:hover { background: #0F6E56; }
@@ -88,14 +85,16 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
 
 <div class="plan">
 
+  <!-- HEADER -->
   <div class="plan-header">
     <div class="week-label">Week 1</div>
-    <div class="golfer-name">Tucker</div>
-    <div class="golfer-sub">Alfie Golf Trainings — Practice Plan</div>
+    <h1 class="golfer-name">Ryan</h1>
+    <p class="golfer-sub">Your practice plan from Alfie Golf Trainings</p>
+
     <div class="overview-chips">
       <div class="chip">
         <div class="chip-lbl">Total time</div>
-        <div class="chip-val">30 min</div>
+        <div class="chip-val">30 min (one drill per session)</div>
       </div>
       <div class="chip">
         <div class="chip-lbl">Location</div>
@@ -103,37 +102,39 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
       </div>
       <div class="chip">
         <div class="chip-lbl">This week's focus</div>
-        <div class="chip-val">Ball-first contact &amp; low-point control with long irons</div>
+        <div class="chip-val">Wedge distance control + finding more fairways off the tee</div>
       </div>
     </div>
+
     <div class="opening-card">
-      <p>Tucker, long irons are one of the hardest things to sharpen because they punish every small contact issue that shorter irons forgive. This week we're going to zero in on striking your long irons clean and consistent — ball-first contact with a confident, committed swing. One focused drill, done well three times this week, will do more than hitting a bucket of 4-irons aimlessly.</p>
+      <p>Ryan, you've flagged two areas that are eating your scores — wedges and the tee box. This week I'm giving you one drill for each, but here's the key: focus on only one drill per session. Don't try to cram both into 30 minutes. Session 1, pick one. Session 2, pick the other. That single-focus approach will get you further than splitting your attention ever will.</p>
     </div>
   </div>
 
+  <!-- DRILLS -->
   <div class="section-label">Drills</div>
 
   <!-- Drill 1 -->
   <div class="drill-card">
     <div class="drill-header">
       <div class="drill-num">1</div>
-      <div class="drill-name">Low-Point Stripe</div>
-      <div class="drill-time">15 min</div>
+      <div class="drill-name">Distance Ladder — Wedges</div>
+      <div class="drill-time">30 min</div>
     </div>
     <div class="drill-body">
       <div>
         <div class="micro">What to do</div>
-        <p class="drill-text">Place an alignment rod (or draw a line with a tee) on the grass perpendicular to your target line. Set the ball just in front of the line — about 1 inch on the target side. Hit 25 balls total with your longest iron that frustrates you (likely 4i or 5i). Use the first 5 balls as a warm-up with a mid-iron to calibrate, then switch to the long iron for the remaining 20. On every swing, your goal is to brush or take a divot that starts on the target side of the line — never behind it. After each shot, check where your club contacted the ground relative to the line. Every 10 balls, pause and note how many were clean strikes with a divot ahead of the line.</p>
+        <p class="drill-text">Pick your most-used wedge (pitching wedge or sand wedge — whichever you grab most inside 100 yards). Set up at the range and choose four targets at roughly 30, 50, 70, and 90 yards. Hit 5 balls to the 30-yard target, then 5 to 50, then 5 to 70, then 5 to 90. That's 20 balls — one "ladder." Focus on making smooth, controlled swings rather than muscling the ball. After the ladder, repeat with your remaining time. You're learning what a half-swing, three-quarter swing, and full swing actually produce with one club. If you'd rather mix clubs to hit those distances — say, sand wedge for the shorter targets and pitching wedge for the longer ones — go for it. The goal is the same: build a feel for predictable distances with whatever club you choose.</p>
       </div>
       <div class="why-block">
         <div class="why-lbl">Why this matters for you</div>
-        <p class="why-text">At 6.4, your swing fundamentals are strong — you're not rebuilding anything. But long irons demand a low point that's consistently forward, and even a half-inch back turns a pure 4-iron into a thin skull or a fat chunk. This drill gives you instant visual feedback on exactly where you're bottoming out, so you can feel the difference between a committed strike and a bail-out. Three sessions of this week and you'll start trusting those long irons instead of steering them.</p>
+        <p class="why-text">At 19.9, a huge chunk of your scoring happens inside 100 yards. Dialling in predictable wedge distances means you're giving yourself more realistic birdie and par looks instead of leaving chips and pitches in no-man's land. This is one of the fastest ways to chip strokes off your handicap.</p>
       </div>
       <div class="score-box">
         <div class="score-box-lbl">Score to record</div>
         <div class="score-row">
           <div>
-            <div class="score-item-lbl">Clean strikes</div>
+            <div class="score-item-lbl">Within 10 yards of target</div>
             <div class="score-single">
               <input id="s1" type="number" min="0" max="20" placeholder="—" oninput="checkReady()">
               <span class="den">/ 20</span>
@@ -148,69 +149,87 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
   <div class="drill-card">
     <div class="drill-header">
       <div class="drill-num">2</div>
-      <div class="drill-name">Pause-at-the-Top</div>
-      <div class="drill-time">15 min</div>
+      <div class="drill-name">Gate Drill — Driver</div>
+      <div class="drill-time">30 min</div>
     </div>
     <div class="drill-body">
       <div>
         <div class="micro">What to do</div>
-        <p class="drill-text">Using the same long iron, hit 15 balls with a deliberate pause at the top of your backswing. Complete your backswing, hold for a full second, then start the downswing. The pause should feel like a genuine stop — not a slow-motion transition. Focus on staying balanced during the pause and then accelerating smoothly through the ball. After the 15 pause swings, hit 5 full-speed swings trying to keep the same feeling of calm transition and committed contact. For both sets, mark each shot as "good contact" if the strike feels solid and centred on the face.</p>
+        <p class="drill-text">Place two alignment sticks in the ground about 3 feet in front of your ball, spaced roughly a clubhead-width apart to form a gate. Tee up and hit 20 drives with one goal: start the ball cleanly through the gate. Before every shot, stand behind the ball, pick your line, then step in and go. After each shot, note whether the ball went through the gate, missed left, or missed right. If you're consistently missing one side, don't try to fix your swing mid-drill — just note the pattern and keep committing to your line.</p>
       </div>
       <div class="why-block">
         <div class="why-lbl">Why this matters for you</div>
-        <p class="why-text">When long irons aren't cooperating, the natural instinct is to rush from the top — snatching at the ball to generate the speed you think you need. That rush kills your sequencing and moves your low point backwards, which is exactly the problem you're working on. The pause forces your lower body to lead the downswing properly, giving you the forward shaft lean and ball-first contact that make long irons feel effortless. At your handicap, this isn't a new move — it's removing the tension that blocks the move you already have.</p>
+        <p class="why-text">You mentioned the tee box as a frustration, and at your handicap, the fastest win off the tee isn't more distance — it's keeping the ball in play. One fewer penalty or punch-out per round can save you 2–3 strokes immediately. The gate gives you instant feedback on your start line, which is the single biggest factor in finding fairways.</p>
       </div>
       <div class="score-box">
         <div class="score-box-lbl">Score to record</div>
         <div class="score-row">
           <div>
-            <div class="score-item-lbl">Pause contact</div>
+            <div class="score-item-lbl">Through the gate</div>
             <div class="score-single">
-              <input id="s2a" type="number" min="0" max="15" placeholder="—" oninput="checkReady()">
-              <span class="den">/ 15</span>
+              <input id="s2a" type="number" min="0" max="20" placeholder="—" oninput="checkReady()">
+              <span class="den">/ 20</span>
             </div>
           </div>
           <div class="score-sep"></div>
           <div>
-            <div class="score-item-lbl">Full-swing contact</div>
+            <div class="score-item-lbl">Missed left</div>
             <div class="score-single">
-              <input id="s2b" type="number" min="0" max="5" placeholder="—" oninput="checkReady()">
-              <span class="den">/ 5</span>
+              <input id="s2b" type="number" min="0" max="20" placeholder="—" oninput="checkReady()">
+              <span class="den">/ 20</span>
             </div>
           </div>
           <div class="score-sep"></div>
-          <div class="score-total-row">
-            <span class="score-total-lbl">Total</span>
-            <span class="score-total-val" id="s2total">—</span>
-            <span class="score-total-den">/ 20</span>
+          <div>
+            <div class="score-item-lbl">Missed right</div>
+            <div class="score-single">
+              <input id="s2c" type="number" min="0" max="20" placeholder="—" oninput="checkReady()">
+              <span class="den">/ 20</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- CLOSING + FEEDBACK -->
   <div class="section-label">Closing</div>
-
   <div class="feedback-section">
     <div class="feedback-card">
-      <p class="feedback-intro">You're a 6-handicap, Tucker — the swing is there. Long irons just need you to commit to hitting down and through with the same authority you give a 7-iron. Track your scores across all three sessions this week and watch those numbers climb. We'll build from here.<span class="feedback-hint">Fill in your scores above, answer the four questions below, then tap Send.</span></p>
+      <p class="feedback-intro">Ryan, these two drills attack exactly where your scores are leaking — inside 100 yards and off the tee. Alternate between them across your two sessions this week and write down your scores each time. I want to see those numbers climb over the coming weeks. Keep it simple, stay focused, and you'll feel the difference next time you're on the course.</p>
+      <p class="feedback-hint">Fill in your scores above, then answer all four questions to unlock Send.</p>
+
       <div class="feedback-question">
-        <div class="feedback-q-label"><span class="q-num">1</span>What felt different, hard, or clicked?</div>
-        <textarea class="feedback-textarea" id="q1" rows="3" placeholder="Even one or two sentences is perfect..." oninput="checkReady()"></textarea>
+        <div class="feedback-q-label"><span class="q-num">1</span>How did this session go? <span class="req-star">*</span></div>
+        <div class="tile-row">
+          <button type="button" class="q-tile" data-group="q1" data-value="Nailed it 💪" onclick="selectTile(this)">Nailed it 💪</button>
+          <button type="button" class="q-tile" data-group="q1" data-value="Good progress 👍" onclick="selectTile(this)">Good progress 👍</button>
+          <button type="button" class="q-tile" data-group="q1" data-value="Struggled a bit 😅" onclick="selectTile(this)">Struggled a bit 😅</button>
+          <button type="button" class="q-tile" data-group="q1" data-value="Really tough 🤯" onclick="selectTile(this)">Really tough 🤯</button>
+        </div>
       </div>
       <div class="feedback-question">
-        <div class="feedback-q-label"><span class="q-num">2</span>Anything that didn't make sense or felt wrong?</div>
-        <textarea class="feedback-textarea" id="q2" rows="3" placeholder="Drills, instructions, timing — anything off..." oninput="checkReady()"></textarea>
+        <div class="feedback-q-label"><span class="q-num">2</span>The instructions were… <span class="req-star">*</span></div>
+        <div class="tile-row">
+          <button type="button" class="q-tile" data-group="q2" data-value="Crystal clear ✓" onclick="selectTile(this)">Crystal clear ✓</button>
+          <button type="button" class="q-tile" data-group="q2" data-value="A bit confusing" onclick="selectTile(this)">A bit confusing</button>
+          <button type="button" class="q-tile" data-group="q2" data-value="Hard to follow" onclick="selectTile(this)">Hard to follow</button>
+        </div>
       </div>
       <div class="feedback-question">
-        <div class="feedback-q-label"><span class="q-num">3</span>One thing you want to focus on more next week?</div>
-        <textarea class="feedback-textarea" id="q3" rows="2" placeholder="Any specific shot, situation, or area of your game..." oninput="checkReady()"></textarea>
+        <div class="feedback-q-label"><span class="q-num">3</span>Next week I want… <span class="req-star">*</span></div>
+        <div class="tile-row">
+          <button type="button" class="q-tile" data-group="q3" data-value="More of the same" onclick="selectTile(this)">More of the same</button>
+          <button type="button" class="q-tile" data-group="q3" data-value="Push it harder" onclick="selectTile(this)">Push it harder</button>
+          <button type="button" class="q-tile" data-group="q3" data-value="Something different" onclick="selectTile(this)">Something different</button>
+        </div>
       </div>
       <div class="feedback-question">
-        <div class="feedback-q-label"><span class="q-num">4</span>Ready for next week's plan?</div>
-        <div class="yn-row">
-          <button type="button" class="yn-btn yn-yes" id="yn-yes" onclick="selectYN('yes')">Yes — send it</button>
-          <button type="button" class="yn-btn yn-no" id="yn-no" onclick="selectYN('no')">Not yet — need more time</button>
+        <div class="feedback-q-label"><span class="q-num">4</span>Ready for next week's plan? <span class="req-star">*</span></div>
+        <div class="tile-row">
+          <button type="button" class="q-tile" data-group="q4" data-value="Yes, send it 🙌" onclick="selectTile(this)">Yes, send it 🙌</button>
+          <button type="button" class="q-tile" data-group="q4" data-value="Not yet" onclick="selectTile(this)">Not yet</button>
+          <button type="button" class="q-tile" data-group="q4" data-value="Not interested" onclick="selectTile(this)">Not interested</button>
         </div>
       </div>
     </div>
@@ -221,91 +240,98 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       Send my scores &amp; feedback
     </button>
-    <p class="send-hint" id="send-hint">Fill in all drill scores and answer question 4 to unlock</p>
-    <div id="send-options" style="display:none;margin-top:12px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.14);border-radius:14px;padding:18px 16px">
-      <p style="color:#9FE1CB;font-size:13px;font-weight:500;margin-bottom:4px">How would you like to send?</p>
-      <p style="color:rgba(255,255,255,0.35);font-size:11px;margin-bottom:14px;line-height:1.5">Looks like your device doesn't have an email app set up. Choose an option below.</p>
-      <button onclick="openGmail()" style="width:100%;padding:12px;margin-bottom:9px;background:#1D9E75;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8l10 6 10-6"/></svg>
-        Open Gmail in browser
-      </button>
-      <button onclick="openMailApp()" style="width:100%;padding:11px;margin-bottom:9px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);border:0.5px solid rgba(255,255,255,0.15);border-radius:10px;font-size:13px;cursor:pointer;font-family:inherit">
-        Try my email app again (Mail, Outlook…)
-      </button>
-      <button id="copy-btn" onclick="copyResults()" style="width:100%;padding:11px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);border:0.5px solid rgba(255,255,255,0.15);border-radius:10px;font-size:13px;cursor:pointer;font-family:inherit">
-        Copy text — paste into any email manually
-      </button>
-    </div>
+    <p class="send-hint" id="send-hint">Fill in all drill scores and answer all questions to unlock</p>
+  </div>
+  <!-- SEND OPTIONS (shown if no email client handles the mailto) -->
+  <div id="send-options" style="display:none;margin-top:12px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.14);border-radius:14px;padding:18px 16px">
+    <p style="color:#9FE1CB;font-size:13px;font-weight:500;margin-bottom:4px">How would you like to send?</p>
+    <p style="color:rgba(255,255,255,0.35);font-size:11px;margin-bottom:14px;line-height:1.5">Choose the option that works best on your device.</p>
+    <button onclick="openGmail()" style="width:100%;padding:12px;margin-bottom:9px;background:#1D9E75;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8l10 6 10-6"/></svg>
+      Open Gmail in browser
+    </button>
+    <button onclick="openMailApp()" style="width:100%;padding:11px;margin-bottom:9px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);border:0.5px solid rgba(255,255,255,0.15);border-radius:10px;font-size:13px;cursor:pointer;font-family:inherit">
+      Open my email app (Mail, Outlook…)
+    </button>
+    <button id="copy-btn" onclick="copyResults()" style="width:100%;padding:11px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);border:0.5px solid rgba(255,255,255,0.15);border-radius:10px;font-size:13px;cursor:pointer;font-family:inherit">
+      Copy text — paste into any email manually
+    </button>
   </div>
 
   <div class="plan-footer">
     <span>Alfie Golf Trainings</span>
-    <span>Week 1 — Tucker</span>
+    <span>Week 1</span>
   </div>
 
 </div>
 
 <script>
-var ynAnswer = '';
-function selectYN(v) {
-  ynAnswer = v;
-  document.getElementById('yn-yes').classList.toggle('active', v==='yes');
-  document.getElementById('yn-no').classList.toggle('active', v==='no');
+var lastSubject = ''; var lastBody = '';
+function selectTile(btn) {
+  var group = btn.dataset.group;
+  document.querySelectorAll('.q-tile[data-group="'+group+'"]').forEach(function(b){b.classList.remove('selected');});
+  btn.classList.add('selected');
   checkReady();
 }
+
 function checkReady() {
   var s1 = document.getElementById('s1').value;
   var s2a = document.getElementById('s2a').value;
   var s2b = document.getElementById('s2b').value;
-  var a = parseInt(s2a)||0;
-  var b = parseInt(s2b)||0;
-  document.getElementById('s2total').textContent = (s2a !== '' || s2b !== '') ? (a+b) : '—';
-  var scoresOk = s1 !== '' && s2a !== '' && s2b !== '';
-  var ready = scoresOk && ynAnswer !== '';
+  var s2c = document.getElementById('s2c').value;
+
+  var scoresOk = s1 !== '' && s2a !== '' && s2b !== '' && s2c !== '';
+  var tilesOk = ['q1','q2','q3','q4'].every(function(g){return document.querySelector('.q-tile[data-group="'+g+'"].selected');});
+  var ready = scoresOk && tilesOk;
+
   document.getElementById('send-btn').disabled = !ready;
+
   var hint = document.getElementById('send-hint');
   if (ready) {
-    hint.textContent = 'Opens your email app with everything pre-filled — just hit send';
+    hint.textContent = 'Opens your email app with everything pre-filled \u2014 just hit send';
     hint.style.color = 'rgba(255,255,255,0.32)';
   } else {
     var missing = [];
     if (!scoresOk) missing.push('all drill scores');
-    if (!ynAnswer) missing.push('question 4');
+    if (!tilesOk) missing.push('all questions');
     hint.textContent = 'Fill in ' + missing.join(' and ') + ' to unlock';
     hint.style.color = 'rgba(255,200,100,0.6)';
   }
 }
-function buildEmailParts() {
-  var q1 = document.getElementById('q1').value.trim() || '(no response)';
-  var q2 = document.getElementById('q2').value.trim() || '(no response)';
-  var q3 = document.getElementById('q3').value.trim() || '(no response)';
-  var q4 = ynAnswer === 'yes' ? 'Yes — send it' : 'Not yet — need more time';
-  var s1 = document.getElementById('s1').value || '—';
-  var s2a = document.getElementById('s2a').value || '—';
-  var s2b = document.getElementById('s2b').value || '—';
-  var a = parseInt(document.getElementById('s2a').value)||0;
-  var b = parseInt(document.getElementById('s2b').value)||0;
-  var s2total = (document.getElementById('s2a').value !== '' || document.getElementById('s2b').value !== '') ? (a+b) : '—';
-  var raw =
-    'Week 1 — Tucker\n\n' +
+
+function sendPlan() {
+  var q1 = document.querySelector('.q-tile[data-group="q1"].selected')?.dataset.value || '(no response)';
+  var q2 = document.querySelector('.q-tile[data-group="q2"].selected')?.dataset.value || '(no response)';
+  var q3 = document.querySelector('.q-tile[data-group="q3"].selected')?.dataset.value || '(no response)';
+  var q4 = document.querySelector('.q-tile[data-group="q4"].selected')?.dataset.value || '(no response)';
+
+  var s1 = document.getElementById('s1').value || '\u2014';
+  var s2a = document.getElementById('s2a').value || '\u2014';
+  var s2b = document.getElementById('s2b').value || '\u2014';
+  var s2c = document.getElementById('s2c').value || '\u2014';
+
+  var subject = encodeURIComponent('Week 1 results \u2014 Ryan');
+  var body = encodeURIComponent(
+    'Week 1 \u2014 Ryan\n\n' +
     '-- SCORES --\n' +
-    'Drill 1 — Low-Point Stripe: Clean strikes: ' + s1 + ' / 20\n' +
-    'Drill 2 — Pause-at-the-Top: Pause contact: ' + s2a + ' / 15, Full-swing contact: ' + s2b + ' / 5 (Total: ' + s2total + ' / 20)\n\n' +
+    'Drill 1 \u2014 Distance Ladder \u2014 Wedges: Within 10 yards of target: ' + s1 + ' / 20\n\n' +
+    'Drill 2 \u2014 Gate Drill \u2014 Driver:\n' +
+    '  Through the gate: ' + s2a + ' / 20\n' +
+    '  Missed left: ' + s2b + ' / 20\n' +
+    '  Missed right: ' + s2c + ' / 20\n\n' +
     '-- FEEDBACK --\n' +
     '1. What felt different, hard, or clicked:\n' + q1 + '\n\n' +
     '2. Anything that did not make sense or felt wrong:\n' + q2 + '\n\n' +
     '3. One thing to focus on more next week:\n' + q3 + '\n\n' +
-    '4. Ready for next week\'s plan: ' + q4 + '\n\n' +
-    '— Tucker';
-  return { subject: 'Week 1 results — Tucker', raw: raw };
-}
-function sendPlan() {
-  var parts = buildEmailParts();
+    '4. Ready for next week\u2019s plan: ' + q4 + '\n\n' +
+    '\u2014 Ryan'
+  );
+
+  lastSubject = subject; lastBody = body;
   var mailtoWorked = false;
   function onBlur() { mailtoWorked = true; window.removeEventListener('blur', onBlur); }
   window.addEventListener('blur', onBlur);
-  window.location.href = 'mailto:trainings@alfie-golf.com?subject=' +
-    encodeURIComponent(parts.subject) + '&body=' + encodeURIComponent(parts.raw);
+  window.location.href = 'mailto:trainings@alfie-golf.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
   setTimeout(function() {
     window.removeEventListener('blur', onBlur);
     if (!mailtoWorked) {
@@ -316,33 +342,37 @@ function sendPlan() {
   }, 800);
 }
 function openGmail() {
-  var parts = buildEmailParts();
-  window.open('https://mail.google.com/mail/?view=cm&fs=1&to=trainings@alfie-golf.com&su=' +
-    encodeURIComponent(parts.subject) + '&body=' + encodeURIComponent(parts.raw), '_blank');
+  var url = 'https://mail.google.com/mail/?view=cm&fs=1&to=trainings@alfie-golf.com&su=' +
+    encodeURIComponent(lastSubject) + '&body=' + encodeURIComponent(lastBody);
+  window.open(url, '_blank');
 }
 function openMailApp() {
-  var parts = buildEmailParts();
   window.location.href = 'mailto:trainings@alfie-golf.com?subject=' +
-    encodeURIComponent(parts.subject) + '&body=' + encodeURIComponent(parts.raw);
+    encodeURIComponent(lastSubject) + '&body=' + encodeURIComponent(lastBody);
 }
 function copyResults() {
-  var parts = buildEmailParts();
-  var text = 'To: trainings@alfie-golf.com\nSubject: ' + parts.subject + '\n\n' + parts.raw;
+  var text = 'To: trainings@alfie-golf.com\nSubject: ' + lastSubject + '\n\n' + lastBody;
   var btn = document.getElementById('copy-btn');
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(function() {
       btn.textContent = '\u2713 Copied! Paste it into an email to trainings@alfie-golf.com';
       btn.style.color = '#9FE1CB';
+      btn.style.borderColor = 'rgba(29,158,117,0.5)';
     });
   } else {
     var ta = document.createElement('textarea');
-    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
     document.body.removeChild(ta);
     btn.textContent = '\u2713 Copied! Paste it into an email to trainings@alfie-golf.com';
     btn.style.color = '#9FE1CB';
   }
 }
 </script>
+
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Week 1 — Joshua</title>
+<title>Week 1 — Mark</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; background: #085041; min-height: 100vh; padding: 2rem 1rem 4rem; }
@@ -54,13 +54,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
 .feedback-question:last-child { margin-bottom: 0; }
 .feedback-q-label { font-size: 11px; font-weight: 500; color: #9FE1CB; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 7px; display: flex; align-items: center; gap: 8px; }
 .q-num { width: 19px; height: 19px; border-radius: 50%; background: rgba(255,255,255,0.1); display: inline-flex; align-items: center; justify-content: center; font-size: 10px; color: #9FE1CB; flex-shrink: 0; }
-.feedback-textarea { width: 100%; background: #fff; border: 0.5px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 10px 12px; font-size: 13px; color: #085041; font-family: inherit; line-height: 1.6; resize: vertical; min-height: 72px; outline: none; }
-.feedback-textarea::placeholder { color: rgba(8,80,65,0.35); }
-.feedback-textarea:focus { border-color: #5DCAA5; }
-.yn-row { display: flex; gap: 8px; }
-.yn-btn { flex: 1; padding: 10px 12px; border: 0.5px solid rgba(255,255,255,0.2); border-radius: 8px; background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.65); font-size: 14px; font-weight: 500; cursor: pointer; text-align: center; font-family: inherit; transition: background 0.12s, border-color 0.12s, color 0.12s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
-.yn-yes.active { background: #E1F5EE; border-color: #5DCAA5; color: #085041; }
-.yn-no.active { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.45); color: #fff; }
+.tile-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.q-tile { padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 12px; font-family: inherit; line-height: 1.3; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.65); transition: background 0.12s, border-color 0.12s, color 0.12s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.q-tile.selected { background: rgba(29,158,117,0.20); border: 1px solid #1D9E75; color: #9FE1CB; }
+.req-star { color: #ff6b6b; margin-left: 3px; }
 .send-wrap { position: relative; z-index: 1; margin-top: 1.25rem; padding-bottom: 0.5rem; }
 .send-btn { width: 100%; padding: 14px; background: #1D9E75; color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 500; cursor: pointer; font-family: inherit; transition: background 0.15s; display: flex; align-items: center; justify-content: center; gap: 9px; }
 .send-btn:hover { background: #0F6E56; }
@@ -88,11 +85,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
 
 <div class="plan">
 
+  <!-- HEADER -->
   <div class="plan-header">
     <div class="week-label">Week 1</div>
-    <h1 class="golfer-name">Joshua</h1>
-    <p class="golfer-sub">Your practice plan for this week</p>
-
+    <h1 class="golfer-name">Mark</h1>
+    <div class="golfer-sub">Alfie Golf Trainings — practice plan</div>
     <div class="overview-chips">
       <div class="chip">
         <div class="chip-lbl">Total time</div>
@@ -104,45 +101,32 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
       </div>
       <div class="chip">
         <div class="chip-lbl">This week's focus</div>
-        <div class="chip-val">Moving your low point forward to eliminate fat iron strikes</div>
+        <div class="chip-val">Consistent contact with fairway woods &amp; hybrids off the deck</div>
       </div>
     </div>
-
     <div class="opening-card">
-      <p>Joshua, that's a really common trap — winter mats are forgiving liars. They let the club bounce through fat contact and still produce a decent-looking shot, so when you move back onto grass the truth comes out fast. This week we're resetting your low point so you start striking the ball first on real turf, every time.</p>
+      <p>Mark, that moment you described — standing over a fairway wood or hybrid on a second shot, knowing you need something acceptable, and instead dribbling it 60 yards — that's not a swing speed problem or a club selection problem. That's a low-point and strike problem, and it's the exact thing we're going after this week. Fairway woods and hybrids off the deck are unforgiving when contact is even slightly off, and the fix is more mechanical than mental. Let's clean it up.</p>
     </div>
   </div>
 
+  <!-- DRILLS -->
   <div class="section-label">Drills</div>
 
   <!-- Drill 1 -->
   <div class="drill-card">
     <div class="drill-header">
       <div class="drill-num">1</div>
-      <div class="drill-name">Line-in-the-Grass Drill</div>
-      <div class="drill-time">25 min</div>
+      <div class="drill-name">Low-Point Brush Warm-Up</div>
+      <div class="drill-time">5 min</div>
     </div>
     <div class="drill-body">
       <div>
         <div class="micro">What to do</div>
-        <p class="drill-text">Find a spot on the grass range where you can see your divots clearly. Use a tee or the edge of a scorecard to scratch a visible line in the turf perpendicular to your target line. Place the ball directly on the line. Hit shots with your 7-iron, then walk forward and check where the divot starts relative to the line. Your goal is for the divot to begin on the target side of the line — meaning the club touched the ground after the ball, not before it.</p>
-        <p class="drill-text" style="margin-top:8px">Start with 5 half-swings (hands to hip height) to get the feeling of brushing the ground forward of the line. Then build to 10 three-quarter swings. Then hit 15 full shots, checking your divot position every single time. After each shot, note whether the divot started behind the line (fat), on the line (acceptable), or in front of the line (ideal). Re-draw the line whenever it fades.</p>
+        <div class="drill-text">Before hitting any balls, grab a mid-iron and find a spot on the grass. Draw a short line in the turf with a tee — perpendicular to your target line, roughly in the middle of your stance. You can also lay an alignment stick on the ground instead, positioned the same way (perpendicular to the target, a few inches away from your body so you don't hit it).<br><br>Set up with the line or stick slightly behind center in your stance. Now make continuous, easy hip-to-hip swings — no ball, no target, just smooth back-and-through motion. Your only goal is to have the sole of the club brush the grass on the target side of that line every time. No divot — just a light brush. If you're catching the ground behind the line, you're bottoming out too early. If you're not touching the grass at all, you're lifting out of it.<br><br>Keep the rhythm relaxed and continuous — don't stop between swings. Think of it as a pendulum. Do this for 5 minutes straight. By the end, you should feel exactly where the club naturally reaches the ground when your body stays centered and your arms stay loose. That's the low-point awareness you'll carry into the rest of this session.</div>
       </div>
       <div class="why-block">
         <div class="why-lbl">Why this matters for you</div>
-        <p class="why-text">You've spent a winter on mats where there was zero feedback about where the club hit the ground — and that trained you to bottom out too early without knowing it. On grass, that's a fat shot every time. This drill gives you instant, honest feedback on every single rep. At your level (scoring 100–105), cleaning up ball-first contact with your irons is one of the fastest ways to drop shots, because fat strikes cost you both distance and direction.</p>
-      </div>
-      <div class="score-box">
-        <div class="score-box-lbl">Score to record</div>
-        <div class="score-row">
-          <div>
-            <div class="score-item-lbl">Divot-forward strikes</div>
-            <div class="score-single">
-              <input id="s1" type="number" min="0" max="30" placeholder="—" oninput="checkReady()">
-              <span class="den">/ 30</span>
-            </div>
-          </div>
-        </div>
+        <div class="why-text">Those dribbled fairway wood and hybrid shots you described are a low-point problem — the club is reaching the ground in the wrong spot. This warm-up trains your body to feel where the bottom of the arc is before you add a ball to the equation. At 11.9 your swing is plenty good enough; this is about calibrating the one thing that makes the difference between a flush strike and a 60-yard dribble. Starting every session this way builds the habit fast.</div>
       </div>
     </div>
   </div>
@@ -151,27 +135,26 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
   <div class="drill-card">
     <div class="drill-header">
       <div class="drill-num">2</div>
-      <div class="drill-name">Step and Strike</div>
-      <div class="drill-time">25 min</div>
+      <div class="drill-name">Tee Sweep Drill — 3-Wood</div>
+      <div class="drill-time">20 min</div>
     </div>
     <div class="drill-body">
       <div>
         <div class="micro">What to do</div>
-        <p class="drill-text">Set up to the ball with your 8-iron by placing your lead foot (left foot for a right-hander) in its normal address position first. Then bring your trail foot right next to it so your feet are together — this is your starting stance. Make your backswing with your feet together. As you start the downswing, step your lead foot out to its normal width and strike the ball. The step forces your weight to shift onto your front side before impact — exactly where it needs to be for ball-first contact.</p>
-        <p class="drill-text" style="margin-top:8px">Hit 5 slow-motion rehearsals without a ball first, just stepping and brushing the grass. Then hit 20 balls at about 70% effort, focusing on the step triggering the downswing. After those 20, hit 10 more full-effort shots. On every shot, check: did the divot start after the ball? If you're catching it fat, slow down the tempo and make the step more deliberate.</p>
+        <div class="drill-text">Make sure you're hitting off grass for this entire session — no mats. Mats hide fat contact and won't give you honest feedback.<br><br>Grab your 3-wood. Place a ball on the ground and set up with it in the middle of your stance — not forward, middle. Now lay a tee flat on the ground horizontally, just in front of the ball (on the target side, about an inch ahead). The tee is your feedback tool.<br><br>Your goal on every swing is to sweep the ball and the tee off the ground together in one smooth motion. Swing easy — maybe 60–70% effort — with loose, soft arms. No forcing it. You want the sole of the club to brush the ground shallow enough to collect the ball and push that tee forward. If you're digging, the club will thud into the turf behind the ball and the tee stays put. If you're picking the ball clean with no ground contact, the tee also stays put. The sweet spot is a shallow sweep that sends both the ball and the tee forward.<br><br>Hit 25 balls this way. After every 5 shots, reset and check: am I staying loose, or am I tightening up and swinging harder? The urge with a 3-wood is to muscle it. Resist that. Easy arms, smooth sweep, ball and tee gone together.<br><br>Total: 25 balls.</div>
       </div>
       <div class="why-block">
         <div class="why-lbl">Why this matters for you</div>
-        <p class="why-text">On mats, you could hang back on your trail side and still get away with it — the club would bounce into the ball. On grass, hanging back is the #1 cause of fat shots. The step drill physically prevents you from staying on your back foot because you literally have no base there until you move forward. Three sessions a week at an hour each gives you plenty of reps to groove this feeling quickly, so by next week the forward shift should start feeling automatic.</p>
+        <div class="why-text">Those dribbled shots at 170–200 yards almost always come from the club bottoming out too early — catching the ground behind the ball or topping it with an ascending strike. At 11.9 you clearly have the swing speed to hit these clubs — the issue is where the club reaches the ground and how tense your arms get when the pressure is on. This drill retrains the low point while also teaching you that loose arms and an easy tempo launch the ball better than forcing it. When the tee disappears with the ball, the strike is right.</div>
       </div>
       <div class="score-box">
         <div class="score-box-lbl">Score to record</div>
         <div class="score-row">
           <div>
-            <div class="score-item-lbl">Clean strikes</div>
+            <div class="score-item-lbl">Tee swept away</div>
             <div class="score-single">
-              <input id="s2" type="number" min="0" max="30" placeholder="—" oninput="checkReady()">
-              <span class="den">/ 30</span>
+              <input id="s2" type="number" min="0" max="25" placeholder="—" oninput="checkReady()">
+              <span class="den">/ 25</span>
             </div>
           </div>
         </div>
@@ -179,30 +162,74 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
     </div>
   </div>
 
-  <div class="section-label">Closing</div>
+  <!-- Drill 3 -->
+  <div class="drill-card">
+    <div class="drill-header">
+      <div class="drill-num">3</div>
+      <div class="drill-name">Feet-Together Sweep</div>
+      <div class="drill-time">25 min</div>
+    </div>
+    <div class="drill-body">
+      <div>
+        <div class="micro">What to do</div>
+        <div class="drill-text">Stay on grass — no mats. Using your hybrid, set up with your feet completely together and the ball positioned in the center of your narrow stance. Make a smooth three-quarter swing and hit the ball. With your feet together, you physically cannot lunge or sway — your body has to rotate in place, which naturally levels out the bottom of your swing arc. This is exactly the shallow, sweeping strike fairway woods and hybrids need off the deck.<br><br>Hit 10 balls this way with the hybrid. Then widen to your normal stance and hit 5 balls, trying to recreate that same feeling of a smooth, balanced sweep through the ball. On each normal-stance shot, ask yourself: did the club brush the ground smoothly, or did it thump?<br><br>Switch to your fairway wood. Same sequence: 10 feet-together shots (swing at 70% effort — fairway woods are longer and harder to control with a narrow base, so keep it smooth), then 5 normal-stance shots recreating the feel.<br><br>Finish with 5 normal-stance shots with whichever of the two clubs gives you the most trouble on the course. On these, pick a target in the 170–200+ yard range and commit to it.<br><br>Total: 35 balls.</div>
+      </div>
+      <div class="why-block">
+        <div class="why-lbl">Why this matters for you</div>
+        <div class="why-text">Mark, when you described standing over a second shot and mishitting it, that's a pressure moment where your body tends to get overactive — lunging at the ball, swaying, or hanging back. The feet-together drill strips all of that away and forces a centered, balanced strike. Fairway woods and hybrids reward smooth rotation, not force. Once you feel how little effort it takes to launch a hybrid off the deck when your body stays centered, those par-5 second shots stop being a gamble and start being a weapon.</div>
+      </div>
+      <div class="score-box">
+        <div class="score-box-lbl">Score to record</div>
+        <div class="score-row">
+          <div>
+            <div class="score-item-lbl">Smooth strikes (normal stance)</div>
+            <div class="score-single">
+              <input id="s3" type="number" min="0" max="15" placeholder="—" oninput="checkReady()">
+              <span class="den">/ 15</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <!-- CLOSING -->
+  <div class="section-label">Closing</div>
   <div class="feedback-section">
     <div class="feedback-card">
-      <p class="feedback-intro">Use your last 10 minutes to alternate between both drills freely — a few Line-in-the-Grass shots, a few Step and Strikes — and notice which one clicks better for you. That's the one to lead with in your next two sessions this week. You're putting in serious time with three sessions a week, Joshua — that's more than enough to break the mat habits and start trusting your iron contact on grass again.</p>
-      <p class="feedback-hint">Fill in your scores above, answer the four questions below, then tap Send.</p>
-
+      <p class="feedback-intro">Mark, you said eliminating those mishits could drop you 2–3 strokes. I believe that. An 11.9 who can trust his fairway woods and hybrids on second shots is a single-digit handicap waiting to happen. This week is about building that strike pattern on the range so it holds up when you're standing over a 3-wood on a par 5 with a real number on the line. Put in the reps — I'll check in next week.</p>
+      <p class="feedback-hint">Fill in your scores above, then answer all four questions to unlock Send.</p>
       <div class="feedback-question">
-        <div class="feedback-q-label"><span class="q-num">1</span>What felt different, hard, or clicked?</div>
-        <textarea class="feedback-textarea" id="q1" rows="3" placeholder="Even one or two sentences is perfect..." oninput="checkReady()"></textarea>
+        <div class="feedback-q-label"><span class="q-num">1</span>How did this session go? <span class="req-star">*</span></div>
+        <div class="tile-row">
+          <button type="button" class="q-tile" data-group="q1" data-value="Nailed it 💪" onclick="selectTile(this)">Nailed it 💪</button>
+          <button type="button" class="q-tile" data-group="q1" data-value="Good progress 👍" onclick="selectTile(this)">Good progress 👍</button>
+          <button type="button" class="q-tile" data-group="q1" data-value="Struggled a bit 😅" onclick="selectTile(this)">Struggled a bit 😅</button>
+          <button type="button" class="q-tile" data-group="q1" data-value="Really tough 🤯" onclick="selectTile(this)">Really tough 🤯</button>
+        </div>
       </div>
       <div class="feedback-question">
-        <div class="feedback-q-label"><span class="q-num">2</span>Anything that didn't make sense or felt wrong?</div>
-        <textarea class="feedback-textarea" id="q2" rows="3" placeholder="Drills, instructions, timing — anything off..." oninput="checkReady()"></textarea>
+        <div class="feedback-q-label"><span class="q-num">2</span>The instructions were… <span class="req-star">*</span></div>
+        <div class="tile-row">
+          <button type="button" class="q-tile" data-group="q2" data-value="Crystal clear ✓" onclick="selectTile(this)">Crystal clear ✓</button>
+          <button type="button" class="q-tile" data-group="q2" data-value="A bit confusing" onclick="selectTile(this)">A bit confusing</button>
+          <button type="button" class="q-tile" data-group="q2" data-value="Hard to follow" onclick="selectTile(this)">Hard to follow</button>
+        </div>
       </div>
       <div class="feedback-question">
-        <div class="feedback-q-label"><span class="q-num">3</span>One thing you want to focus on more next week?</div>
-        <textarea class="feedback-textarea" id="q3" rows="2" placeholder="Any specific shot, situation, or area of your game..." oninput="checkReady()"></textarea>
+        <div class="feedback-q-label"><span class="q-num">3</span>Next week I want… <span class="req-star">*</span></div>
+        <div class="tile-row">
+          <button type="button" class="q-tile" data-group="q3" data-value="More of the same" onclick="selectTile(this)">More of the same</button>
+          <button type="button" class="q-tile" data-group="q3" data-value="Push it harder" onclick="selectTile(this)">Push it harder</button>
+          <button type="button" class="q-tile" data-group="q3" data-value="Something different" onclick="selectTile(this)">Something different</button>
+        </div>
       </div>
       <div class="feedback-question">
-        <div class="feedback-q-label"><span class="q-num">4</span>Ready for next week's plan?</div>
-        <div class="yn-row">
-          <button type="button" class="yn-btn yn-yes" id="yn-yes" onclick="selectYN('yes')">Yes — send it</button>
-          <button type="button" class="yn-btn yn-no" id="yn-no" onclick="selectYN('no')">Not yet — need more time</button>
+        <div class="feedback-q-label"><span class="q-num">4</span>Ready for next week's plan? <span class="req-star">*</span></div>
+        <div class="tile-row">
+          <button type="button" class="q-tile" data-group="q4" data-value="Yes, send it 🙌" onclick="selectTile(this)">Yes, send it 🙌</button>
+          <button type="button" class="q-tile" data-group="q4" data-value="Not yet" onclick="selectTile(this)">Not yet</button>
+          <button type="button" class="q-tile" data-group="q4" data-value="Not interested" onclick="selectTile(this)">Not interested</button>
         </div>
       </div>
     </div>
@@ -213,8 +240,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       Send my scores &amp; feedback
     </button>
-    <p class="send-hint" id="send-hint">Fill in all drill scores and answer question 4 to unlock</p>
-
+    <p class="send-hint" id="send-hint">Fill in all drill scores and answer all questions to unlock</p>
     <div id="send-options" style="display:none;margin-top:12px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.14);border-radius:14px;padding:18px 16px">
       <p style="color:#9FE1CB;font-size:13px;font-weight:500;margin-bottom:4px">How would you like to send?</p>
       <p style="color:rgba(255,255,255,0.35);font-size:11px;margin-bottom:14px;line-height:1.5">Looks like your device doesn't have an email app set up. Choose an option below.</p>
@@ -233,26 +259,18 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
 
   <div class="plan-footer">
     <span>Alfie Golf Trainings</span>
-    <span>Week 1 — Joshua</span>
+    <span>Week 1 — Mark</span>
   </div>
 
 </div>
 
 <script>
-var ynAnswer = '';
-
-function selectYN(v) {
-  ynAnswer = v;
-  document.getElementById('yn-yes').classList.toggle('active', v === 'yes');
-  document.getElementById('yn-no').classList.toggle('active', v === 'no');
-  checkReady();
-}
-
 function checkReady() {
-  var s1 = document.getElementById('s1').value;
   var s2 = document.getElementById('s2').value;
-  var scoresOk = s1 !== '' && s2 !== '';
-  var ready = scoresOk && ynAnswer !== '';
+  var s3 = document.getElementById('s3').value;
+  var scoresOk = s2 !== '' && s3 !== '';
+  var tilesOk = ['q1','q2','q3','q4'].every(function(g){return document.querySelector('.q-tile[data-group="'+g+'"].selected');});
+  var ready = scoresOk && tilesOk;
   document.getElementById('send-btn').disabled = !ready;
   var hint = document.getElementById('send-hint');
   if (ready) {
@@ -261,35 +279,31 @@ function checkReady() {
   } else {
     var missing = [];
     if (!scoresOk) missing.push('all drill scores');
-    if (!ynAnswer) missing.push('question 4');
+    if (!tilesOk) missing.push('all questions');
     hint.textContent = 'Fill in ' + missing.join(' and ') + ' to unlock';
     hint.style.color = 'rgba(255,200,100,0.6)';
   }
 }
-
 function buildEmailParts() {
-  var q1 = document.getElementById('q1').value.trim() || '(no response)';
-  var q2 = document.getElementById('q2').value.trim() || '(no response)';
-  var q3 = document.getElementById('q3').value.trim() || '(no response)';
-  var q4 = ynAnswer === 'yes' ? 'Yes \u2014 send it' : 'Not yet \u2014 need more time';
-  var s1 = document.getElementById('s1').value || '\u2014';
+  var q1 = document.querySelector('.q-tile[data-group="q1"].selected')?.dataset.value || '(no response)';
+  var q2 = document.querySelector('.q-tile[data-group="q2"].selected')?.dataset.value || '(no response)';
+  var q3 = document.querySelector('.q-tile[data-group="q3"].selected')?.dataset.value || '(no response)';
+  var q4 = document.querySelector('.q-tile[data-group="q4"].selected')?.dataset.value || '(no response)';
   var s2 = document.getElementById('s2').value || '\u2014';
-
+  var s3 = document.getElementById('s3').value || '\u2014';
   var raw =
-    'Week 1 \u2014 Joshua\n\n' +
+    'Week 1 \u2014 Mark\n\n' +
     '-- SCORES --\n' +
-    'Drill 1 \u2014 Line-in-the-Grass Drill: Divot-forward strikes: ' + s1 + ' / 30\n' +
-    'Drill 2 \u2014 Step and Strike: Clean strikes: ' + s2 + ' / 30\n\n' +
+    'Drill 2 \u2014 Tee Sweep Drill (3-Wood): Tee swept away: ' + s2 + ' / 25\n' +
+    'Drill 3 \u2014 Feet-Together Sweep: Smooth strikes (normal stance): ' + s3 + ' / 15\n\n' +
     '-- FEEDBACK --\n' +
     '1. What felt different, hard, or clicked:\n' + q1 + '\n\n' +
     '2. Anything that did not make sense or felt wrong:\n' + q2 + '\n\n' +
     '3. One thing to focus on more next week:\n' + q3 + '\n\n' +
-    '4. Ready for next week\'s plan: ' + q4 + '\n\n' +
-    '\u2014 Joshua';
-
-  return { subject: 'Week 1 results \u2014 Joshua', raw: raw };
+    '4. Ready for next week\u2019s plan: ' + q4 + '\n\n' +
+    '\u2014 Mark';
+  return { subject: 'Week 1 results \u2014 Mark', raw: raw };
 }
-
 function sendPlan() {
   var parts = buildEmailParts();
   var mailtoWorked = false;
@@ -299,44 +313,6 @@ function sendPlan() {
     encodeURIComponent(parts.subject) + '&body=' + encodeURIComponent(parts.raw);
   setTimeout(function() {
     window.removeEventListener('blur', onBlur);
-    if (!mailtoWorked) {
-      document.getElementById('send-options').style.display = 'block';
-      document.getElementById('send-btn').style.display = 'none';
-      document.getElementById('send-hint').style.display = 'none';
-    }
-  }, 800);
-}
-
-function openGmail() {
-  var parts = buildEmailParts();
-  window.open('https://mail.google.com/mail/?view=cm&fs=1&to=trainings@alfie-golf.com&su=' +
-    encodeURIComponent(parts.subject) + '&body=' + encodeURIComponent(parts.raw), '_blank');
-}
-
-function openMailApp() {
-  var parts = buildEmailParts();
-  window.location.href = 'mailto:trainings@alfie-golf.com?subject=' +
-    encodeURIComponent(parts.subject) + '&body=' + encodeURIComponent(parts.raw);
-}
-
-function copyResults() {
-  var parts = buildEmailParts();
-  var text = 'To: trainings@alfie-golf.com\nSubject: ' + parts.subject + '\n\n' + parts.raw;
-  var btn = document.getElementById('copy-btn');
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(function() {
-      btn.textContent = '\u2713 Copied! Paste it into an email to trainings@alfie-golf.com';
-      btn.style.color = '#9FE1CB';
-    });
-  } else {
-    var ta = document.createElement('textarea');
-    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
-    document.body.removeChild(ta);
-    btn.textContent = '\u2713 Copied! Paste it into an email to trainings@alfie-golf.com';
-    btn.style.color = '#9FE1CB';
-  }
-}
-</script>
+    if
 </body>
 </html>
