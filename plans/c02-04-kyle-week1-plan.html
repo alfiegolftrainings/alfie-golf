@@ -197,20 +197,17 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Ar
     </button>
     <p class="send-hint" id="send-hint">Fill in all drill scores and answer all questions to unlock</p>
   </div>
-  <!-- SEND OPTIONS (shown if no email client handles the mailto) -->
-  <div id="send-options" style="display:none;margin-top:12px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.14);border-radius:14px;padding:18px 16px">
-    <p style="color:#9FE1CB;font-size:13px;font-weight:500;margin-bottom:4px">How would you like to send?</p>
-    <p style="color:rgba(255,255,255,0.35);font-size:11px;margin-bottom:14px;line-height:1.5">Choose the option that works best on your device.</p>
-    <button onclick="openGmail()" style="width:100%;padding:12px;margin-bottom:9px;background:#1D9E75;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8l10 6 10-6"/></svg>
-      Open Gmail in browser
-    </button>
-    <button onclick="openMailApp()" style="width:100%;padding:11px;margin-bottom:9px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);border:0.5px solid rgba(255,255,255,0.15);border-radius:10px;font-size:13px;cursor:pointer;font-family:inherit">
-      Open my email app (Mail, Outlook…)
-    </button>
-    <button id="copy-btn" onclick="copyResults()" style="width:100%;padding:11px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);border:0.5px solid rgba(255,255,255,0.15);border-radius:10px;font-size:13px;cursor:pointer;font-family:inherit">
-      Copy text — paste into any email manually
-    </button>
+
+  <!-- SUCCESS MODAL -->
+  <div id="success-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:200;align-items:center;justify-content:center;padding:20px;">
+    <div style="background:#0d6b51;border:0.5px solid rgba(255,255,255,0.15);border-radius:16px;padding:32px 24px;max-width:340px;width:100%;text-align:center;">
+      <div style="width:52px;height:52px;border-radius:50%;background:rgba(29,158,117,0.25);border:2px solid #1D9E75;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <p style="font-size:18px;font-weight:700;color:#fff;margin-bottom:8px;">Results sent!</p>
+      <p style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.6;margin-bottom:24px;">Your scores and feedback have been logged. Alfie will review them and be in touch about your Week 2 plan.</p>
+      <a id="modal-dashboard-link" href="#" style="display:block;width:100%;padding:13px;background:#1D9E75;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;box-sizing:border-box;">Back to dashboard →</a>
+    </div>
   </div>
 
   <!-- FOOTER -->
@@ -226,7 +223,6 @@ var fn = window.location.pathname.split('/').pop();
 var slug = fn.replace(/-week\d+-plan\.html$/, '');
 document.getElementById('back-link').href = 'https://alfie-golf.com/' + slug;
 
-var lastSubject = ''; var lastBody = '';
 function selectTile(btn) {
   var group = btn.dataset.group;
   document.querySelectorAll('.q-tile[data-group="'+group+'"]').forEach(function(b){b.classList.remove('selected');});
@@ -241,8 +237,7 @@ function checkReady() {
   document.getElementById('send-btn').disabled = !ready;
   var hint = document.getElementById('send-hint');
   if (ready) {
-    hint.textContent = 'Opens your email app with everything pre-filled \u2014 just hit send';
-    hint.style.color = 'rgba(255,255,255,0.32)';
+    hint.textContent = '';
   } else {
     var missing = [];
     if (!scoresOk) missing.push('all drill scores');
@@ -252,68 +247,51 @@ function checkReady() {
   }
 }
 function sendPlan() {
-  var q1 = document.querySelector('.q-tile[data-group="q1"].selected')?.dataset.value || '(no response)';
-  var q2 = document.querySelector('.q-tile[data-group="q2"].selected')?.dataset.value || '(no response)';
-  var q3 = document.querySelector('.q-tile[data-group="q3"].selected')?.dataset.value || '(no response)';
-  var q4 = document.querySelector('.q-tile[data-group="q4"].selected')?.dataset.value || '(no response)';
-  var s1 = document.getElementById('s1').value || '\u2014';
-  var subject = encodeURIComponent('Week 1 results \u2014 Kyle');
-  var body = encodeURIComponent(
-    'Week 1 \u2014 Kyle\n\n' +
-    '-- SCORES --\n' +
-    'Drill 1 \u2014 Step-Through Towel Drill: Clean reps: ' + s1 + ' / 20\n\n' +
-    '-- FEEDBACK --\n' +
-    '1. What felt different, hard, or clicked:\n' + q1 + '\n\n' +
-    '2. Anything that did not make sense or felt wrong:\n' + q2 + '\n\n' +
-    '3. One thing to focus on more next week:\n' + q3 + '\n\n' +
-    '4. Ready for next week\u2019s plan: ' + q4 + '\n\n' +
-    (document.getElementById('q5').value.trim() ? 'Other feedback:\n' + document.getElementById('q5').value.trim() + '\n\n' : '') +
-    '\u2014 Kyle'
-  );
-  lastSubject = subject; lastBody = body;
-  var mailtoWorked = false;
-  function onBlur() { mailtoWorked = true; window.removeEventListener('blur', onBlur); }
-  window.addEventListener('blur', onBlur);
-  window.location.href = 'mailto:trainings@alfie-golf.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-  setTimeout(function() {
-    window.removeEventListener('blur', onBlur);
-    if (!mailtoWorked) {
-      document.getElementById('send-options').style.display = 'block';
-      document.getElementById('send-btn').style.display = 'none';
-      document.getElementById('send-hint').style.display = 'none';
+  var btn = document.getElementById('send-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Sending\u2026';
+
+  var q1 = document.querySelector('.q-tile[data-group="q1"].selected').dataset.value;
+  var q2 = document.querySelector('.q-tile[data-group="q2"].selected').dataset.value;
+  var q3 = document.querySelector('.q-tile[data-group="q3"].selected').dataset.value;
+  var q4 = document.querySelector('.q-tile[data-group="q4"].selected').dataset.value;
+  var s1 = parseFloat(document.getElementById('s1').value);
+  var q5 = document.getElementById('q5').value.trim();
+
+  var payload = {
+    slug: slug,
+    week: 1,
+    session: 1,
+    date: new Date().toISOString(),
+    drills: [{ name: 'Step-Through Towel Drill', label: 'Clean reps', max: 20 }],
+    scores: [{ label: 'Clean reps', value: s1, max: 20 }],
+    q1: q1, q2: q2, q3: q3, q4: q4
+  };
+  if (q5) payload.q5 = q5;
+
+  fetch('https://alfie-api.alfie-golf.workers.dev/?action=submitSession', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+  .then(function(res) { return res.json(); })
+  .then(function(data) {
+    if (data.ok) {
+      var overlay = document.getElementById('success-overlay');
+      overlay.style.display = 'flex';
+      document.getElementById('modal-dashboard-link').href = 'https://alfie-golf.com/' + slug;
+    } else {
+      throw new Error(data.error || 'Unknown error');
     }
-  }, 800);
-}
-function openGmail() {
-  var url = 'https://mail.google.com/mail/?view=cm&fs=1&to=trainings@alfie-golf.com&su=' +
-    encodeURIComponent(lastSubject) + '&body=' + encodeURIComponent(lastBody);
-  window.open(url, '_blank');
-}
-function openMailApp() {
-  window.location.href = 'mailto:trainings@alfie-golf.com?subject=' +
-    encodeURIComponent(lastSubject) + '&body=' + encodeURIComponent(lastBody);
-}
-function copyResults() {
-  var text = 'To: trainings@alfie-golf.com\nSubject: ' + lastSubject + '\n\n' + lastBody;
-  var btn = document.getElementById('copy-btn');
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(function() {
-      btn.textContent = '\u2713 Copied! Paste it into an email to trainings@alfie-golf.com';
-      btn.style.color = '#9FE1CB';
-      btn.style.borderColor = 'rgba(29,158,117,0.5)';
-    });
-  } else {
-    var ta = document.createElement('textarea');
-    ta.value = text;
-    ta.style.position = 'fixed';
-    ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-    btn.textContent = '\u2713 Copied! Paste it into an email to trainings@alfie-golf.com';
-    btn.style.color = '#9FE1CB';
-  }
+  })
+  .catch(function(err) {
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send my scores &amp; feedback';
+    var hint = document.getElementById('send-hint');
+    hint.textContent = 'Something went wrong \u2014 please try again';
+    hint.style.color = 'rgba(255,100,100,0.8)';
+    console.error(err);
+  });
 }
 </script>
 
