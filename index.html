@@ -58,7 +58,7 @@
     }
 
     /* ── App shell ──────────────────────────────────────────────── */
-    #app { max-width: 980px; margin: 0 auto; padding: 28px 20px 80px; }
+    #app { max-width: 860px; margin: 0 auto; padding: 28px 20px 80px; }
 
     /* ── Loading / error states ─────────────────────────────────── */
     #app { position: relative; z-index: 1; }
@@ -526,12 +526,14 @@
   <div id="kwt-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:200; align-items:center; justify-content:center;">
     <div class="modal-card" style="text-align:center; padding:36px 28px;">
       <button class="modal-close" onclick="closeKwt()">×</button>
-      <div style="font-size:48px; margin-bottom:16px;">🏌️</div>
-      <div class="modal-title" style="margin-bottom:8px;">Message sent to Alfie!</div>
+      <div style="width:64px;height:64px;border-radius:50%;background:#1D9E75;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 0 0 8px rgba(29,158,117,0.18);">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="modal-title" style="margin-bottom:8px;color:#1D9E75;">Request sent!</div>
       <p style="font-size:13px; color:rgba(255,255,255,0.62); line-height:1.65; margin-bottom:28px;">
         Alfie will be in touch soon to discuss how to keep your game moving forward.
       </p>
-      <button class="btn btn-primary" style="width:100%;" onclick="closeKwt()">Got it</button>
+      <button class="btn btn-primary" style="width:100%;background:#1D9E75;border-color:#1D9E75;" onclick="closeKwt()">Got it</button>
     </div>
   </div>
 
@@ -846,8 +848,8 @@
             <div class="progress-row"><span>${n} of 4 sessions logged</span><span>${pct}%</span></div>
             <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
             <div class="hero-actions">
-              <button class="btn btn-primary" onclick="openModal()">Log session ${n + 1}</button>
-              <a href="${planUrl}" class="btn btn-secondary">Open ${weekLabel} plan</a>
+              <a href="${planUrl}" class="btn btn-primary">Open ${weekLabel} plan</a>
+              <button class="btn btn-secondary" onclick="openModal()">Log session ${n + 1}</button>
               ${heroAmberBtn}
             </div>
           </div>
@@ -1060,8 +1062,33 @@
     /* ── Coach quote ──────────────────────────────────────────── */
     function coachQuote(avg) {
       const f = (GOLFER.frustration || '').replace(/\.+$/, '').toLowerCase();
-      if (!SESSIONS.length) return `This week every drill is built around ${f}. Trust the process.`;
-      if (avg >= 70) return `${avg}% average — the pattern is already changing. Keep the reps going.`;
+      const n = SESSIONS.length;
+      if (!n) return `This week every drill is built around ${f}. Trust the process.`;
+
+      const latest = SESSIONS[n - 1];
+      const q3 = (latest.q3 || latest.parsed?.q3 || '').toLowerCase();
+      const q1 = (latest.q1 || latest.parsed?.q1 || '').toLowerCase();
+
+      // Session-specific quotes
+      if (n >= 4) {
+        return avg >= 70
+          ? `Four sessions in and you're averaging ${avg}% — that's real progress. The consistency is the whole game.`
+          : `You've put in four sessions. That's the work. Keep showing up and the numbers follow.`;
+      }
+      if (n >= 3) {
+        return avg >= 65
+          ? `${avg}% average after ${n} sessions. The reps are stacking up — you can feel the difference.`
+          : `Session ${n} done. Every rep is building muscle memory. ${q3 ? 'You mentioned wanting to ' + q3 + ' — that\'s exactly what this week targets.' : 'Stay with it.'}`;
+      }
+      if (n >= 2) {
+        return q1 && q1.includes('nailed')
+          ? `You said you nailed it — I believe you. Now let's lock that in with session ${n + 1}.`
+          : avg >= 60
+            ? `${avg}% across ${n} sessions is right where you should be. The groove is forming.`
+            : `Two sessions in. ${q3 ? 'You want to focus on ' + q3 + ' — that\'s noted for next week.' : 'The fix takes reps. You\'re doing them.'}`;
+      }
+      // n === 1
+      if (avg >= 70) return `${avg}% on your first session — the pattern is already changing. Keep the reps going.`;
       if (avg >= 50) return `${avg}% on session 1 is exactly where it should be. The score climbs as the movement clicks.`;
       return `Session 1 is the hardest. Stay patient — the fix for ${f} takes a few reps to feel. You're in the right place.`;
     }
@@ -1260,54 +1287,4 @@
     var H = cv.height = window.innerHeight;
     var ctx = cv.getContext('2d');
     function gauss(x,y,cx,cy,A,s){
-      return A*Math.exp(-((x-cx)*(x-cx)+(y-cy)*(y-cy))/(2*s*s));
-    }
-    var hills = [
-      [0.18, 0.13, 0.90, 0.13], [0.50, 0.07, 0.62, 0.10],
-      [0.86, 0.16, 0.75, 0.11], [0.13, 0.33, 0.58, 0.12],
-      [0.53, 0.30, 0.68, 0.13], [0.90, 0.37, 0.72, 0.14],
-      [0.24, 0.53, 0.65, 0.13], [0.56, 0.61, 0.60, 0.11],
-      [0.93, 0.62, 0.52, 0.10], [0.16, 0.75, 0.70, 0.12],
-      [0.50, 0.82, 0.63, 0.12], [0.82, 0.87, 0.55, 0.10]
-    ];
-    function hf(x,y){
-      var v=0;
-      for(var i=0;i<hills.length;i++){
-        var h=hills[i];
-        v+=gauss(x,y, h[0]*W, h[1]*H, h[2], h[3]*Math.min(W,H));
-      }
-      return v;
-    }
-    var RES=3;
-    var C=Math.floor(W/RES)+2, R=Math.floor(H/RES)+2;
-    var g=new Float32Array(C*R);
-    var lo=1e9, hi=-1e9;
-    for(var r=0;r<R;r++) for(var c=0;c<C;c++){
-      var v=hf(c*RES,r*RES); g[r*C+c]=v;
-      if(v<lo)lo=v; if(v>hi)hi=v;
-    }
-    ctx.strokeStyle='rgba(255,255,255,0.09)';
-    ctx.lineWidth=0.85; ctx.lineCap='round';
-    var NL=40;
-    for(var l=1;l<NL;l++){
-      var lv=lo+(hi-lo)*l/NL;
-      ctx.beginPath();
-      for(var ri=0;ri<R-1;ri++) for(var ci=0;ci<C-1;ci++){
-        var x=ci*RES,y=ri*RES;
-        var a=g[ri*C+ci],b=g[ri*C+ci+1],d=g[(ri+1)*C+ci+1],e=g[(ri+1)*C+ci];
-        var pts=[];
-        function ep(v1,v2,x1,y1,x2,y2){
-          if((v1>=lv)===(v2>=lv)||v1===v2)return;
-          var t=(lv-v1)/(v2-v1);
-          pts.push(x1+(x2-x1)*t,y1+(y2-y1)*t);
-        }
-        ep(a,b,x,y,x+RES,y); ep(b,d,x+RES,y,x+RES,y+RES);
-        ep(e,d,x,y+RES,x+RES,y+RES); ep(a,e,x,y,x,y+RES);
-        if(pts.length===4){ctx.moveTo(pts[0],pts[1]);ctx.lineTo(pts[2],pts[3]);}
-      }
-      ctx.stroke();
-    }
-  })();
-  </script>
-</body>
-</html>
+      ret
