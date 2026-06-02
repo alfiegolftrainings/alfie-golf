@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spencer — Week 1 Practice Plan</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;background:#063d31;min-height:100vh;padding:2rem 1rem 4rem}
+#topo-bg{position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:0}
+.plan{max-width:560px;margin:0 auto;position:relative;z-index:1}
+.back-link{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:rgba(255,255,255,0.45);text-decoration:none;margin-bottom:1.25rem;transition:color 0.15s;position:relative;z-index:1}
+.back-link:hover{color:#9FE1CB}
+.week-label{font-size:10px;color:#9FE1CB;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px}
+.golfer-name{font-size:32px;font-weight:500;color:#fff;line-height:1.15;margin-bottom:2px}
+.golfer-sub{font-size:12px;color:#9FE1CB;margin-bottom:1.25rem}
+.overview-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1.1rem}
+.chip{background:#0d6b51;border:0.5px solid rgba(255,255,255,0.12);border-radius:8px;padding:8px 11px}
+.chip-lbl{font-size:9px;color:#9FE1CB;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px}
+.chip-val{font-size:12px;font-weight:500;color:#fff}
+.opening-card{background:linear-gradient(135deg,#1a7a5e 0%,#0a5740 100%);border-left:3px solid #5DCAA5;border-radius:8px;padding:11px 14px}
+.opening-card p{font-size:12.5px;color:rgba(255,255,255,0.88);line-height:1.7;font-style:italic}
+.section-label{font-size:9px;font-weight:600;color:#9FE1CB;text-transform:uppercase;letter-spacing:0.1em;display:flex;align-items:center;gap:8px;margin:1.25rem 0 0.6rem;position:relative;z-index:1}
+.section-label::after{content:"";flex:1;height:0.5px;background:rgba(255,255,255,0.15)}
+.drill-card{background:#fff;border-radius:10px;overflow:hidden;margin-bottom:9px;position:relative;z-index:1}
+.drill-header{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:0.5px solid #ece9e3}
+.drill-num{width:26px;height:26px;border-radius:50%;background:#E1F5EE;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#085041;flex-shrink:0}
+.drill-name{font-size:13px;font-weight:500;color:#1a1a1a;flex:1}
+.drill-time{font-size:11px;color:#0F6E56;background:#E1F5EE;border:0.5px solid #9FE1CB;padding:3px 9px;border-radius:5px;font-weight:500;white-space:nowrap}
+.drill-body{padding:13px 14px;display:flex;flex-direction:column;gap:11px}
+.micro{font-size:9px;font-weight:600;color:#aaa;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px}
+.drill-text{font-size:12px;color:#1a1a1a;line-height:1.68}
+.why-block{border-left:3px solid #1D9E75;padding:4px 0 4px 10px}
+.why-lbl{font-size:9px;font-weight:600;color:#0F6E56;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px}
+.why-text{font-size:12px;color:#555;line-height:1.62;font-style:italic}
+.score-box{background:#E1F5EE;border:0.5px solid #9FE1CB;border-radius:8px;padding:9px 12px}
+.score-box-lbl{font-size:9px;font-weight:600;color:#085041;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px}
+.score-row{display:flex;flex-direction:column;gap:10px}
+.score-item-lbl{font-size:11px;font-weight:600;color:#085041;margin-bottom:5px}
+.score-single{display:flex;align-items:center;gap:8px}
+.score-single input{width:64px;padding:6px 9px;border-radius:6px;border:1px solid #9FE1CB;background:#fff;font-size:16px;font-weight:500;color:#085041;text-align:center;outline:none;font-family:inherit}
+.score-single input:focus{border-color:#1D9E75}
+.den{font-size:13px;color:#0F6E56;font-weight:500}
+.score-sep{height:0.5px;background:rgba(15,110,86,0.2);margin:4px 0}
+.score-total-row{display:flex;align-items:center;gap:8px;padding-top:4px}
+.score-total-lbl{font-size:11px;font-weight:600;color:#085041;flex:1}
+.score-total-val{font-size:18px;font-weight:600;color:#085041;min-width:32px}
+.score-total-den{font-size:13px;color:#0F6E56;font-weight:500}
+.feedback-section{position:relative;z-index:1}
+.feedback-card{background:#0d6b51;border:0.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:1.25rem 1.5rem}
+.feedback-intro{font-size:13px;color:rgba(255,255,255,0.88);line-height:1.7;margin-bottom:1.25rem}
+.feedback-hint{display:block;margin-top:8px;font-size:12px;color:rgba(255,255,255,0.45);font-style:italic}
+.feedback-question{margin-bottom:16px}
+.feedback-question:last-child{margin-bottom:0}
+.feedback-q-label{font-size:11px;font-weight:500;color:#fff;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:7px;display:flex;align-items:center;gap:8px}
+.q-num{width:19px;height:19px;border-radius:50%;background:rgba(255,255,255,0.15);display:inline-flex;align-items:center;justify-content:center;font-size:10px;color:#fff;flex-shrink:0}
+.req-star{color:#ff6b6b;margin-left:3px}
+.tile-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.q-tile{padding:10px 14px;border-radius:10px;cursor:pointer;font-size:12px;font-family:inherit;line-height:1.3;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.35);color:rgba(255,255,255,0.90);transition:background 0.12s,border-color 0.12s,color 0.12s;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.q-tile.selected{background:#ffc846;border:1px solid #ffc846;color:#3a2800;font-weight:600}
+.opt-label{font-size:10px;color:rgba(255,255,255,0.4);font-weight:400;margin-left:5px;text-transform:none;letter-spacing:0}
+.feedback-textarea{width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);border-radius:10px;padding:10px 12px;font-size:13px;color:rgba(255,255,255,0.88);font-family:inherit;line-height:1.6;resize:vertical;min-height:72px;outline:none;transition:border-color 0.15s}
+.feedback-textarea::placeholder{color:rgba(255,255,255,0.3)}
+.feedback-textarea:focus{border-color:rgba(255,255,255,0.5)}
+.send-wrap{position:relative;z-index:1;margin-top:1.25rem;padding-bottom:0.5rem}
+.send-btn{width:100%;padding:14px;background:#1D9E75;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:500;cursor:pointer;font-family:inherit;transition:background 0.15s;display:flex;align-items:center;justify-content:center;gap:9px}
+.send-btn:hover{background:#0F6E56}
+.send-btn:disabled{background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.3);cursor:not-allowed}
+.send-hint{text-align:center;font-size:12px;color:rgba(255,255,255,0.32);margin-top:9px;line-height:1.4}
+.plan-footer{display:flex;justify-content:space-between;padding-top:1rem;margin-top:1.5rem;border-top:0.5px solid rgba(255,255,255,0.1);position:relative;z-index:1}
+.plan-footer span{font-size:10px;color:rgba(255,255,255,0.25)}
+</style>
+</head>
+<body>
+<canvas id="topo-bg" aria-hidden="true"></canvas>
+<div class="plan">
+<a href="#" class="back-link" id="back-link">
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+Dashboard
+</a>
+<div class="plan-header">
+<div class="week-label">Week 1 · Practice Plan</div>
+<h1 class="golfer-name">Spencer</h1>
+<div class="overview-chips"><div class="chip"><div class="chip-lbl">Duration</div><div class="chip-val">60 min</div></div><div class="chip"><div class="chip-lbl">Location</div><div class="chip-val">Driving range</div></div><div class="chip"><div class="chip-lbl">Focus</div><div class="chip-val">Eliminating the over-the-top move with irons and fairway woods</div></div></div>
+<div class="opening-card"><p>Spencer, that over-the-top move with your long irons and woods is one of the most common patterns at your level — and the good news is it responds fast to the right drills. This week we're attacking it from two angles: rebuilding your path with irons using a gate and weight-transfer combo, then grooving an inside path with your fairway woods using a headcover checkpoint. Two drills, full focus.</p></div>
+</div>
+<div class="section-label">Drills</div>
+<div class="drill-card"><div class="drill-header"><div class="drill-num">1</div><div class="drill-name">Iron Gate Drill with Step-and-Strike</div><div class="drill-time">25 min</div></div><div class="drill-body"><div><div class="micro">What to do</div><p class="drill-text">Place two balls on the ground as a gate, one on each side of your clubhead at address. You'll hit 30 balls total in two blocks:
+
+Block 1 — Relaxed gate (15 balls): Set the gate so each ball is roughly 3 inches wider than the clubhead on both sides. Use a 7-iron. Address the ball normally, then slide your lead foot in until it touches your trail foot. Take your backswing from this narrow stance. BEFORE you start the downswing, step your lead foot toward the target back to its normal position and transfer your weight onto that lead foot — then swing through. The step forces your lower body to lead, which naturally shallows the club and keeps it from coming over the top. Your goal is to strike the ball without disturbing either gate ball.
+
+Block 2 — Tight gate (15 balls): Move each gate ball in so it sits just barely wider than the clubhead. Same step-and-strike process: feet together, backswing, step and transfer, then swing. The tighter gate demands a more precise path — any over-the-top move will clip the outside gate ball.
+
+Reset the gate after any contact with a gate ball. Take your time between reps; this isn't about speed.</p></div><div class="why-block"><div class="why-lbl">Why this matters for you</div><p class="why-text">As a 16-handicap fighting a slice with long irons, your club is almost certainly approaching from outside the target line. The gate gives you instant, binary feedback — you either miss the gate balls or you don't. The step-and-strike setup is what ties it together: by starting with your feet together and stepping toward the target before the downswing, you're training your lower body to initiate the transition. That's the single most effective way to shallow the club and kill the over-the-top pattern that's producing your slice.</p></div><div class="score-box"><div class="score-box-lbl">Score to record <span class="req-star">*</span></div><div class="score-row"><div><div class="score-item-lbl">Relaxed gate passes</div><div class="score-single"><input id="s1a" type="number" min="0" placeholder="—" oninput="checkReady()"><span class="den">/ 15</span></div></div><div style="margin-top:10px"><div class="score-item-lbl">Tight gate passes</div><div class="score-single"><input id="s1b" type="number" min="0" placeholder="—" oninput="checkReady()"><span class="den">/ 15</span></div></div><div class="score-sep"></div><div class="score-total-row"><span class="score-total-lbl">Total</span><span class="score-total-val" id="st1">—</span><span class="score-total-den">/ 30</span></div></div></div></div></div><div class="drill-card"><div class="drill-header"><div class="drill-num">2</div><div class="drill-name">Headcover Drill — Fairway Woods</div><div class="drill-time">25 min</div></div><div class="drill-body"><div><div class="micro">What to do</div><p class="drill-text">Place your driver headcover on the ground just outside the ball and slightly behind it (toward your trail foot) — roughly 2–3 inches outside and 2–3 inches back. The headcover sits in the exact zone your clubhead would pass through if you came over the top. You'll hit 30 balls total in two blocks, alternating between your 3-wood and 5-wood throughout both.
+
+Block 1 — Off the ground (15 balls): Place the ball directly on the turf or off a low mat, no tee. Your only job: swing through the ball without making contact with the headcover. If you clip or launch the headcover, your path is still coming over the top and outside-in. A clean miss of the headcover means your club is approaching from the inside. Alternate between your 3-wood and 5-wood every few shots so you get comfortable with both.
+
+Block 2 — Off a tee (15 balls): Tee the ball up at a low height — just enough to barely elevate it off the ground, the way you'd tee up a fairway wood on a par 3 or a tight tee shot. Same headcover position, same goal. Again, alternate between 3-wood and 5-wood.
+
+For both blocks, pick a target on the range that represents a 40-yard-wide fairway — at 180+ yards out, that's roughly the width between two range markers one bay apart, or about 10 yards to the left and 30 yards to the right of centre (accounting for your slice tendency — be honest with yourself about where centre really is). Count any ball that would land within that corridor as a &quot;fairway.&quot;
+
+Don't worry about distance — focus entirely on missing the headcover and finding the fairway.</p></div><div class="why-block"><div class="why-lbl">Why this matters for you</div><p class="why-text">Your over-the-top move is especially destructive with fairway woods because the longer shafts and lower lofts amplify the outside-in path into a bigger slice. These are the clubs you need off the deck on long par 4s and par 5s, and right now the slice is turning them into liabilities. The headcover acts as a physical blocker — it makes the wrong path punishing and the right path obvious. At a 16 handicap, getting your fairway woods in play will save you more strokes than almost anything else. Every shot that stays in a 40-yard corridor is one that doesn't cost you a penalty stroke or a punch-out.</p></div><div class="score-box"><div class="score-box-lbl">Score to record <span class="req-star">*</span></div><div class="score-row"><div><div class="score-item-lbl">Clean misses — ground</div><div class="score-single"><input id="s2a" type="number" min="0" placeholder="—" oninput="checkReady()"><span class="den">/ 15</span></div></div><div style="margin-top:10px"><div class="score-item-lbl">Fairway hits — ground</div><div class="score-single"><input id="s2b" type="number" min="0" placeholder="—" oninput="checkReady()"><span class="den">/ 15</span></div></div><div style="margin-top:10px"><div class="score-item-lbl">Clean misses — teed</div><div class="score-single"><input id="s2c" type="number" min="0" placeholder="—" oninput="checkReady()"><span class="den">/ 15</span></div></div><div style="margin-top:10px"><div class="score-item-lbl">Fairway hits — teed</div><div class="score-single"><input id="s2d" type="number" min="0" placeholder="—" oninput="checkReady()"><span class="den">/ 15</span></div></div><div class="score-sep"></div><div class="score-total-row"><span class="score-total-lbl">Total</span><span class="score-total-val" id="st2">—</span><span class="score-total-den">/ 60</span></div></div></div></div></div>
+<div class="section-label">Closing</div>
+<div class="feedback-section"><div class="feedback-card">
+<p class="feedback-intro">Spencer, both of these drills are training the same thing — getting your club to approach from the inside instead of over the top. The gate drill builds the feel with irons and teaches your lower body to lead; the headcover drill transfers that feel to your fairway woods where that slice is costing you the most on longer shots. Track your scores each session and watch those numbers climb. You're going to see straighter shots faster than you think.
+<span class="feedback-hint">Fill in your scores above, then answer all four questions to unlock Send.</span>
+</p>
+<div class="feedback-question">
+<div class="feedback-q-label"><span class="q-num">1</span>How did this session go?<span class="req-star">*</span></div>
+<div class="tile-row">
+<button type="button" class="q-tile" data-group="q1" data-value="Nailed it 💪" onclick="selectTile(this)">Nailed it 💪</button>
+<button type="button" class="q-tile" data-group="q1" data-value="Good progress 👍" onclick="selectTile(this)">Good progress 👍</button>
+<button type="button" class="q-tile" data-group="q1" data-value="Struggled a bit 😅" onclick="selectTile(this)">Struggled a bit 😅</button>
+<button type="button" class="q-tile" data-group="q1" data-value="Really tough 🤯" onclick="selectTile(this)">Really tough 🤯</button>
+</div></div>
+<div class="feedback-question">
+<div class="feedback-q-label"><span class="q-num">2</span>The instructions were…<span class="req-star">*</span></div>
+<div class="tile-row">
+<button type="button" class="q-tile" data-group="q2" data-value="Crystal clear 🎯" onclick="selectTile(this)">Crystal clear 🎯</button>
+<button type="button" class="q-tile" data-group="q2" data-value="A bit confusing 🤔" onclick="selectTile(this)">A bit confusing 🤔</button>
+<button type="button" class="q-tile" data-group="q2" data-value="Hard to follow 😵‍💫" onclick="selectTile(this)">Hard to follow 😵‍💫</button>
+</div></div>
+<div class="feedback-question">
+<div class="feedback-q-label"><span class="q-num">3</span>Next week I want…<span class="req-star">*</span></div>
+<div class="tile-row">
+<button type="button" class="q-tile" data-group="q3" data-value="More of the same 🔁" onclick="selectTile(this)">More of the same 🔁</button>
+<button type="button" class="q-tile" data-group="q3" data-value="Push it harder 🔥" onclick="selectTile(this)">Push it harder 🔥</button>
+<button type="button" class="q-tile" data-group="q3" data-value="Something different 🔀" onclick="selectTile(this)">Something different 🔀</button>
+</div></div>
+<div class="feedback-question">
+<div class="feedback-q-label"><span class="q-num">4</span>Ready for next week's plan?<span class="req-star">*</span></div>
+<div class="tile-row">
+<button type="button" class="q-tile" data-group="q4" data-value="Yes, send it 🙌" onclick="selectTile(this)">Yes, send it 🙌</button>
+<button type="button" class="q-tile" data-group="q4" data-value="Not yet ⏳" onclick="selectTile(this)">Not yet ⏳</button>
+<button type="button" class="q-tile" data-group="q4" data-value="Not interested 👋" onclick="selectTile(this)">Not interested 👋</button>
+</div></div>
+<div class="feedback-question" style="margin-top:8px">
+<div class="feedback-q-label">Other feedback<span class="opt-label">(optional)</span></div>
+<textarea id="q5" class="feedback-textarea" placeholder="Anything else you'd like to share…"></textarea>
+</div>
+</div></div>
+<div class="send-wrap">
+<button class="send-btn" id="send-btn" onclick="sendPlan()" disabled>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+Send my scores &amp; feedback
+</button>
+<p class="send-hint" id="send-hint">Fill in all drill scores and answer all questions to unlock</p>
+</div>
+<div class="plan-footer"><span>Alfie Golf</span><span>Week 1 · Spencer</span></div>
+</div>
+<div id="success-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:200;align-items:center;justify-content:center;padding:20px;">
+<div style="background:#0d6b51;border:0.5px solid rgba(255,255,255,0.15);border-radius:16px;padding:32px 24px;max-width:340px;width:100%;text-align:center;">
+<div style="width:52px;height:52px;border-radius:50%;background:rgba(29,158,117,0.25);border:2px solid #1D9E75;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+</div>
+<p style="font-size:18px;font-weight:700;color:#fff;margin-bottom:8px;">Results sent!</p>
+<p style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.6;margin-bottom:24px;">Your scores and feedback have been logged. Alfie will review them and be in touch about your Week 2 plan.</p>
+<a id="modal-dashboard-link" href="#" style="display:block;width:100%;padding:13px;background:#1D9E75;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;box-sizing:border-box;">Back to dashboard →</a>
+</div></div>
+<script>
+(function(){
+  var cv=document.getElementById("topo-bg");
+  var W=cv.width=window.innerWidth, H=cv.height=window.innerHeight;
+  var ctx=cv.getContext("2d");
+  function gauss(x,y,cx,cy,A,s){return A*Math.exp(-((x-cx)*(x-cx)+(y-cy)*(y-cy))/(2*s*s));}
+  var hills=[[0.18,0.13,0.90,0.13],[0.50,0.07,0.62,0.10],[0.86,0.16,0.75,0.11],
+    [0.13,0.33,0.58,0.12],[0.53,0.30,0.68,0.13],[0.90,0.37,0.72,0.14],
+    [0.24,0.53,0.65,0.13],[0.56,0.61,0.60,0.11],[0.93,0.62,0.52,0.10],
+    [0.16,0.75,0.70,0.12],[0.50,0.82,0.63,0.12],[0.82,0.87,0.55,0.10]];
+  function hf(x,y){var v=0;for(var i=0;i<hills.length;i++){var h=hills[i];v+=gauss(x,y,h[0]*W,h[1]*H,h[2],h[3]*Math.min(W,H));}return v;}
+  var RES=3,C=Math.floor(W/RES)+2,R=Math.floor(H/RES)+2;
+  var g=new Float32Array(C*R),lo=1e9,hi=-1e9;
+  for(var r=0;r<R;r++)for(var c=0;c<C;c++){var v=hf(c*RES,r*RES);g[r*C+c]=v;if(v<lo)lo=v;if(v>hi)hi=v;}
+  ctx.strokeStyle="rgba(255,255,255,0.09)";ctx.lineWidth=0.85;ctx.lineCap="round";
+  var NL=40;
+  for(var l=1;l<NL;l++){
+    var lv=lo+(hi-lo)*l/NL;ctx.beginPath();
+    for(var ri=0;ri<R-1;ri++)for(var ci=0;ci<C-1;ci++){
+      var x=ci*RES,y=ri*RES;
+      var a=g[ri*C+ci],b=g[ri*C+ci+1],d=g[(ri+1)*C+ci+1],e=g[(ri+1)*C+ci];
+      var pts=[];
+      function ep(v1,v2,x1,y1,x2,y2){if((v1>=lv)===(v2>=lv)||v1===v2)return;var t=(lv-v1)/(v2-v1);pts.push(x1+(x2-x1)*t,y1+(y2-y1)*t);}
+      ep(a,b,x,y,x+RES,y);ep(b,d,x+RES,y,x+RES,y+RES);
+      ep(e,d,x,y+RES,x+RES,y+RES);ep(a,e,x,y,x,y+RES);
+      if(pts.length===4){ctx.moveTo(pts[0],pts[1]);ctx.lineTo(pts[2],pts[3]);}
+    }
+    ctx.stroke();
+  }
+})();
+var fn=window.location.pathname.split("/").pop();
+var slug=fn.replace(/-week\d+-plan\.html$/,"");
+document.getElementById("back-link").href="https://alfie-golf.com/"+slug;
+document.getElementById("modal-dashboard-link").href="https://alfie-golf.com/"+slug;
+function selectTile(btn){
+  var g=btn.dataset.group;
+  document.querySelectorAll(".q-tile[data-group=\""+g+"\"]").forEach(function(b){b.classList.remove("selected");});
+  btn.classList.add("selected");checkReady();
+}
+function checkReady(){
+  var scoresOk=document.getElementById("s1a").value!==""&&document.getElementById("s1b").value!==""&&document.getElementById("s2a").value!==""&&document.getElementById("s2b").value!==""&&document.getElementById("s2c").value!==""&&document.getElementById("s2d").value!=="";
+  var tilesOk=["q1","q2","q3","q4"].every(function(g){return document.querySelector(".q-tile[data-group=\""+g+"\"].selected");});
+  var _t1=(parseInt(document.getElementById("s1a").value)||0)+(parseInt(document.getElementById("s1b").value)||0);document.getElementById("st1").textContent=_t1||"—";
+  var _t2=(parseInt(document.getElementById("s2a").value)||0)+(parseInt(document.getElementById("s2b").value)||0)+(parseInt(document.getElementById("s2c").value)||0)+(parseInt(document.getElementById("s2d").value)||0);document.getElementById("st2").textContent=_t2||"—";
+  document.getElementById("send-btn").disabled=!(scoresOk&&tilesOk);
+  var hint=document.getElementById("send-hint");
+  if(scoresOk&&tilesOk){hint.textContent="";} else {
+    var missing=[];
+    if(!scoresOk)missing.push("all drill scores");
+    if(!tilesOk)missing.push("all questions");
+    hint.textContent="Fill in "+missing.join(" and ")+" to unlock";
+    hint.style.color="rgba(255,200,100,0.6)";
+  }
+}
+function sendPlan(){
+  var btn=document.getElementById("send-btn");
+  btn.disabled=true;btn.innerHTML="… Sending…";
+  var q1=document.querySelector(".q-tile[data-group=\"q1\"].selected").dataset.value;
+  var q2=document.querySelector(".q-tile[data-group=\"q2\"].selected").dataset.value;
+  var q3=document.querySelector(".q-tile[data-group=\"q3\"].selected").dataset.value;
+  var q4=document.querySelector(".q-tile[data-group=\"q4\"].selected").dataset.value;
+  var q5=document.getElementById("q5").value.trim();
+  fetch("https://alfie-api.alfie-golf.workers.dev/?action=submitSession",{
+    method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({slug:slug,week:1,session:1,date:new Date().toISOString().split("T")[0],
+      drills:[{name:"Iron Gate Drill with Step-and-Strike",score:(parseInt(document.getElementById("s1a").value)||0)+(parseInt(document.getElementById("s1b").value)||0),max:30},{name:"Headcover Drill — Fairway Woods",score:(parseInt(document.getElementById("s2a").value)||0)+(parseInt(document.getElementById("s2b").value)||0)+(parseInt(document.getElementById("s2c").value)||0)+(parseInt(document.getElementById("s2d").value)||0),max:60}],scores:JSON.stringify({"relaxed_gate_passes": document.getElementById("s1a").value,"tight_gate_passes": document.getElementById("s1b").value,"clean_misses_—_ground": document.getElementById("s2a").value,"fairway_hits_—_ground": document.getElementById("s2b").value,"clean_misses_—_teed": document.getElementById("s2c").value,"fairway_hits_—_teed": document.getElementById("s2d").value}),
+      q1:q1,q2:q2,q3:q3,q4:q4,q5:q5||undefined})
+  })
+  .then(function(res){if(!res.ok)throw new Error("Server error "+res.status);return res.json();})
+  .then(function(data){
+    if(data.ok){document.getElementById("success-overlay").style.display="flex";}
+    else throw new Error(data.error||"Unknown error");
+  })
+  .catch(function(err){
+    btn.disabled=false;
+    btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send my scores &amp; feedback';
+    var hint=document.getElementById("send-hint");
+    hint.textContent="Something went wrong — please try again";
+    hint.style.color="rgba(255,100,100,0.8)";
+    console.error(err);
+  });
+}
+</script>
+</body>
+</html>
