@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log your session — Daniel Lewis</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #063d31; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; padding: 24px 16px 48px; }
+  .card { background: #fff; border-radius: 16px; max-width: 520px; margin: 0 auto; overflow: hidden; }
+
+  /* Header */
+  .header { background: linear-gradient(135deg, #1a7a5e, #0a5740); border-left: 4px solid #5DCAA5; padding: 20px 22px; }
+  .header-eyebrow { font-size: 11px; font-weight: 600; color: #5DCAA5; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .header-title { font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 2px; }
+  .header-sub { font-size: 13px; color: rgba(255,255,255,0.65); }
+
+  /* Section */
+  .section { padding: 20px 20px 0; }
+  .section:last-of-type { padding-bottom: 20px; }
+  .section-label { font-size: 11px; font-weight: 600; color: #0F6E56; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+
+  /* Drill card */
+  .drill-card { border: 0.5px solid #e5e5e5; border-radius: 12px; overflow: hidden; margin-bottom: 8px; }
+  .drill-header { display: flex; align-items: center; gap: 10px; padding: 11px 14px; background: #fafafa; border-bottom: 0.5px solid #ece9e3; }
+  .drill-num { width: 26px; height: 26px; border-radius: 50%; background: #E1F5EE; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #085041; flex-shrink: 0; }
+  .drill-name { font-size: 13px; font-weight: 500; color: #1a1a1a; flex: 1; }
+  .drill-time { font-size: 11px; color: #0F6E56; background: #E1F5EE; border: 0.5px solid #9FE1CB; padding: 3px 9px; border-radius: 5px; font-weight: 500; white-space: nowrap; }
+  .score-box { padding: 14px; }
+  .score-lbl { font-size: 11px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; }
+  .score-row { display: flex; align-items: center; gap: 10px; }
+  .score-row input { width: 72px; height: 40px; border: 1.5px solid #ccc; border-radius: 8px; font-size: 18px; font-weight: 600; text-align: center; color: #085041; outline: none; transition: border-color 0.15s; -moz-appearance: textfield; }
+  .score-row input::-webkit-outer-spin-button,
+  .score-row input::-webkit-inner-spin-button { -webkit-appearance: none; }
+  .score-row input:focus { border-color: #1D9E75; }
+  .score-den { font-size: 13px; color: #666; }
+
+  /* Feedback */
+  .feedback-card { background: #0d6b51; border-radius: 12px; padding: 18px; margin-bottom: 0; }
+  .feedback-title { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+  .feedback-hint { font-size: 12px; color: rgba(255,255,255,0.5); font-style: italic; margin-bottom: 16px; }
+  .q-block { margin-bottom: 14px; }
+  .q-block:last-of-type { margin-bottom: 0; }
+  .q-label { font-size: 11px; font-weight: 600; color: #9FE1CB; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+  .q-num { background: rgba(255,255,255,0.15); color: #fff; font-size: 10px; font-weight: 700; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  textarea { width: 100%; background: rgba(255,255,255,0.1); border: 0.5px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; font-size: 14px; font-family: inherit; padding: 10px 12px; resize: none; outline: none; transition: border-color 0.15s; }
+  textarea::placeholder { color: rgba(255,255,255,0.35); }
+  textarea:focus { border-color: rgba(255,255,255,0.5); }
+
+  /* Q4 tiles */
+  .q4-tiles { display: flex; gap: 10px; }
+  .q4-tile { flex: 1; background: rgba(255,255,255,0.14); border: 1.5px solid transparent; border-radius: 10px; padding: 11px 8px; text-align: center; cursor: pointer; transition: all 0.15s; }
+  .q4-tile:hover { background: rgba(255,255,255,0.2); }
+  .q4-tile.selected { background: #ffc846; border-color: #ffc846; }
+  .q4-tile .tile-icon { font-size: 20px; margin-bottom: 4px; }
+  .q4-tile .tile-label { font-size: 12px; font-weight: 600; color: #fff; }
+  .q4-tile.selected .tile-label { color: #063d31; }
+
+  /* Submit */
+  .submit-area { padding: 16px 20px 20px; }
+  .btn-send { width: 100%; padding: 15px; background: #1D9E75; color: #fff; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.15s, opacity 0.15s; }
+  .btn-send:disabled { background: #ccc; cursor: not-allowed; }
+  .btn-send:not(:disabled):hover { background: #0F6E56; }
+  .send-hint { font-size: 12px; color: #999; text-align: center; margin-top: 8px; }
+
+  /* Success overlay */
+  .success { display: none; flex-direction: column; align-items: center; justify-content: center; padding: 48px 24px; text-align: center; }
+  .success-icon { width: 60px; height: 60px; background: #E1F5EE; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+  .success-icon svg { width: 28px; height: 28px; stroke: #1D9E75; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+  .success-title { font-size: 18px; font-weight: 600; color: #063d31; margin-bottom: 8px; }
+  .success-sub { font-size: 14px; color: #666; line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<div class="card" id="form-card">
+
+  <div class="header">
+    <div class="header-eyebrow">Alfie Golf Trainings</div>
+    <div class="header-title">Log your session, Daniel</div>
+    <div class="header-sub">Week 1 · Enter your score and answer the four questions below</div>
+  </div>
+
+  <!-- Drill score -->
+  <div class="section">
+    <div class="section-label">Drill score</div>
+    <div class="drill-card">
+      <div class="drill-header">
+        <div class="drill-num">1</div>
+        <div class="drill-name">Step and Strike + Towel — 7-iron</div>
+        <div class="drill-time">25 min</div>
+      </div>
+      <div class="score-box">
+        <div class="score-lbl">Score to record</div>
+        <div class="score-row">
+          <input type="number" id="score1" min="0" max="20" placeholder="—" oninput="checkReady()">
+          <span class="score-den">/ 20 shots without touching the towel</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feedback -->
+  <div class="section">
+    <div class="section-label">Your feedback</div>
+    <div class="feedback-card">
+      <div class="feedback-title">Four quick questions</div>
+      <div class="feedback-hint">All optional except #4 — even one sentence is perfect.</div>
+
+      <div class="q-block">
+        <div class="q-label"><div class="q-num">1</div>What felt different, hard, or clicked?</div>
+        <textarea id="q1" rows="3" placeholder="Even one or two sentences is perfect..."></textarea>
+      </div>
+
+      <div class="q-block">
+        <div class="q-label"><div class="q-num">2</div>Anything that didn't make sense or felt wrong?</div>
+        <textarea id="q2" rows="3" placeholder="Drills, instructions, timing — anything off..."></textarea>
+      </div>
+
+      <div class="q-block">
+        <div class="q-label"><div class="q-num">3</div>One thing you want to focus on more next week?</div>
+        <textarea id="q3" rows="2" placeholder="Any specific shot, situation, or area of your game..."></textarea>
+      </div>
+
+      <div class="q-block">
+        <div class="q-label"><div class="q-num">4</div>Ready for next week's plan?</div>
+        <div class="q4-tiles">
+          <div class="q4-tile" id="tile-yes" onclick="selectQ4('yes')">
+            <div class="tile-icon">✅</div>
+            <div class="tile-label">Yes — send it</div>
+          </div>
+          <div class="q4-tile" id="tile-no" onclick="selectQ4('no')">
+            <div class="tile-icon">⏳</div>
+            <div class="tile-label">Not yet — need more time</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Submit -->
+  <div class="submit-area">
+    <button class="btn-send" id="btn-send" disabled onclick="submitSession()">Send results &amp; feedback →</button>
+    <p class="send-hint" id="send-hint">Enter your drill score and answer question 4 to unlock</p>
+  </div>
+
+</div>
+
+<!-- Success state -->
+<div class="card success" id="success-card">
+  <div class="success-icon">
+    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+  </div>
+  <div class="success-title">Session logged — nice work!</div>
+  <div class="success-sub">Alfie has your results and feedback. You'll hear from us when your next plan is ready.</div>
+</div>
+
+<script>
+var q4Answer = null;
+
+function selectQ4(val) {
+  q4Answer = val;
+  document.getElementById('tile-yes').classList.toggle('selected', val === 'yes');
+  document.getElementById('tile-no').classList.toggle('selected', val === 'no');
+  checkReady();
+}
+
+function checkReady() {
+  var scoreOk = document.getElementById('score1').value !== '';
+  var q4Ok = q4Answer !== null;
+  var btn = document.getElementById('btn-send');
+  var hint = document.getElementById('send-hint');
+  btn.disabled = !(scoreOk && q4Ok);
+  if (scoreOk && q4Ok) {
+    hint.textContent = '';
+  } else {
+    var missing = [];
+    if (!scoreOk) missing.push('your drill score');
+    if (!q4Ok) missing.push('question 4');
+    hint.textContent = 'Enter ' + missing.join(' and ') + ' to unlock';
+  }
+}
+
+function submitSession() {
+  var btn = document.getElementById('btn-send');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  var payload = {
+    slug: 'c01-20-daniel-lewis',
+    week: 1,
+    session: 1,
+    date: new Date().toISOString().slice(0, 10),
+    drills: [{ name: 'Step and Strike + Towel — 7-iron', score: Number(document.getElementById('score1').value), max: 20 }],
+    scores: [Number(document.getElementById('score1').value)],
+    q1: document.getElementById('q1').value.trim() || '(no response)',
+    q2: document.getElementById('q2').value.trim() || '(no response)',
+    q3: document.getElementById('q3').value.trim() || '(no response)',
+    q4: q4Answer === 'yes' ? 'Yes — send it' : 'Not yet — need more time'
+  };
+
+  fetch('https://alfie-api.alfie-golf.workers.dev/?action=submitSession', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(res) {
+    if (res.ok || res.id || res.slug) {
+      document.getElementById('form-card').style.display = 'none';
+      var s = document.getElementById('success-card');
+      s.style.display = 'flex';
+    } else {
+      btn.disabled = false;
+      btn.textContent = 'Send results & feedback →';
+      alert('Something went wrong. Please try again.');
+    }
+  })
+  .catch(function() {
+    btn.disabled = false;
+    btn.textContent = 'Send results & feedback →';
+    alert('Connection error. Please check your internet and try again.');
+  });
+}
+</script>
+</body>
+</html>
