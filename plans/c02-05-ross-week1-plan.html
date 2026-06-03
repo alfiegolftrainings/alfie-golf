@@ -206,7 +206,7 @@ function sendPlan(){
   fetch("https://alfie-api.alfie-golf.workers.dev/?action=submitSession",{
     method:"POST",headers:{"Content-Type":"application/json"},
     body:JSON.stringify({slug:slug,week:1,session:1,date:new Date().toISOString().split("T")[0],
-      drills:"[]",scores:JSON.stringify({"score": document.getElementById("s1").value,"score": document.getElementById("s2").value}),
+      drills:JSON.stringify([{name:"Fatigue-Proof Contact",score:document.getElementById("s1").value,max:15},{name:"Pause-at-the-Top Tempo Holds",score:document.getElementById("s2").value,max:10}]),scores:JSON.stringify({s1:document.getElementById("s1").value,s2:document.getElementById("s2").value}),
       q1:q1,q2:q2,q3:q3,q4:q4,q5:q5||undefined})
   })
   .then(function(res){if(!res.ok)throw new Error("Server error "+res.status);return res.json();})
