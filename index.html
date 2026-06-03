@@ -609,6 +609,7 @@
 
         if (SESSIONS.length === 0) renderState1(); else renderState2();
         showView('dashboard');
+        try{fetch("https://alfie-api.alfie-golf.workers.dev/?action=trackEvent",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({slug:SLUG,event:"dashboard_visited",meta:{}})})}catch(e){}
 
       } catch (err) {
         console.error('Boot error:', err);

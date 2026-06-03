@@ -240,6 +240,9 @@ function sendPlan(){
     console.error(err);
   });
 }
+function trackEvent(event,meta){try{fetch("https://alfie-api.alfie-golf.workers.dev/?action=trackEvent",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({slug:slug,event:event,meta:meta||{}})})}catch(e){}}
+window.addEventListener("load",function(){trackEvent("plan_opened",{week:2,referrer:document.referrer?"email":"direct"});});
+(function(){var fired={};["s1","s2","s3"].forEach(function(id){var el=document.getElementById(id);if(el)el.addEventListener("focus",function(){if(!fired[id]){fired[id]=true;trackEvent("score_started",{week:2,input:id});}},true);});})();
 </script>
 </body>
 </html>
