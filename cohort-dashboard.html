@@ -216,11 +216,16 @@
   }
   .funnel-bar {
     width: 60%;
+    height: 80px;
     background: rgba(255,255,255,0.1);
     border-radius: 6px;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
   }
   .funnel-fill {
+    width: 100%;
     background: var(--green);
     border-radius: 6px;
     transition: height .6s ease;
@@ -682,21 +687,20 @@ function renderKPIs(gs) {
 
 // ── Funnel ──────────────────────────────────────────────────
 function renderFunnel(gs) {
-  var total     = gs.length;
-  var sent      = gs.filter(function(g){ return g.week1Sent; }).length;
-  var opened    = gs.filter(function(g){ return g.results && g.results.length > 0; }).length; // proxy
-  var responded = opened;
-  var wantWk2   = gs.filter(function(g){
-    return getGolferLatestQ4(g) === 'yes';
+  var total      = gs.length;
+  var submitted  = gs.filter(function(g){ return g.results && g.results.length > 0; }).length;
+  var wantWk2    = gs.filter(function(g){ return getGolferLatestQ4(g) === 'yes'; }).length;
+  var submWk2    = gs.filter(function(g){
+    return g.results && g.results.some(function(s){ return String(s.week) === '2'; });
   }).length;
-  var wk2sent   = gs.filter(function(g){ return g.week2Sent; }).length;
+  var kwt        = gs.filter(function(g){ return g.kwtAt; }).length;
 
   var steps = [
-    { label: 'Signed up',     n: total,     base: total },
-    { label: 'W1 sent',       n: sent,      base: total },
-    { label: 'Submitted',     n: responded, base: total },
-    { label: 'Want Week 2',   n: wantWk2,   base: total },
-    { label: 'W2 sent',       n: wk2sent,   base: total }
+    { label: 'Signed up',       n: total,     base: total },
+    { label: 'Submitted',       n: submitted, base: total },
+    { label: 'Want Week 2',     n: wantWk2,   base: total },
+    { label: 'Submitted W2',    n: submWk2,   base: total },
+    { label: 'Keep working',    n: kwt,        base: total }
   ];
 
   document.getElementById('funnel-steps').innerHTML = steps.map(function(s) {
@@ -704,8 +708,8 @@ function renderFunnel(gs) {
     var h   = Math.max(pct, 8);
     return '<div class="funnel-step">' +
       '<div class="funnel-bar-wrap">' +
-        '<div class="funnel-bar" style="height:80px">' +
-          '<div class="funnel-fill" style="height:' + h + '%;background:#1D9E75"></div>' +
+        '<div class="funnel-bar">' +
+          '<div class="funnel-fill" style="height:' + h + '%"></div>' +
         '</div>' +
       '</div>' +
       '<div class="funnel-n">' + s.n + '</div>' +
