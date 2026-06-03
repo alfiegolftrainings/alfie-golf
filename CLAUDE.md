@@ -8,6 +8,19 @@ This file is loaded automatically at the start of every Cowork session. Read it 
 
 **Alfie Golf Trainings** is a personalised golf coaching concierge run by Fabio. Golfers fill out a Google Form, Fabio builds a weekly practice plan using Claude, and the plan is delivered as a branded HTML card (interactive, emailed to the golfer). Golfers also get a personal dashboard at `alfie-golf.com/[slug]` to track their progress.
 
+### Phase 0 — Concierge test (current)
+C01 (40 golfers) and C02 (40 golfers) are the live test cohorts. The workflow is intentionally manual: Fabio builds every plan by hand using Claude + plan-builder.html, sends emails via the Worker, and tracks results on the cohort dashboard. The goal is to validate engagement, retention, and plan quality before automating anything.
+
+### Phase 1 — Product (if concierge test is promising)
+If C01/C02 results show meaningful engagement (golfers logging sessions, requesting Week 2, wanting to continue), the plan is to evolve Alfie into a proper SaaS product for golf coaches. Key ideas:
+
+- **Self-serve onboarding:** golfer fills a form → plan auto-generated (AI, no manual step) → delivered in minutes
+- **Coach dashboard as the core product:** coach manages a roster of golfers, sees engagement funnel, sends plans, tracks week-over-week progress
+- **Multi-coach:** any golf coach can sign up, import their roster, and run their own Alfie concierge
+- **Subscription model:** coaches pay per active golfer or per cohort
+- **The current stack is production-ready:** Cloudflare Worker + D1 + Resend + Vercel scales to thousands of golfers with zero infrastructure changes
+- **What needs to be built:** auth layer (Cloudflare Access or Clerk), self-serve plan generation endpoint (Claude API in the Worker), coach onboarding flow, billing (Stripe)
+
 ---
 
 ## Stack
@@ -299,9 +312,21 @@ For golfers who can't complete the plan HTML form (device/browser compatibility 
 
 ---
 
+## Cohort dashboard (cohort-dashboard.html) — current state
+
+Coach-facing dashboard. Loads data live from D1 via Worker on page open. Key features:
+- **Engagement funnel (two-stage):** Week 1 (Participants → Logged a session → Ready for W2 via Q4 Yes) + Week 2 (Started → Logged a session → Want to continue). Bar fill proportional to count. Conversion % shown between steps. Green for W1, amber for W2.
+- **"All cohorts" mode:** aggregates C01 + C02 only — excludes Test (C00) and Waitlist (W).
+- **KPI cards, charts, golfer table, qualitative responses.**
+- Not yet D1-native for all data — some fields (sessions_per_week, session_duration) pending Worker enhancement.
+
+---
+
 ## Remaining build phases
 
-- **Phase C:** D1-native cohort dashboard — add `getDashboardData` Worker endpoint, update `cohort-dashboard.html` to use Worker instead of Google Sheet
+- **Phase C:** D1-native cohort dashboard — add `getDashboardData` Worker endpoint to expose sessions_per_week + session_duration fields currently showing as "—"
+- **Phase E:** Stress test Run 4 — resolve IMPROVE-1 through IMPROVE-7 backlog items first
+- **Phase 1 (if concierge test is promising):** See Product Vision in "What this project is" above
 
 ---
 
@@ -329,20 +354,21 @@ C01 numbers = sequential 01–40. C02 numbers = sequential 01–40. D1 slugs: `c
 30 Rob Reid · 31 Colin · 32 Dave · 33 Danny · 34 Rob · 35 Alex · 36 Joel Sati
 37 Tanner Meyer · 38 Rachel Smith · 39 Gonzalo · 40 Tom
 
-### Cohort 2 (C02) — 40 golfers — plans in plans/
+### Cohort 2 (C02) — 40 golfers — all plans sent as of 2026-06-02/03
 
-**Plans sent (01–19):**
+**Sent manually on 2026-06-02 (week1_sent stamped in D1):**
+- 14 Mike Vega (mikevega4177@gmail.com) — sent 14:11 UTC
+- 38 Neil M (millys1977@gmail.com) — sent 18:49 UTC. Plan has 3 drills: Putting Ladder (/40), 18-Hole 2-Putt Par Game (/par 36), 9-Hole Up-and-Down Challenge (/par 18).
+
+**Scheduled in D1 `scheduled_sends` for 2026-06-03 13:00 UTC (15:00 CEST):**
 01 Atticus B · 02 Mike (Lovitto) · 03 Josh (jlpsuperfly) · 04 Kyle · 05 Ross (lockrmail)
 06 Austin (McAllistera92) · 07 Ryan (rtkindsfather) · 08 Joe L · 09 Bob · 10 Nate J
-11 Josh (JJ.bana) · 12 Andy Metzner · 13 Tucker · 14 Mike Vega (📵 phone only) · 15 Matt Sather
-16 Joshua (Leftyjosh23) · 17 Luke P · 18 Mark (mdecapua) · 19 Luis Chavez
-
-**No plan sent yet (20–40):**
-20 Miguel · 21 Matt (Kimball) · 22 Alex Luna · 23 Hayden Frey · 24 Jason (torquato)
-25 J (Concon11) · 26 Robert Manning · 27 Pete · 28 Michael (Meznar) · 29 Chase
-30 T.Sijtsma · 31 Spencer · 32 Ryan (ryanschwartz1) · 33 Nick · 34 Jason (Jasonywkim)
-35 John (Burke) · 36 Miles · 37 Ryan (Laporte) · 38 Neil M (📵 phone only) · 39 Chris (chrislikestogolf)
-40 Matthew (Cooper)
+11 Josh (JJ.bana) · 12 Andy Metzner · 13 Tucker · 15 Matt Sather · 16 Joshua (Leftyjosh23)
+17 Luke P · 18 Mark (mdecapua) · 19 Luis Chavez · 20 Miguel · 21 Matt (Kimball)
+22 Alex Luna · 23 Hayden Frey · 24 Jason (torquato) · 25 J (Concon11) · 26 Robert Manning
+27 Pete · 28 Michael (Meznar) · 29 Chase · 30 T.Sijtsma · 31 Spencer
+32 Ryan (ryanschwartz1) · 33 Nick · 34 Jason (Jasonywkim) · 35 John (Burke) · 36 Miles
+37 Ryan (Laporte) · 39 Chris (chrislikestogolf) · 40 Matthew (Cooper)
 
 ### Waitlist (W) — 7 golfers — no plans yet
 81 Austin Miranda · 82 David Murphy · 83 Richard · 84 Chris (Itschrisq)

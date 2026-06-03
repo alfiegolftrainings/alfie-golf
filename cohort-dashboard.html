@@ -564,6 +564,7 @@ async function loadData() {
         frustration:    profile.frustration || '',
         week1Sent:      profile.week1Sent   || '',
         week2Sent:      profile.week2Sent   || '',
+        kwtAt:          profile.kwtAt       || '',
         planWeek1:      profile.planWeek1   || '',
         sessions:       '—',   // sessions_per_week — Worker enhancement pending
         duration:       '—',   // session_duration  — Worker enhancement pending
@@ -644,32 +645,28 @@ function renderDashboard(golfers) {
 
 // ── KPIs ────────────────────────────────────────────────────
 function renderKPIs(gs) {
-  var total      = gs.length;
-  var planSent   = gs.filter(function(g){ return g.week1Sent; }).length;
-  var responded  = gs.filter(function(g){ return g.results && g.results.length > 0; }).length;
-  var totalSubs  = gs.reduce(function(a,g){ return a + (g.results ? g.results.length : 0); }, 0);
-  var avgSubs    = responded > 0 ? (totalSubs / responded).toFixed(1) : '—';
+  var total     = gs.length;
+  var responded = gs.filter(function(g){ return g.results && g.results.length > 0; }).length;
+  var activRate = total > 0 ? Math.round(responded / total * 100) + '%' : '—';
 
-  var q4yes      = 0, q4counted = 0;
+  var q4yes = 0;
   gs.forEach(function(g) {
     if (!g.results || !g.results.length) return;
-    var q4 = getGolferLatestQ4(g);
-    if (q4 !== 'unknown') {
-      q4counted++;
-      if (q4 === 'yes') q4yes++;
-    }
+    if (getGolferLatestQ4(g) === 'yes') q4yes++;
   });
-  var wk2conv  = q4counted > 0 ? Math.round(q4yes / q4counted * 100) + '%' : '—';
-  var activRate = planSent > 0 ? Math.round(responded / planSent * 100) + '%' : '—';
-  var wk2sent  = gs.filter(function(g){ return g.week2Sent; }).length;
+  var wk2intent = responded > 0 ? Math.round(q4yes / responded * 100) + '%' : '—';
+
+  var wk2sent   = gs.filter(function(g){ return g.week2Sent; }).length;
+  var kwt       = gs.filter(function(g){ return g.kwtAt; }).length;
+  var retention = wk2sent > 0 ? Math.round(kwt / wk2sent * 100) + '%' : '—';
 
   var kpis = [
-    { label: 'Total golfers',    value: total,    sub: 'in selection' },
-    { label: 'W1 plans sent',    value: planSent, sub: 'Week 1 emails out' },
-    { label: 'Submitted scores', value: responded,sub: 'at least 1 response' },
-    { label: 'Activation rate',  value: activRate, sub: 'submitted / sent' },
-    { label: 'Week 2 intent',    value: wk2conv,  sub: '"Yes" on Q4 (latest)' },
-    { label: 'W2 plans sent',    value: wk2sent,  sub: 'Week 2 emails out' }
+    { label: 'Total golfers',    value: total,      sub: 'in selection' },
+    { label: 'Submitted scores', value: responded,  sub: 'at least 1 session logged' },
+    { label: 'Activation rate',  value: activRate,  sub: '% of total golfers' },
+    { label: 'Week 2 intent',    value: wk2intent,  sub: '% of submitted scores' },
+    { label: 'W2 submitted',     value: wk2sent,    sub: 'Week 2 sessions logged' },
+    { label: 'Final Retention',   value: retention,  sub: '% of W2 submitted' }
   ];
 
   document.getElementById('kpi-grid').innerHTML = kpis.map(function(k) {
